@@ -1,5 +1,7 @@
 # athackst/mkdocs-simple-plugin
 
+![Docs](https://github.com/athackst/mkdocs-simple-plugin/workflows/Docs/badge.svg) ![Test](https://github.com/athackst/mkdocs-simple-plugin/workflows/Test/badge.svg)
+
 This plugin enables you to build documentation from markdown files interspersed within your code.  It is designed for the way developers commonly write documentation in their own code -- with simple markdown files.
 
 ## About
@@ -26,7 +28,7 @@ You may be wondering why you would want to generate a static site for your proje
 
 This plugin was made to be super simple to use.
 
-### Prerequisites 
+### Prerequisites
 
 You will need to have [mkdocs](https://www.mkdocs.org/) installed on your system.  I recommend installing it via pip to get the latest version.
 
@@ -55,6 +57,7 @@ Basic usage was optimized around ease of use.  Simply run
 ```bash
 mkdocs_simple_gen
 ```
+
 and you're all set!
 
 #### Advanced
@@ -78,7 +81,7 @@ ignore_directories: # Folders that should be ignored to add md files
   - "drafts"
 ```
 
-**Note**
+Some things to note:
 
 * Files in the `docs_dir` (by default `docs`) will be merged with any other documentation in your repository.
 * If you have specified `nav` elements in your mkdocs.yml, only those pages will be rendered in the site
@@ -99,7 +102,14 @@ mkdocs serve
 
 ### Deploy
 
-TODO
+After you build, you'll need to initialize your deployment by running the gh-deploy command for mkdocs.  This will set up the gh-pages branch and copy the site over.
+
+```bash
+mkdocs gh-deploy
+```
+
+Next, you'll need to set up your github repository to enable gh-pages support. See [Github Pages](https://pages.github.com/)
+
 <!--TODO github integration -->
 
 ## License

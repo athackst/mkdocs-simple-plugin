@@ -1,2 +1,3 @@
-*.egg-info/
 site/
+*.egg-info/
+*.pyc

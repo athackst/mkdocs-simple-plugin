@@ -42,7 +42,7 @@
     {
       "label": "test",
       "type": "shell",
-      "command": "bats ./tests/integration/test.bats",
+      "command": "./tests/test_flake8.sh && ./tests/integration/test.bats",
       "problemMatcher": [],
       "options": {
         "env": {"PATH": "${env:PATH}:/home/vscode/.local/bin"}

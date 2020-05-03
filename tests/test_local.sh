@@ -1,5 +1,10 @@
 #!/bin/bash
 
+set -e
+# Lint via flake8
+echo "Running flake8 linter -------->"
+./tests/test_flake8.sh
+
 # End-to-end testing via Bats (Bash automated tests)
 function docker_run_integration_tests() {
 docker build -t mkdocs-simple-test-runner:$1 -f- . <<EOF

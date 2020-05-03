@@ -1,0 +1,6 @@
+nav:
+- Home: index.md
+- Test: test.md
+plugins:
+- simple
+site_name: ok-mkdocs-docs-merge

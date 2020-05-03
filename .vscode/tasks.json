@@ -1,0 +1,52 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "mkdocs_simple_gen",
+      "type": "shell",
+      "command": "pip install -e . && mkdocs_simple_gen",
+      "problemMatcher": [],
+      "options": {
+        "env": {"PATH": "${env:PATH}:/home/vscode/.local/bin"}
+      }
+    },
+    {
+      "label": "pip install",
+      "type": "shell",
+      "command": "pip install -e . ",
+      "problemMatcher": []
+    },
+    {
+      "label": "mkdocs build",
+      "type": "shell",
+      "command": "mkdocs build",
+      "problemMatcher": [],
+    },
+    {
+      "label": "mkdocs serve",
+      "type": "shell",
+      "command": "mkdocs serve",
+      "problemMatcher": [],
+    },
+    {
+      "label": "clean",
+      "type": "shell",
+      "command": "rm -rf docs/ site/ *.egg-info/ **/__pycache__/ && for dir in ${fixturesDir}/*; do (cd $dir && ./clean.sh); done",
+      "problemMatcher": [],
+      "options": {
+        "env": {"fixturesDir": "tests/integration/fixtures"}
+      }
+    },
+    {
+      "label": "test",
+      "type": "shell",
+      "command": "bats ./tests/integration/test.bats",
+      "problemMatcher": [],
+      "options": {
+        "env": {"PATH": "${env:PATH}:/home/vscode/.local/bin"}
+      }
+    },
+  ]
+}

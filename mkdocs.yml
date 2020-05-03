@@ -1,0 +1,4 @@
+plugins:
+  - simple:
+      ignore_folders: ["__tests__"]
+site_name: mkdocs-simple-plugin

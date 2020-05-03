@@ -1,0 +1,22 @@
+{
+  "cSpell.words": [
+    "athackst",
+    "autoremove",
+    "devcontainer",
+    "devcontainers",
+    "entrypoint",
+    "mkdocs",
+    "noninteractive",
+    "thackston"
+  ],
+  "files.associations": {
+    "*.bats": "shellscript"
+  },
+  "cSpell.enableFiletypes": [
+    "dockerfile",
+    "markdown",
+    "python",
+    "shellscript",
+    "yaml"
+  ],
+}

@@ -1,3 +1,5 @@
 site/
 *.egg-info/
 *.pyc
+build/
+dist/

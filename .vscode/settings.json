@@ -1,14 +1,26 @@
 {
   "cSpell.words": [
+    "action",
     "athackst",
     "autoremove",
+    "bdist",
+    "canonicalize",
+    "changelog",
     "devcontainer",
     "devcontainers",
     "entrypoint",
+    "generator",
+    "github",
+    "heinrichreimer",
     "mkdocs",
     "noninteractive",
     "peaceiris",
-    "thackston"
+    "pylint",
+    "pypi",
+    "sdist",
+    "setuptools",
+    "thackston",
+    "wheel"
   ],
   "files.associations": {
     "*.bats": "shellscript"
@@ -19,5 +31,5 @@
     "python",
     "shellscript",
     "yaml"
-  ],
+  ]
 }

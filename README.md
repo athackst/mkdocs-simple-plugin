@@ -1,6 +1,8 @@
 # athackst/mkdocs-simple-plugin
 
-![Docs](https://github.com/athackst/mkdocs-simple-plugin/workflows/Docs/badge.svg) ![Test](https://github.com/athackst/mkdocs-simple-plugin/workflows/Test/badge.svg)
+[athackst.github.io/mkdocs-simple-plugin](http://athackst.github.io/mkdocs-simple-plugin)
+
+![Test](https://github.com/athackst/mkdocs-simple-plugin/workflows/Test/badge.svg) ![Docs](https://github.com/athackst/mkdocs-simple-plugin/workflows/Docs/badge.svg)
 
 This plugin enables you to build documentation from markdown files interspersed within your code.  It is designed for the way developers commonly write documentation in their own code -- with simple markdown files.
 
@@ -114,6 +116,6 @@ Next, you'll need to set up your github repository to enable gh-pages support. S
 
 ## License
 
-This software is licensed under [Apache 2.0](LICENSE)
+This software is licensed under [Apache 2.0](https://github.com/athackst/mkdocs-simple-plugin/blob/master/LICENSE)
 
 ## Contributing

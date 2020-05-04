@@ -1,14 +1,14 @@
 import setuptools
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
 
 setuptools.setup(
     name='mkdocs-simple-plugin',
     version='0.0.1',
     description='Plugin for adding simple wiki site creation from markdown files interspersed within your code with MkDocs.',
-    long_description="""
-        This introduces support for creating a simple MkDocs site from the common practice of creating README.md and other documentation files
-        alongside and interspersed within your code.
-    """,
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     keywords='mkdocs readme wiki',
     url='https://github.com/athackst/mkdocs-simple-plugin',
     author='Allison Thackston',

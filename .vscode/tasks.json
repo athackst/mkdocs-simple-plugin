@@ -22,18 +22,18 @@
       "label": "mkdocs build",
       "type": "shell",
       "command": "mkdocs build",
-      "problemMatcher": [],
+      "problemMatcher": []
     },
     {
       "label": "mkdocs serve",
       "type": "shell",
       "command": "mkdocs serve",
-      "problemMatcher": [],
+      "problemMatcher": []
     },
     {
       "label": "clean",
       "type": "shell",
-      "command": "rm -rf docs/ site/ *.egg-info/ **/__pycache__/ && for dir in ${fixturesDir}/*; do (cd $dir && ./clean.sh); done",
+      "command": "rm -rf build/ dist/ docs/ site/ *.egg-info/ **/__pycache__/ && for dir in ${fixturesDir}/*; do (cd $dir && ./clean.sh); done",
       "problemMatcher": [],
       "options": {
         "env": {"fixturesDir": "tests/integration/fixtures"}
@@ -48,5 +48,11 @@
         "env": {"PATH": "${env:PATH}:/home/vscode/.local/bin"}
       }
     },
+    {
+      "label": "package",
+      "type": "shell",
+      "command": "python3 setup.py sdist bdist_wheel",
+      "problemMatcher": []
+    }
   ]
 }

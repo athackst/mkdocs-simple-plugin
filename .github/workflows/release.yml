@@ -21,32 +21,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install setuptools wheel twine
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - name: Build
-        run: |
-          python setup.py sdist bdist_wheel
-      - name: Generate changelog
-        uses: heinrichreimer/github-changelog-generator-action@v2.1.1
-        id: Changelog
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-        env:
-          REPO: ${{ github.repository }}
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-
-            ${{ steps.Changelog.outputs.changelog }}
-          draft: false
-          prerelease: false
-      - name: Publish
+      - name: Build and Publish
         env:
           TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
+          python setup.py sdist bdist_wheel
           twine upload dist/*

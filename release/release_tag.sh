@@ -1,14 +1,15 @@
 #!/bin/bash
-
 set -e
 
-git checkout master
-git pull
-export VERSION=`./release/bump.py $@`
+DIR=`pwd`
+cd /tmp
+git clone -b master --single-branch git@github.com:athackst/mkdocs-simple-plugin.git
+cd mkdocs-simple-plugin
+VERSION=`./release/bump.py $@`
 echo "Releasing version ${VERSION}"
 git add setup.py
-git commit -m "Releasing version ${VERSION}"
-git push origin master
+git commit -m "Releasing version v${VERSION}"
 git tag "v${VERSION}"
-git push --tags
-exit 0
+git push origin master
+git push --tag
+cd $DIR

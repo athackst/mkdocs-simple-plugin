@@ -3,7 +3,7 @@ set -e
 
 DIR=`pwd`
 cd /tmp
-git clone -b master --single-branch git@github.com:athackst/mkdocs-simple-plugin.git
+git clone -b master --depth 1 git@github.com:athackst/mkdocs-simple-plugin.git
 cd mkdocs-simple-plugin
 VERSION=`./release/bump.py $@`
 echo "Releasing version ${VERSION}"

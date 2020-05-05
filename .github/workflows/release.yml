@@ -1,8 +1,10 @@
 name: Release
 
 on:
-  release:
-    types: [published]
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
   deploy:
@@ -26,3 +28,13 @@ jobs:
         run: |
           python setup.py sdist bdist_wheel
           twine upload dist/*
+      - name: Publish Release
+        id: create_release
+        uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          config-name: release-drafter.yml
+          tag: ${{ github.ref }}
+          name: Release ${{ github.ref }}
+          publish: true

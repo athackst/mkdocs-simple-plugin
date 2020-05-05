@@ -24,10 +24,6 @@ class SemVer(object):
         self.local = local
 
     def __repr__(self):
-        # TODO: this is broken
-        # return "<SemVer {}>".format(
-        #     ", ".join(["{}={}".format(n, getattr(self, n)) for n in self.__slots__])
-        # )
         return self.__str__()
 
     def __str__(self):

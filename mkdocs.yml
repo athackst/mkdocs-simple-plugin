@@ -2,3 +2,11 @@ plugins:
   - simple:
       ignore_folders: ["tests"]
 site_name: mkdocs-simple-plugin
+theme: readthedocs
+markdown_extensions:
+    - smarty
+    - toc:
+        permalink: True
+    - pymdownx.superfences
+    - pymdownx.emoji:
+        emoji_generator: !!python/name:pymdownx.emoji.to_png

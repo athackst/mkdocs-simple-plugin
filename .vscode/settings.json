@@ -16,20 +16,22 @@
     "noninteractive",
     "peaceiris",
     "pylint",
+    "pymdownx",
     "pypi",
     "sdist",
     "setuptools",
+    "superfences",
     "thackston",
     "wheel"
   ],
-  "files.associations": {
-    "*.bats": "shellscript"
-  },
   "cSpell.enableFiletypes": [
     "dockerfile",
     "markdown",
     "python",
     "shellscript",
     "yaml"
-  ]
+  ],
+  "files.associations": {
+    "*.bats": "shellscript"
+  }
 }

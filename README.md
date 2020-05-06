@@ -1,6 +1,6 @@
-# athackst/mkdocs-simple-plugin
+# mkdocs-simple-plugin
 
-[athackst.github.io/mkdocs-simple-plugin](http://athackst.github.io/mkdocs-simple-plugin)
+[ [Docs](http://athackst.github.io/mkdocs-simple-plugin) | [Code](http://github.com/athackst/mkdocs-simple-plugin) ]
 
 ![Test](https://github.com/athackst/mkdocs-simple-plugin/workflows/Test/badge.svg) ![Docs](https://github.com/athackst/mkdocs-simple-plugin/workflows/Docs/badge.svg)
 
@@ -8,15 +8,15 @@ This plugin enables you to build documentation from markdown files interspersed 
 
 ## About
 
-You may be wondering why you would want to generate a static site for your project, without doing the typical "wiki" thing of consolidating all documentation within a `docs` folder.
+You may be wondering why you would want to generate a static site for your project, without doing the typical "wiki" thing of consolidating all documentation within a single `docs` folder or using a single `README` file.
 
-1. My repository is too big for a single file
+1. My repository is too big for a single documentation source.
 
     Sometimes it isn't really feasible to consolidate all documentation within an upper level `docs` directory.  This is often the case with medium/large repositories.  In general, if your code base is too large to fit well within a single `include` directory, your code base is probably also too large for documentation to fit within a single `docs` directory.  
 
     Since it's typically easier to keep documentation up to date when it lives as close to the code as possible, it is better to create multiple sources for documentation.
 
-2. My repository is too simple for advanced documentation
+2. My repository is too simple for advanced documentation.
 
     If your code base is _very very_ large, something like the [monorepo plugin](https://github.com/spotify/mkdocs-monorepo-plugin) might better fit your needs.
 
@@ -66,7 +66,7 @@ and you're all set!
 
 Advanced usage is _also_ easy.
 
-Simply create a `mkdocs.yml` file in the root of your directory and add this plugin to it's plugin list
+Create a `mkdocs.yml` file in the root of your directory and add this plugin to it's plugin list.
 
 ```yaml
 site_name: your_site_name
@@ -74,7 +74,7 @@ plugins:
   - simple
 ```
 
-If you'd like, you can specify some additional configuration settings
+If you'd like, you can specify some additional configuration settings.
 
 ```yaml
 # simple plugin configuration options
@@ -83,12 +83,9 @@ ignore_directories: # Folders that should be ignored to add md files
   - "drafts"
 ```
 
-Some things to note:
+Note:  Files in the `docs_dir` (by default `docs`) will be merged with any other documentation in your repository.
 
-* Files in the `docs_dir` (by default `docs`) will be merged with any other documentation in your repository.
-* If you have specified `nav` elements in your mkdocs.yml, only those pages will be rendered in the site
-
-Then, you build the mkdocs from the command line
+Then, you can build the mkdocs from the command line.
 
 ```bash
 mkdocs build
@@ -96,7 +93,7 @@ mkdocs build
 
 ### Test
 
-And you can even preview the resulting site
+One of the best parts of mkdocs is it's ability to serve (and update!) your documentation site locally.
 
 ```bash
 mkdocs serve
@@ -117,5 +114,3 @@ Next, you'll need to set up your github repository to enable gh-pages support. S
 ## License
 
 This software is licensed under [Apache 2.0](https://github.com/athackst/mkdocs-simple-plugin/blob/master/LICENSE)
-
-## Contributing

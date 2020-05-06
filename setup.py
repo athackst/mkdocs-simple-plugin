@@ -10,7 +10,12 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     keywords='mkdocs readme wiki',
-    url='https://github.com/athackst/mkdocs-simple-plugin',
+    url='http://athackst.github.io/mkdocs-simple-plugin',
+    project_urls={
+        "Issues": "https://github.com/athackst/mkdocs-simple-plugin/issues",
+        "Documentation": "http://athackst.github.io/mkdocs-simple-plugin",
+        "Source Code": "https://github.com/athackst/mkdocs-simple-plugin",
+    },
     author='Allison Thackston',
     author_email='allison@lyonthackston.com',
     license='Apache-2.0',

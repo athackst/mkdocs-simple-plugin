@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='mkdocs-simple-plugin',
-    version='0.0.1',
+    version='0.0.2',
     description='Plugin for adding simple wiki site creation from markdown files interspersed within your code with MkDocs.',
     long_description=long_description,
     long_description_content_type="text/markdown",

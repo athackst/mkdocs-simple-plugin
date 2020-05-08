@@ -1,17 +1,33 @@
 name: Release
 
 on:
-  push:
-    # Sequence of patterns matched against refs/tags
-    tags:
-    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+  release:
+    types: [published]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
+      - name: Bump version
+        run: |
+          VERSION=`/usr/bin/git tag --list | sed 's|.*v\([0-9\.]*\).*|\1|'`
+          sed "s/^    version=.*/    version='${VERSION}',/" -i setup.py
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add setup.py
+          git commit -m "releasing v${VERSION}"
+          git tag -f "v${VERSION}"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push tags
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tags: true
+          force: true
       - name: Set up Python
         uses: actions/setup-python@v1
         with:
@@ -28,13 +44,3 @@ jobs:
         run: |
           python setup.py sdist bdist_wheel
           twine upload dist/*
-      - name: Publish Release
-        id: create_release
-        uses: release-drafter/release-drafter@v5
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          config-name: release-drafter.yml
-          tag: ${{ github.ref }}
-          name: Release ${{ github.ref }}
-          publish: true

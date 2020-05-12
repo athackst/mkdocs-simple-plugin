@@ -23,3 +23,4 @@ RUN apt-get update \
    && rm -rf /var/lib/apt/lists/*
 ENV DEBIAN_FRONTEND=dialog
 
+RUN echo "source /usr/share/bash-completion/completions/git" >> /home/vscode/.bashrc

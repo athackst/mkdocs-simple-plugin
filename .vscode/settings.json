@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "WORKDIR",
     "action",
     "athackst",
     "autoremove",
@@ -8,6 +9,7 @@
     "changelog",
     "devcontainer",
     "devcontainers",
+    "elgohr",
     "entrypoint",
     "generator",
     "github",
@@ -20,6 +22,7 @@
     "pypi",
     "sdist",
     "setuptools",
+    "squidfunk",
     "superfences",
     "thackston",
     "wheel"

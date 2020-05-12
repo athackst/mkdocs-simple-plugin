@@ -1,7 +1,7 @@
 plugins:
   - simple:
       ignore_folders: ["tests"]
-site_name: mkdocs-simple-plugin
+site_name: athackst/mkdocs-simple-plugin
 theme: readthedocs
 markdown_extensions:
     - smarty

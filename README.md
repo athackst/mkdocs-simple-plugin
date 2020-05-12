@@ -10,19 +10,19 @@ This plugin enables you to build documentation from markdown files interspersed 
 
 You may be wondering why you would want to generate a static site for your project, without doing the typical "wiki" thing of consolidating all documentation within a single `docs` folder or using a single `README` file.
 
-1. My repository is too big for a single documentation source.
+* **My repository is too big for a single documentation source.**
 
     Sometimes it isn't really feasible to consolidate all documentation within an upper level `docs` directory.  This is often the case with medium/large repositories.  In general, if your code base is too large to fit well within a single `include` directory, your code base is probably also too large for documentation to fit within a single `docs` directory.  
 
     Since it's typically easier to keep documentation up to date when it lives as close to the code as possible, it is better to create multiple sources for documentation.
 
-2. My repository is too simple for advanced documentation.
+* **My repository is too simple for advanced documentation.**
 
     If your code base is _very very_ large, something like the [monorepo plugin](https://github.com/spotify/mkdocs-monorepo-plugin) might better fit your needs.
 
     For most other medium+ repositories that have grown over time, you probably have scattered documentation throughout your code.  By combining all of that documentation while keeping folder structure, you can better surface and collaborate with others. And, let's face it.  That documentation is probably all in markdown, since github renders it nicely.
 
-3. I want a pretty documentation site without the hassle.
+* **I want a pretty documentation site without the hassle.**
 
     Finally, you may be interested in this plugin if you have a desire for stylized documentation, but don't want to invest the time/energy in replicating information you already have in your README.md files, and you want to keep them where they are (thank you very much).
 
@@ -30,25 +30,13 @@ You may be wondering why you would want to generate a static site for your proje
 
 This plugin was made to be super simple to use.
 
-### Prerequisites
-
-You will need to have [mkdocs](https://www.mkdocs.org/) installed on your system.  I recommend installing it via pip to get the latest version.
-
-```bash
-sudo apt-get install python-pip
-pip install --upgrade pip --user
-pip install mkdocs --user
-```
-
-### Installation
-
-Then, install the plugin.
+Install the plugin with pip.
 
 ```bash
 pip install mkdocs-simple-plugin
 ```
 
-### Usage
+### Build your docs
 
 It's easy to use this plugin.  You can either use the generation script included, or set up your own custom config.
 
@@ -91,7 +79,7 @@ Then, you can build the mkdocs from the command line.
 mkdocs build
 ```
 
-### Test
+### Run a local server
 
 One of the best parts of mkdocs is it's ability to serve (and update!) your documentation site locally.
 
@@ -99,7 +87,7 @@ One of the best parts of mkdocs is it's ability to serve (and update!) your docu
 mkdocs serve
 ```
 
-### Deploy
+### Deploy to gh-pages
 
 After you build, you'll need to initialize your deployment by running the gh-deploy command for mkdocs.  This will set up the gh-pages branch and copy the site over.
 
@@ -107,7 +95,77 @@ After you build, you'll need to initialize your deployment by running the gh-dep
 mkdocs gh-deploy
 ```
 
-Next, you'll need to set up your github repository to enable gh-pages support. See [Github Pages](https://pages.github.com/)
+Next, you'll need to set up your github repository to enable gh-pages support. See [Github Pages](https://pages.github.com/) for more information.
+
+## Docker
+
+Additionally, you can use this plugin using the `athackst/mkdocs-simple-plugin` docker image.
+
+By using the docker image, you don't need to have the plugin or its dependencies installed on your system.
+
+Below are some useful commands:
+
+* Build your docs
+
+    ```bash
+    docker run --rm -it -v ${PWD}:/docs athackst/mkdocs-simple-plugin mkdocs_simple_gen
+    ```
+
+* Run a local server
+
+    ```bash
+    docker run --rm -it -p 8000:8000 -v ${PWD}:/docs athackst/mkdocs-simple-plugin
+    ```
+
+* Deploy to gh-pages
+
+    ```bash
+    docker run --rm -it -v ~/.ssh:/root/.ssh -v ${PWD}:/docs athackst/mkdocs-simple-plugin mkdocs gh-deploy
+    ```
+
+## Build from source
+
+### Prerequisites
+
+You will need to have [mkdocs](https://www.mkdocs.org/) installed on your system.  I recommend installing it via pip to get the latest version.
+
+```bash
+sudo apt-get install python-pip
+pip install --upgrade pip --user
+pip install mkdocs --user
+```
+
+If you want to run the test suite, you'll also need 'bats'
+
+```bash
+sudo apt-get install bats
+```
+
+### Develop
+
+Install the package locally with
+
+```bash
+pip install -e .
+```
+
+Testing involves both linting with flake8
+
+```bash
+./tests/test_flake8.sh
+```
+
+and testing with `bats`
+
+```bash
+./tests/integration/test.bats
+```
+
+If you want to test against all the different versions of python, run the local test script.
+
+```bash
+./tests/test_local.sh
+```
 
 <!--TODO github integration -->
 

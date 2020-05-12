@@ -33,7 +33,7 @@
     {
       "label": "clean",
       "type": "shell",
-      "command": "rm -rf build/ dist/ docs/ site/ *.egg-info/ **/__pycache__/ && for dir in ${fixturesDir}/*; do (cd $dir && ./clean.sh); done",
+      "command": "sudo rm -rf build/ dist/ docs/ site/ *.egg-info/ **/__pycache__/ && for dir in ${fixturesDir}/*; do (cd $dir && sudo ./clean.sh); done",
       "problemMatcher": [],
       "options": {
         "env": {"fixturesDir": "tests/integration/fixtures"}

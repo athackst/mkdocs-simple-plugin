@@ -36,6 +36,8 @@ Install the plugin with pip.
 pip install mkdocs-simple-plugin
 ```
 
+_Python 3.x, 3.5, 3.6, 3.7, 3.8 supported._
+
 ### Build your docs
 
 It's easy to use this plugin.  You can either use the generation script included, or set up your own custom config.

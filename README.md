@@ -52,6 +52,8 @@ mkdocs_simple_gen
 
 and you're all set!
 
+See [mkdocs_simple_gen](mkdocs_simple_plugin/README.md#mkdocs_simple_gen) for more info.
+
 #### Advanced
 
 Advanced usage is _also_ easy.
@@ -64,16 +66,7 @@ plugins:
   - simple
 ```
 
-If you'd like, you can specify some additional configuration settings.
-
-```yaml
-# simple plugin configuration options
-ignore_hidden: True # Ignore md files in hidden directories (those starting with a '.')
-ignore_directories: # Folders that should be ignored to add md files
-  - "drafts"
-```
-
-Note:  Files in the `docs_dir` (by default `docs`) will be merged with any other documentation in your repository.
+See [mkdocs-simple-plugin](mkdocs_simple_plugin/README.md#mkdocs-simple-plugin) for more info.
 
 Then, you can build the mkdocs from the command line.
 
@@ -97,33 +90,20 @@ After you build, you'll need to initialize your deployment by running the gh-dep
 mkdocs gh-deploy
 ```
 
-Next, you'll need to set up your github repository to enable gh-pages support. See [Github Pages](https://pages.github.com/) for more information.
+Then you'll need to set up your github repository to enable gh-pages support. See [Github Pages](https://pages.github.com/) for more information.
 
 ## Docker
 
-Additionally, you can use this plugin using the `athackst/mkdocs-simple-plugin` docker image.
+Additionally, you can use this plugin with the `athackst/mkdocs-simple-plugin` docker image.
 
 By using the docker image, you don't need to have the plugin or its dependencies installed on your system.
 
-Below are some useful commands:
 
-* Build your docs
+Install, build and serve your docs:
 
-    ```bash
-    docker run --rm -it -v ${PWD}:/docs athackst/mkdocs-simple-plugin mkdocs_simple_gen
-    ```
-
-* Run a local server
-
-    ```bash
-    docker run --rm -it -p 8000:8000 -v ${PWD}:/docs athackst/mkdocs-simple-plugin
-    ```
-
-* Deploy to gh-pages
-
-    ```bash
-    docker run --rm -it -v ~/.ssh:/root/.ssh -v ${PWD}:/docs athackst/mkdocs-simple-plugin mkdocs gh-deploy
-    ```
+```bash
+docker run --rm -it -v --network=host ${PWD}:/docs athackst/mkdocs-simple-plugin
+```
 
 ## Build from source
 

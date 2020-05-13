@@ -35,16 +35,17 @@ class SimplePlugin(BasePlugin):
             self.dir_copy(self.orig_docs_dir,
                           self.docs_dir)
 
-    def on_serve(self, server, config):
-        buildfunc = list(server.watcher._tasks.values())[0]['func']
+    def on_serve(self, server, config, **kwargs):
+        builder = list(server.watcher._tasks.values())[0]['func']
 
         # still watch the original docs/ directory
         if os.path.exists(self.orig_docs_dir):
-            server.watch(self.orig_docs_dir, buildfunc)
+            server.watch(self.orig_docs_dir, builder)
 
         # watch all the doc files
         for orig, _ in self.paths:
-            server.watch(orig, buildfunc)
+            server.watch(orig, builder)
+
         return server
 
     def on_post_build(self, config):

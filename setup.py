@@ -21,7 +21,8 @@ setuptools.setup(
     license='Apache-2.0',
     python_requires='>=3',
     install_requires=[
-        'mkdocs>=1.0.6'
+        'mkdocs>=1.0.6',
+        'click>=7.1'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',

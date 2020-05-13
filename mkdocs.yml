@@ -9,4 +9,11 @@ markdown_extensions:
         permalink: True
     - pymdownx.superfences
     - pymdownx.emoji:
+        emoji_index: !!python/name:pymdownx.emoji.twemoji
         emoji_generator: !!python/name:pymdownx.emoji.to_png
+        alt: short
+        options:
+            attributes:
+            align: absmiddle
+            height: 20px
+            width: 20px

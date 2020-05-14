@@ -79,6 +79,7 @@ class SimplePlugin(BasePlugin):
 
     def dir_copy(self, root_src_dir, root_dst_dir):
         if(sys.version_info >= (3, 8)):
+            # pylint: disable=unexpected-keyword-arg
             shutil.copytree(root_src_dir, root_dst_dir, dirs_exist_ok=True)
         else:
             for src_dir, _, files in os.walk(root_src_dir):

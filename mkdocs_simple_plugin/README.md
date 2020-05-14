@@ -17,9 +17,9 @@ site_name: your_site_name
 plugins:
   - simple:
       # Optional setting to ignore specific folders
-      ignore_folders: ["tests"] 
+      ignore_folders: ["tests"]
       # Optional setting to specify if hidden folders should be ignored
-      ignore_hidden: True 
+      ignore_hidden: True
 ```
 
 ## mkdocs_simple_gen

@@ -4,6 +4,7 @@ plugins:
 site_name: athackst/mkdocs-simple-plugin
 theme: readthedocs
 markdown_extensions:
+    - admonition
     - smarty
     - toc:
         permalink: True

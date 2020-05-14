@@ -98,12 +98,31 @@ Additionally, you can use this plugin with the `athackst/mkdocs-simple-plugin` d
 
 By using the docker image, you don't need to have the plugin or its dependencies installed on your system.
 
-
 Install, build and serve your docs:
 
 ```bash
-docker run --rm -it -v --network=host ${PWD}:/docs athackst/mkdocs-simple-plugin
+docker run --rm -it --network=host -v ${PWD}:/docs --user $(id -u):$(id -g) -e HOME=/tmp athackst/mkdocs-simple-plugin
 ```
+
+Explanation of docker command line options
+
+| command                    | description                                                                                                           |
+| :------------------------- | :-------------------------------------------------------------------------------------------------------------------- |
+| `--rm`                     | [optional] remove the docker image after it finishes running                                                          |
+| `-it`                      | [optional] run in an interactive terminal                                                                             |
+| `--network=host`           | Attach to the host network (needed for serving the doc site locally)                                                  |
+| `-v ${PWD}:/docs`          | Mount the local directory into the docs directory to build site.                                                      |
+| `--user $(id -u):$(id -g)` | [recommended] Run the docker container with the current user and group                                                |
+| ` -e HOME=/tmp`            | [recommended] Use the tmp directory for the home directory for the user (needed if you need to install dependencies). |
+
+See [mkdocs_simple_gen](mkdocs_simple_plugin/README.md#mkdocs_simple_gen) for a list of command line options you can set.
+
+!!! tip
+    Add an alias for the docker command to serve docs from any workspace.
+
+    ```bash
+    echo 'alias mkdocs_simple="docker run --rm -it --network=host -v ${PWD}:/docs --user $(id -u):$(id -g) -e HOME=/tmp athackst/mkdocs-simple-plugin"' >> ~/.bashrc
+    ```
 
 ## Build from source
 

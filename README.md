@@ -2,7 +2,7 @@
 
 [ [Docs](http://athackst.github.io/mkdocs-simple-plugin) | [Code](http://github.com/athackst/mkdocs-simple-plugin) ]
 
-![Test](https://github.com/athackst/mkdocs-simple-plugin/workflows/Test/badge.svg) ![Docs](https://github.com/athackst/mkdocs-simple-plugin/workflows/Docs/badge.svg)
+![Test](https://github.com/athackst/mkdocs-simple-plugin/workflows/Test/badge.svg) ![Docs](https://github.com/athackst/mkdocs-simple-plugin/workflows/Docs/badge.svg) ![Docker](https://img.shields.io/docker/pulls/athackst/mkdocs-simple-plugin?color=blue) ![pypi](https://img.shields.io/pypi/dm/mkdocs-simple-plugin?color=blue)
 
 This plugin enables you to build documentation from markdown files interspersed within your code.  It is designed for the way developers commonly write documentation in their own code -- with simple markdown files.
 
@@ -94,7 +94,7 @@ Then you'll need to set up your github repository to enable gh-pages support. Se
 
 ## Docker
 
-Additionally, you can use this plugin with the `athackst/mkdocs-simple-plugin` docker image.
+Additionally, you can use this plugin with the [athackst/mkdocs-simple-plugin](https://hub.docker.com/r/athackst/mkdocs-simple-plugin) docker image.
 
 By using the docker image, you don't need to have the plugin or its dependencies installed on your system.
 
@@ -106,22 +106,26 @@ docker run --rm -it --network=host -v ${PWD}:/docs --user $(id -u):$(id -g) -e H
 
 Explanation of docker command line options
 
-| command                    | description                                                                                                           |
-| :------------------------- | :-------------------------------------------------------------------------------------------------------------------- |
-| `--rm`                     | [optional] remove the docker image after it finishes running                                                          |
-| `-it`                      | [optional] run in an interactive terminal                                                                             |
-| `--network=host`           | Attach to the host network (needed for serving the doc site locally)                                                  |
-| `-v ${PWD}:/docs`          | Mount the local directory into the docs directory to build site.                                                      |
-| `--user $(id -u):$(id -g)` | [recommended] Run the docker container with the current user and group                                                |
-| ` -e HOME=/tmp`            | [recommended] Use the tmp directory for the home directory for the user (needed if you need to install dependencies). |
+| command                         | description                                                                                                           |
+| :------------------------------ | :-------------------------------------------------------------------------------------------------------------------- |
+| `--rm`                          | [optional] remove the docker image after it finishes running.                                                         |
+| `-it`                           | [optional] run in an interactive terminal.                                                                            |
+| `--network=host`                | [required] Attach to the host network (needed for serving the doc site locally).                                      |
+| `-v ${PWD}:/docs`               | [required] Mount the local directory into the docs directory to build site.                                           |
+| `--user $(id -u):$(id -g)`      | [recommended] Run the docker container with the current user and group.                                               |
+| `-e HOME=/tmp`                  | [recommended] Use the tmp directory for the home directory for the user (needed if you need to install dependencies). |
+| `-e PATH=/tmp/.local/bin:$PATH` | [recommended] Set the path to point to the home directory (needed for installing some dependencies).                  |
 
 See [mkdocs_simple_gen](mkdocs_simple_plugin/README.md#mkdocs_simple_gen) for a list of command line options you can set.
 
-!!! tip
+!!! TIP
+
     Add an alias for the docker command to serve docs from any workspace.
 
     ```bash
-    echo 'alias mkdocs_simple="docker run --rm -it --network=host -v ${PWD}:/docs --user $(id -u):$(id -g) -e HOME=/tmp athackst/mkdocs-simple-plugin"' >> ~/.bashrc
+    echo 'function mkdocs_simple() { 
+        docker run --rm -it --network=host -v ${PWD}:/docs --user $(id -u):$(id -g) -e HOME=/tmp -e PATH=/tmp/.local/bin:$PATH athackst/mkdocs-simple-plugin $@ 
+    }' >> ~/.bashrc
     ```
 
 ## Build from source

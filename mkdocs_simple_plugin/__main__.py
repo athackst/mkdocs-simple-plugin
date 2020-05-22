@@ -87,8 +87,10 @@ def main(build, install, serve, dev_addr):
     if build:
         os.system('mkdocs build')
     if serve:
-        os.system('mkdocs serve --dev-addr='+ dev_addr)
+        os.system('mkdocs serve --dev-addr=' + dev_addr)
 
 
 if __name__ == "__main__":
+    # pylint doesn't know how to parse the click decorators, so disable no-value-for-parameter on main
+    # pylint: disable=no-value-for-parameter
     main()

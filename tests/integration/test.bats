@@ -50,6 +50,11 @@ assertGenEmpty() {
   assertFileNotExists site/index.html
 }
 
+assertServeSuccess() {
+  run pgrep -x mkdocs
+  [ ! -z "$status" ]
+}
+
 ##
 # These are special life cycle methods for Bats (Bash automated testing).
 # setup() is ran before every test, teardown() is ran after every test.
@@ -88,4 +93,12 @@ teardown() {
   assertGenSuccess
   assertFileExists site/test/index.html
   # TODO: check that drafts isn't in nav
+}
+
+@test "serve a mkdocs site" {
+  cd ${fixturesDir}/ok-mkdocs-docs
+  mkdocs_simple_gen --serve &
+  sleep 5
+  assertServeSuccess
+  pkill mkdocs
 }

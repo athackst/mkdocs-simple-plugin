@@ -16,6 +16,7 @@
     "generator",
     "github",
     "heinrichreimer",
+    "markdownlint",
     "mkdocs",
     "musl",
     "noninteractive",
@@ -44,5 +45,7 @@
   ],
   "files.associations": {
     "*.bats": "shellscript"
-  }
+  },
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true
 }

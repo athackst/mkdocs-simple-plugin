@@ -106,6 +106,7 @@ docker run --rm -it --network=host -v ${PWD}:/docs --user $(id -u):$(id -g) -e H
 
 Explanation of docker command line options
 
+<!-- markdownlint-disable MD038 -->
 | command                         | description                                                                                                           |
 | :------------------------------ | :-------------------------------------------------------------------------------------------------------------------- |
 | `--rm`                          | [optional] remove the docker image after it finishes running.                                                         |
@@ -115,11 +116,12 @@ Explanation of docker command line options
 | `--user $(id -u):$(id -g)`      | [recommended] Run the docker container with the current user and group.                                               |
 | `-e HOME=/tmp`                  | [recommended] Use the tmp directory for the home directory for the user (needed if you need to install dependencies). |
 | `-e PATH=/tmp/.local/bin:$PATH` | [recommended] Set the path to point to the home directory (needed for installing some dependencies).                  |
+<!-- markdownlint-enable MD038 -->
 
 See [mkdocs_simple_gen](mkdocs_simple_plugin/README.md#mkdocs_simple_gen) for a list of command line options you can set.
 
-!!! TIP
-
+<!-- markdownlint-disable MD046 -->
+!!! tip
     Add an alias for the docker command to serve docs from any workspace.
 
     ```bash
@@ -127,6 +129,7 @@ See [mkdocs_simple_gen](mkdocs_simple_plugin/README.md#mkdocs_simple_gen) for a 
         docker run --rm -it --network=host -v ${PWD}:/docs --user $(id -u):$(id -g) -e HOME=/tmp -e PATH=/tmp/.local/bin:$PATH athackst/mkdocs-simple-plugin $@ 
     }' >> ~/.bashrc
     ```
+<!-- markdownlint-enable MD046 -->
 
 ## Build from source
 

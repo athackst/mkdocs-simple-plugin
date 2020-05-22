@@ -1,6 +1,7 @@
 {
   "cSpell.words": [
     "WORKDIR",
+    "absmiddle",
     "action",
     "athackst",
     "autoremove",
@@ -21,8 +22,11 @@
     "noninteractive",
     "openssh",
     "peaceiris",
+    "pgrep",
+    "pkill",
     "pylint",
     "pymdownx",
+    "pymdownx emoji twemoji",
     "pypi",
     "sdist",
     "setuptools",

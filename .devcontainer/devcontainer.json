@@ -33,7 +33,8 @@
 		"ms-python.python",
 		"redhat.vscode-yaml",
 		"streetsidesoftware.code-spell-checker",
-		"yzhang.markdown-all-in-one"
+		"yzhang.markdown-all-in-one",
+		"shakram02.bash-beautify"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
@@ -43,7 +44,7 @@
 		"source=/${env:HOME}/.bash_aliases,target=/home/vscode/.bash_aliases,type=bind,consistency=cached"
 	],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "pip3 install --user -r requirements.txt",
+	"postCreateCommand": "pip3 install --user -r requirements.txt",
 	// Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "vscode"
 }

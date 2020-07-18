@@ -2,6 +2,7 @@
 from mkdocs.plugins import BasePlugin
 from mkdocs.config import config_options
 
+import fnmatch
 import os
 import shutil
 import sys
@@ -12,6 +13,7 @@ import sys
 
 class SimplePlugin(BasePlugin):
     config_scheme = (
+        ('include_folders', config_options.Type(list, default=['*'])),
         ('ignore_folders', config_options.Type(list, default=[])),
         ('ignore_hidden', config_options.Type(bool, default=True))
     )
@@ -20,6 +22,7 @@ class SimplePlugin(BasePlugin):
         self.docs_dir = "docs_"
 
     def on_pre_build(self, config):
+        self.include_folders = self.config['include_folders']
         self.ignore_folders = self.config['ignore_folders']
         self.ignore_folders += [config['docs_dir'],
                                 config['site_dir'],
@@ -51,30 +54,37 @@ class SimplePlugin(BasePlugin):
     def on_post_build(self, config):
         shutil.rmtree(self.docs_dir)
 
-    def valid_dir(self, dir):
+    def search_dir(self, dir):
         if self.ignore_hidden and dir[0] == ".":
             return False
         if dir in self.ignore_folders:
             return False
         return True
 
+    def include_dir(self, dir):
+        for filter in self.include_folders:
+            if fnmatch.fnmatch(dir, filter):
+                return True
+        return False
+
     def gen_from_dir(self):
         paths = []
         for root, dirs, files in os.walk("."):
-            for f in files:
-                if ".md" in f:
-                    doc_root = "./" + self.docs_dir + root[1:]
-                    orig = "{}/{}".format(root, f)
-                    new = "{}/{}".format(doc_root, f)
-                    try:
-                        os.makedirs(doc_root, exist_ok=True)
-                        shutil.copy(orig, new)
-                        print("{} --> {}".format(orig, new))
-                        paths.append((orig, new))
-                    except Exception as e:
-                        print("ERROR: {}.. skipping {}".format(e, orig))
+            if self.include_dir(root):
+                for f in files:
+                    if ".md" in f:
+                        doc_root = "./" + self.docs_dir + root[1:]
+                        orig = "{}/{}".format(root, f)
+                        new = "{}/{}".format(doc_root, f)
+                        try:
+                            os.makedirs(doc_root, exist_ok=True)
+                            shutil.copy(orig, new)
+                            print("{} --> {}".format(orig, new))
+                            paths.append((orig, new))
+                        except Exception as e:
+                            print("ERROR: {}.. skipping {}".format(e, orig))
 
-            dirs[:] = [d for d in dirs if self.valid_dir(d)]
+            dirs[:] = [d for d in dirs if self.search_dir(d)]
         return paths
 
     def dir_copy(self, root_src_dir, root_dst_dir):

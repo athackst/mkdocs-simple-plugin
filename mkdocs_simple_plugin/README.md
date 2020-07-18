@@ -16,8 +16,10 @@ Create a `mkdocs.yml` file in the root of your directory and add this plugin to 
 site_name: your_site_name
 plugins:
   - simple:
+      # Optional setting to only include specific folders
+      include_folders: ["*"]
       # Optional setting to ignore specific folders
-      ignore_folders: ["tests"]
+      ignore_folders: [""]
       # Optional setting to specify if hidden folders should be ignored
       ignore_hidden: True
 ```

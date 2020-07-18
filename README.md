@@ -38,7 +38,7 @@ pip install mkdocs-simple-plugin
 
 _Python 3.x, 3.5, 3.6, 3.7, 3.8 supported._
 
-### Build your docs
+### Build the docs
 
 It's easy to use this plugin.  You can either use the generation script included, or set up your own custom config.
 
@@ -82,17 +82,7 @@ One of the best parts of mkdocs is it's ability to serve (and update!) your docu
 mkdocs serve
 ```
 
-### Deploy to gh-pages
-
-After you build, you'll need to initialize your deployment by running the gh-deploy command for mkdocs.  This will set up the gh-pages branch and copy the site over.
-
-```bash
-mkdocs gh-deploy
-```
-
-Then you'll need to set up your github repository to enable gh-pages support. See [Github Pages](https://pages.github.com/) for more information.
-
-## Docker
+## Run in a docker container
 
 Additionally, you can use this plugin with the [athackst/mkdocs-simple-plugin](https://hub.docker.com/r/athackst/mkdocs-simple-plugin) docker image.
 
@@ -131,7 +121,60 @@ See [mkdocs_simple_gen](mkdocs_simple_plugin/README.md#mkdocs_simple_gen) for a 
     ```
 <!-- markdownlint-enable MD046 -->
 
-## Build from source
+## Deploy
+
+### Enable GitHub pages
+
+First, set up your github repository to enable gh-pages support.
+
+See [Github Pages](https://pages.github.com/) for more information.
+
+### Deploy from the command line
+
+Mkdocs includes an easy command to initialize your deployment from the command line. This will set up the gh-pages branch and copy the site over.
+
+```bash
+mkdocs gh-deploy
+```
+
+Then push the results to your repository (or wherever you'd like to host your site).
+
+### Deploy from GitHub Actions
+
+Create a yaml file with the following contents in the `.github/workflows` directory in your repository
+
+```yaml
+name: Docs
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Build Docs
+        run: |
+          mkdocs_simple_gen
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./site
+```
+
+## Build plugin from source
 
 ### Prerequisites
 
@@ -174,8 +217,6 @@ If you want to test against all the different versions of python, run the local 
 ```bash
 ./tests/test_local.sh
 ```
-
-<!--TODO github integration -->
 
 ## License
 

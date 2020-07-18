@@ -52,6 +52,7 @@ assertGenEmpty() {
 
 assertServeSuccess() {
   run pgrep -x mkdocs
+  debugger
   [ ! -z "$status" ]
 }
 

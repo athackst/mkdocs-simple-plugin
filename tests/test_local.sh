@@ -2,7 +2,7 @@
 
 set -e
 # Lint via flake8
-echo "Running flake8 linter -------->"
+echo "Running test_flake8  -------->"
 ./tests/test_flake8.sh
 
 # End-to-end testing via Bats (Bash automated tests)
@@ -22,11 +22,11 @@ docker run --rm -it -w /workspace mkdocs-simple-test-runner:$1
 }
 
 if [[ ! -z "$PYTHON_37_ONLY" ]]; then
-  docker_run_integration_tests "3.7-slim"
+  docker_run_integration_tests "3.7"
 else
-  docker_run_integration_tests "3-slim"
-  docker_run_integration_tests "3.5-slim"
-  docker_run_integration_tests "3.6-slim"
-  docker_run_integration_tests "3.7-slim"
-  docker_run_integration_tests "3.8-slim"
+  docker_run_integration_tests "3"
+  docker_run_integration_tests "3.5"
+  docker_run_integration_tests "3.6"
+  docker_run_integration_tests "3.7"
+  docker_run_integration_tests "3.8"
 fi

@@ -15,7 +15,8 @@ class SimplePlugin(BasePlugin):
     config_scheme = (
         ('include_folders', config_options.Type(list, default=['*'])),
         ('ignore_folders', config_options.Type(list, default=[])),
-        ('ignore_hidden', config_options.Type(bool, default=True))
+        ('ignore_hidden', config_options.Type(bool, default=True)),
+        ('include_extensions', config_options.Type(list, default=['.md']))
     )
 
     def __init__(self):
@@ -28,6 +29,7 @@ class SimplePlugin(BasePlugin):
                                 config['site_dir'],
                                 self.docs_dir]
         self.ignore_hidden = self.config['ignore_hidden']
+        self.include_extensions = self.config['include_extensions']
         # Update the docs_dir with our temporary one!
         self.orig_docs_dir = config['docs_dir']
         config['docs_dir'] = self.docs_dir
@@ -72,17 +74,18 @@ class SimplePlugin(BasePlugin):
         for root, dirs, files in os.walk("."):
             if self.include_dir(root):
                 for f in files:
-                    if ".md" in f:
-                        doc_root = "./" + self.docs_dir + root[1:]
-                        orig = "{}/{}".format(root, f)
-                        new = "{}/{}".format(doc_root, f)
-                        try:
-                            os.makedirs(doc_root, exist_ok=True)
-                            shutil.copy(orig, new)
-                            print("{} --> {}".format(orig, new))
-                            paths.append((orig, new))
-                        except Exception as e:
-                            print("ERROR: {}.. skipping {}".format(e, orig))
+                    for extension in self.include_extensions:
+                        if extension in f:
+                            doc_root = "./" + self.docs_dir + root[1:]
+                            orig = "{}/{}".format(root, f)
+                            new = "{}/{}".format(doc_root, f)
+                            try:
+                                os.makedirs(doc_root, exist_ok=True)
+                                shutil.copy(orig, new)
+                                print("{} --> {}".format(orig, new))
+                                paths.append((orig, new))
+                            except Exception as e:
+                                print("ERROR: {}.. skipping {}".format(e, orig))
 
             dirs[:] = [d for d in dirs if self.search_dir(d)]
         return paths

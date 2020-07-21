@@ -29,7 +29,7 @@ class SimplePlugin(BasePlugin):
                                 config['site_dir'],
                                 self.docs_dir]
         self.ignore_hidden = self.config['ignore_hidden']
-        self.include_extensions = self.config['include_extensions']
+        self.include_extensions = ['.md'] + self.config['include_extensions']
         # Update the docs_dir with our temporary one!
         self.orig_docs_dir = config['docs_dir']
         config['docs_dir'] = self.docs_dir

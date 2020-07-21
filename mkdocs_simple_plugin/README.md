@@ -23,7 +23,7 @@ plugins:
       # Optional setting to specify if hidden folders should be ignored
       ignore_hidden: True
       # Optional setting to specify other extensions besides md files to be copied
-      include_extensions: [".md"]
+      include_extensions: [""]
 ```
 
 ## mkdocs_simple_gen

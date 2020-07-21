@@ -74,8 +74,7 @@ class SimplePlugin(BasePlugin):
         for root, dirs, files in os.walk("."):
             if self.include_dir(root):
                 for f in files:
-                    for extension in self.include_extensions:
-                        if extension in f:
+                   if any(extension in f for extension in self.include_extensions):
                             doc_root = "./" + self.docs_dir + root[1:]
                             orig = "{}/{}".format(root, f)
                             new = "{}/{}".format(doc_root, f)

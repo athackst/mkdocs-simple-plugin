@@ -16,7 +16,7 @@ class SimplePlugin(BasePlugin):
         ('include_folders', config_options.Type(list, default=['*'])),
         ('ignore_folders', config_options.Type(list, default=[])),
         ('ignore_hidden', config_options.Type(bool, default=True)),
-        ('include_extensions', config_options.Type(list, default=['.md']))
+        ('include_extensions', config_options.Type(list, default=[]))
     )
 
     def __init__(self):

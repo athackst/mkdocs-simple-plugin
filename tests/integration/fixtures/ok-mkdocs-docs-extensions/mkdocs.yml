@@ -1,0 +1,5 @@
+plugins:
+  - simple:
+      include_extensions: [".txt"]
+
+site_name: ok-mkdocs-docs-extensions

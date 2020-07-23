@@ -15,7 +15,8 @@ class SimplePlugin(BasePlugin):
     config_scheme = (
         ('include_folders', config_options.Type(list, default=['*'])),
         ('ignore_folders', config_options.Type(list, default=[])),
-        ('ignore_hidden', config_options.Type(bool, default=True))
+        ('ignore_hidden', config_options.Type(bool, default=True)),
+        ('include_extensions', config_options.Type(list, default=[]))
     )
 
     def __init__(self):
@@ -28,6 +29,7 @@ class SimplePlugin(BasePlugin):
                                 config['site_dir'],
                                 self.docs_dir]
         self.ignore_hidden = self.config['ignore_hidden']
+        self.include_extensions = ['.md'] + self.config['include_extensions']
         # Update the docs_dir with our temporary one!
         self.orig_docs_dir = config['docs_dir']
         config['docs_dir'] = self.docs_dir
@@ -72,7 +74,7 @@ class SimplePlugin(BasePlugin):
         for root, dirs, files in os.walk("."):
             if self.include_dir(root):
                 for f in files:
-                    if ".md" in f:
+                    if any(extension in f for extension in self.include_extensions):
                         doc_root = "./" + self.docs_dir + root[1:]
                         orig = "{}/{}".format(root, f)
                         new = "{}/{}".format(doc_root, f)

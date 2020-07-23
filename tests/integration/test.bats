@@ -96,6 +96,27 @@ teardown() {
   # TODO: check that drafts isn't in nav
 }
 
+@test "build a mkdocs site that specifies a specific folder to include" {
+  cd ${fixturesDir}/ok-mkdocs-docs-include
+  assertGenEmpty
+  assertFileExists site/subfolder/draft/index.html
+  assertFileExists site/subfolder/index.html
+}
+
+@test "build a mkdocs site that ignores a specific folder" {
+  cd ${fixturesDir}/ok-mkdocs-docs-ignore
+  assertGenSuccess
+  assertFileNotExists site/subfolder/index.html
+  assertFileNotExists site/subfolder/draft/index.html
+  assertFileExists site/test/index.html
+}
+
+@test "build a mkdocs site that includes extra extensions" {
+  cd ${fixturesDir}/ok-mkdocs-docs-extensions
+  assertGenSuccess
+  assertFileExists site/test.txt
+}
+
 @test "serve a mkdocs site" {
   cd ${fixturesDir}/ok-mkdocs-docs
   mkdocs_simple_gen --serve &

@@ -44,15 +44,19 @@ def setup_config():
             try:
                 config = yaml.safe_load(stream)
                 if not config:
+                    # If config is not able to be loaded, replace with default config.
                     config = default_config()
                     write_config(config_file, config)
                 elif("plugins" not in config):
+                    # If no plugins are specified in the config, add the simple plugin
                     config["plugins"].append("simple")
                     write_config(config_file, config)
                 elif ("simple" not in get_plugins(config)):
+                    # If the simple plugin isn't included, add it.
                     config["plugins"].append("simple")
                     write_config(config_file, config)
                 if("docs_dir" in config):
+                    # Update the docs_dir if specified in the config
                     docs_dir = config["docs_dir"]
             except yaml.YAMLError as exc:
                 print(exc)

@@ -1,5 +1,6 @@
 plugins:
-  - simple:
-      ignore_folders: ["subfolder"]
-
+- simple:
+    ignore_folders:
+    - subfolder
 site_name: ok-mkdocs-docs-ignore
+docs_dir: docs

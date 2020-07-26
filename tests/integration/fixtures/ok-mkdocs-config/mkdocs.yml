@@ -1,3 +1,4 @@
 plugins:
 - simple
 site_name: ok-mkdocs-config
+docs_dir: /tmp/ok-mkdocs-config/docs

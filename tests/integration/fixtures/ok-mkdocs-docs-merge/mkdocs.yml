@@ -4,3 +4,4 @@ nav:
 plugins:
 - simple
 site_name: ok-mkdocs-docs-merge
+docs_dir: docs

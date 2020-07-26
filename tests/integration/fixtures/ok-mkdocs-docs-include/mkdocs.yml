@@ -1,5 +1,6 @@
 plugins:
-  - simple:
-      include_folders: ["./subfolder**"]
-
+- simple:
+    include_folders:
+    - ./subfolder**
 site_name: ok-mkdocs-docs-include
+docs_dir: docs

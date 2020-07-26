@@ -13,7 +13,7 @@ def default_config():
 def write_config(config_file, config):
     with open(config_file, 'w') as stream:
         try:
-            yaml.dump(config, stream)
+            yaml.dump(config, stream, sort_keys=False)
         except yaml.YAMLError as exc:
             print(exc)
 
@@ -28,42 +28,46 @@ def get_plugins(config):
     return plugins
 
 
-def setup_config():
+def setup_config(docs_dir):
     """
     Create all the files, including the mkdocs.yml file if it doesn't exist.
     :return:
     """
-    docs_dir = "docs"
     config_file = "./mkdocs.yml"
     if not os.path.exists(config_file):
         # If config file doesn't exit, create a simple one, guess the site name from the folder name.
         write_config(config_file, default_config())
-    else:
-        # Otherwise, open the config file to verify settings.
-        with open(config_file, 'r') as stream:
-            try:
-                config = yaml.safe_load(stream)
-                if not config:
-                    # If config is not able to be loaded, replace with default config.
-                    config = default_config()
-                    write_config(config_file, config)
-                elif("plugins" not in config):
-                    # If no plugins are specified in the config, add the simple plugin
-                    config["plugins"].append("simple")
-                    write_config(config_file, config)
-                elif ("simple" not in get_plugins(config)):
-                    # If the simple plugin isn't included, add it.
-                    config["plugins"].append("simple")
-                    write_config(config_file, config)
-                if("docs_dir" in config):
-                    # Update the docs_dir if specified in the config
-                    docs_dir = config["docs_dir"]
-            except yaml.YAMLError as exc:
-                print(exc)
-
-    # Make the docs_dir if it doesn't already exist.
-    if(not os.path.exists(docs_dir)):
-        os.makedirs(docs_dir, exist_ok=True)
+    # Open the config file to verify settings.
+    with open(config_file, 'r') as stream:
+        try:
+            config = yaml.load(stream, yaml.Loader)
+            if not config:
+                # If config is not able to be loaded, replace with default config.
+                config = default_config()
+                write_config(config_file, config)
+            if("plugins" not in config):
+                # If no plugins are specified in the config, add the simple plugin
+                config["plugins"].append("simple")
+                write_config(config_file, config)
+            if ("simple" not in get_plugins(config)):
+                # If the simple plugin isn't included, add it.
+                config["plugins"].append("simple")
+                write_config(config_file, config)
+            if ("site_name" not in config):
+                config['site_name'] = os.path.basename(os.path.abspath("."))
+                write_config(config_file, config)
+            if ("docs_dir" not in config):
+                # If the docs_dir is not specified, check if the default dir exists
+                config["docs_dir"] = docs_dir
+                write_config(config_file, config)
+            if(not os.path.exists(config["docs_dir"])):
+                config["docs_dir"] = "/tmp/"+config['site_name']+"/docs"
+                print("setting docs_dir to {}".format(config["docs_dir"]))
+                write_config(config_file, config)
+                os.makedirs(config["docs_dir"], exist_ok=True)
+            print(config)
+        except yaml.YAMLError as exc:
+            print(exc)
 
 
 def install_modules():
@@ -83,13 +87,16 @@ def install_modules():
 @click.option('--build/--no-build', default=True, help="build the site using mkdocs build")
 @click.option('--install/--no-install', default=False, help="install required packages listed in requirements.txt")
 @click.option('--serve/--no-serve', default=False, help="serve the site locally")
-@click.option('--dev-addr', help="Local server address", default="127.0.0.1:8000", type=str)
-def main(build, install, serve, dev_addr):
+@click.option('--dev-addr',  default="127.0.0.1:8000", type=str, help="Local server address")
+@click.option('-d', '--site-dir', default="site", type=click.Path(),
+              help="The directory to output the result of the documentation build.")
+@click.option('--docs-dir',  default="docs", type=click.Path(), help="The directory of the documentation.")
+def main(build, install, serve, dev_addr, site_dir, docs_dir):
     if install:
         install_modules()
-    setup_config()
+    setup_config(docs_dir)
     if build:
-        os.system('mkdocs build')
+        os.system('mkdocs build --site-dir=' + site_dir)
     if serve:
         os.system('mkdocs serve --dev-addr=' + dev_addr)
 

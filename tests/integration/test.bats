@@ -26,6 +26,12 @@ debugger() {
   echo "--------------"
 }
 
+assertGen() {
+  run mkdocs_simple_gen --build
+  debugger
+  [ "$status" -eq 0 ]
+}
+
 assertFileExists() {
   run cat $1
   [ "$status" -eq 0 ]
@@ -37,16 +43,12 @@ assertFileNotExists() {
 }
 
 assertGenSuccess() {
-  run mkdocs_simple_gen
-  debugger
-  [ "$status" -eq 0 ]
+  assertGen
   assertFileExists site/index.html
 }
 
 assertGenEmpty() {
-  run mkdocs_simple_gen
-  debugger
-  [ "$status" -eq 0 ]
+  assertGen
   assertFileNotExists site/index.html
 }
 
@@ -63,6 +65,7 @@ assertServeSuccess() {
 
 teardown() {
   for dir in ${fixturesDir}/*; do (cd "$dir" && ./clean.sh); done
+  rm -fr /tmp/mkdocs
 }
 
 ##

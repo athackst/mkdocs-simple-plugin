@@ -21,6 +21,10 @@ WORKDIR /docs
 
 EXPOSE 8000
 
+RUN mkdir -p /home/mkdocs && chmod 777 /home/mkdocs
+ENV HOME=/home/mkdocs
+ENV PATH=/home/mkdocs/.local/bin:${PATH}
+
 COPY entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["entrypoint.sh"]
 

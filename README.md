@@ -91,18 +91,19 @@ By using the docker image, you don't need to have the plugin or its dependencies
 Install, build and serve your docs:
 
 ```bash
-docker run --rm -it --network=host -v ${PWD}:/docs athackst/mkdocs-simple-plugin
+docker run --rm -it --network=host -v ${PWD}:/docs --user $(id -u):$(id -g) athackst/mkdocs-simple-plugin
 ```
 
 Explanation of docker command line options
 
 <!-- markdownlint-disable MD038 -->
-| command           | description                                                                 |
-| :---------------- | :-------------------------------------------------------------------------- |
-| `--rm`            | [optional] remove the docker image after it finishes running.               |
-| `-it`             | [optional] run in an interactive terminal.                                  |
-| `-p 8000:8000`    | [required] Map the mkdocs server port to a port on your localhost.          |
-| `-v ${PWD}:/docs` | [required] Mount the local directory into the docs directory to build site. |
+| command                    | description                                                                 |
+| :------------------------- | :-------------------------------------------------------------------------- |
+| `--rm`                     | [optional] remove the docker image after it finishes running.               |
+| `-it`                      | [optional] run in an interactive terminal.                                  |
+| `-p 8000:8000`             | [required] Map the mkdocs server port to a port on your localhost.          |
+| `-v ${PWD}:/docs`          | [required] Mount the local directory into the docs directory to build site. |
+| `--user $(id -u):$(id -g)` | [recommended] Run the docker container with the current user and group.     |
 <!-- markdownlint-enable MD038 -->
 
 See [mkdocs_simple_gen](mkdocs_simple_plugin/README.md#mkdocs_simple_gen) for a list of command line options you can set.
@@ -156,9 +157,13 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: "3.x"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Build Docs
         run: |
-          mkdocs_simple_gen --install --build 
+          mkdocs_simple_gen
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:

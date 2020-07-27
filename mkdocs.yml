@@ -1,16 +1,14 @@
 plugins:
-- simple:
-    ignore_folders:
-    - tests
+  - simple:
+      ignore_folders: ["tests"]
 site_name: athackst/mkdocs-simple-plugin
 theme: readthedocs
 markdown_extensions:
-- admonition
-- smarty
-- toc:
-    permalink: true
-- pymdownx.superfences
-- pymdownx.emoji:
-    emoji_index: !!python/name:pymdownx.emoji.twemoji ''
-    emoji_generator: !!python/name:pymdownx.emoji.to_png ''
-docs_dir: /tmp/athackst/mkdocs-simple-plugin/docs
+    - admonition
+    - smarty
+    - toc:
+        permalink: True
+    - pymdownx.superfences
+    - pymdownx.emoji:
+        emoji_index: !!python/name:pymdownx.emoji.twemoji
+        emoji_generator: !!python/name:pymdownx.emoji.to_png

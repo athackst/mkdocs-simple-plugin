@@ -65,7 +65,6 @@ assertServeSuccess() {
 
 teardown() {
   for dir in ${fixturesDir}/*; do (cd "$dir" && ./clean.sh); done
-  rm -fr /tmp/mkdocs
 }
 
 ##

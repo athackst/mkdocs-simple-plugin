@@ -33,8 +33,8 @@ def setup_config():
     Create all the files, including the mkdocs.yml file if it doesn't exist.
     :return:
     """
-    config_file = "mkdocs.yml"
     docs_dir = "docs"
+    config_file = "mkdocs.yml"
     if not os.path.exists(config_file):
         # If config file doesn't exit, create a simple one, guess the site name from the folder name.
         write_config(config_file, default_config())

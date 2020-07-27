@@ -67,35 +67,18 @@ def setup_config():
             print(exc)
 
 
-def install_modules():
-    """
-    Install modules in requirements.txt
-    :param modules: str - List of modules to install
-    :return:
-    """
-    requirements_file = "requirements.txt"
-    if not os.path.exists(requirements_file):
-        print(requirements_file, " doesn't exist -- skip installing modules")
-        return
-    os.system("pip install -r " + requirements_file)
-
-
 @click.command()
 @click.option('--build/--no-build', default=True, help="build the site using mkdocs build")
-@click.option('--install/--no-install', default=False, help="install required packages listed in requirements.txt")
-@click.option('--serve/--no-serve', default=False, help="serve the site locally")
-@click.option('--dev-addr',  default="127.0.0.1:8000", type=str, help="Local server address")
-@click.option('-d', '--site-dir', default="site", type=click.Path(),
-              help="The directory to output the result of the documentation build.")
-def main(build, install, serve, dev_addr, site_dir):
-    if install:
-        install_modules()
+@click.argument('build-args', nargs=-1)
+def main(build, build_args):
+    """
+    Generate and build a mkdocs site.
+
+    See mkdocs build -h for additional build args.
+    """
     setup_config()
     if build:
-        os.system('mkdocs build --site-dir=' + site_dir)
-    if serve:
-        os.system('mkdocs serve --dev-addr=' + dev_addr)
-
+        os.system("mkdocs build " + " ".join(build_args))
 
 if __name__ == "__main__":
     # pylint doesn't know how to parse the click decorators, so disable no-value-for-parameter on main

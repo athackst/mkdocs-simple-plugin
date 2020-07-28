@@ -26,7 +26,7 @@ debugger() {
   echo "--------------"
 }
 
-assertGenSuccess() {
+assertGen() {
   run mkdocs_simple_gen
   debugger
   [ "$status" -eq 0 ]
@@ -71,45 +71,45 @@ teardown() {
 
 @test "build an empty mkdocs site with minimal configuration" {
   cd ${fixturesDir}/ok-empty
-  assertGenSuccess
+  assertGen
   assertEmptySite
 }
 
 @test "build an empty mkdocs site with a config" {
   cd ${fixturesDir}/ok-mkdocs-config
-  assertGenSuccess
+  assertGen
   assertEmptySite
 }
 
 @test "build a mkdocs site with just a docs folder" {
   cd ${fixturesDir}/ok-mkdocs-docs
-  assertGenSuccess
+  assertGen
   assertValidSite
 }
 
 @test "build a mkdocs site with just a readme" {
   cd ${fixturesDir}/ok-mkdocs-readme
-  assertGenSuccess
+  assertGen
   assertValidSite
 }
 
 @test "build a mkdocs site that merges docs folder and other documentation" {
   cd ${fixturesDir}/ok-mkdocs-docs-merge
-  assertGenSuccess
+  assertGen
   assertFileExists site/test/index.html
   # TODO: check that drafts isn't in nav
 }
 
 @test "build a mkdocs site that specifies a specific folder to include" {
   cd ${fixturesDir}/ok-mkdocs-docs-include
-  assertGenSuccess
+  assertGen
   assertFileExists site/subfolder/draft/index.html
   assertFileExists site/subfolder/index.html
 }
 
 @test "build a mkdocs site that ignores a specific folder" {
   cd ${fixturesDir}/ok-mkdocs-docs-ignore
-  assertGenSuccess
+  assertGen
   assertFileNotExists site/subfolder/index.html
   assertFileNotExists site/subfolder/draft/index.html
   assertFileExists site/test/index.html
@@ -117,13 +117,13 @@ teardown() {
 
 @test "build a mkdocs site that includes extra extensions" {
   cd ${fixturesDir}/ok-mkdocs-docs-extensions
-  assertGenSuccess
+  assertGen
   assertFileExists site/test.txt
 }
 
 @test "serve a mkdocs site" {
   cd ${fixturesDir}/ok-mkdocs-docs
-  assertGenSuccess
+  assertGen
   assertValidSite
   mkdocs serve &
   sleep 5

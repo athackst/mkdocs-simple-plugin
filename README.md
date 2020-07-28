@@ -114,7 +114,7 @@ See [mkdocs_simple_gen](mkdocs_simple_plugin/README.md#mkdocs_simple_gen) for a 
 
     ```bash
     echo 'function mkdocs_simple() { 
-        docker run --rm -it --network=host -v ${PWD}:/docs --user $(id -u):$(id -g) -e HOME=/tmp -e PATH=/tmp/.local/bin:$PATH athackst/mkdocs-simple-plugin $@ 
+        docker run --rm -it --network=host -v ${PWD}:/docs --user $(id -u):$(id -g) athackst/mkdocs-simple-plugin $@ 
     }' >> ~/.bashrc
     ```
 <!-- markdownlint-enable MD046 -->

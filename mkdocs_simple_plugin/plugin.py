@@ -1,6 +1,7 @@
 
 from mkdocs.plugins import BasePlugin
 from mkdocs.config import config_options
+from mkdocs import utils
 
 import fnmatch
 import os
@@ -24,12 +25,12 @@ class SimplePlugin(BasePlugin):
 
     def on_pre_build(self, config):
         self.include_folders = self.config['include_folders']
-        self.ignore_folders = self.config['ignore_folders']
-        self.ignore_folders += [config['docs_dir'],
-                                config['site_dir'],
-                                self.docs_dir]
+        self.ignore_folders = self.config['ignore_folders'] + [config['docs_dir'],
+                                                               config['site_dir'],
+                                                               self.docs_dir]
         self.ignore_hidden = self.config['ignore_hidden']
-        self.include_extensions = ['.md'] + self.config['include_extensions']
+        self.include_extensions = utils.markdown_extensions + \
+            self.config['include_extensions']
         # Update the docs_dir with our temporary one!
         self.orig_docs_dir = config['docs_dir']
         config['docs_dir'] = self.docs_dir
@@ -55,25 +56,25 @@ class SimplePlugin(BasePlugin):
     def on_post_build(self, config):
         shutil.rmtree(self.docs_dir)
 
-    def _in_search_dir(self, dir):
+    def in_search_dir(self, dir):
         if self.ignore_hidden and dir[0] == ".":
             return False
         if dir in self.ignore_folders:
             return False
         return True
 
-    def _in_include_dir(self, dir):
+    def in_include_dir(self, dir):
         return any(fnmatch.fnmatch(dir, filter) for filter in self.include_folders)
 
-    def _in_extensions(self, file):
+    def in_extensions(self, file):
         return any(extension in file for extension in self.include_extensions)
 
     def get_doc_files(self):
         paths = []
         for root, dirs, files in os.walk("."):
-            if self._in_include_dir(root):
+            if self.in_include_dir(root):
                 for f in files:
-                    if self._in_extensions(f):
+                    if self.in_extensions(f):
                         doc_root = "./" + self.docs_dir + root[1:]
                         orig = "{}/{}".format(root, f)
                         new = "{}/{}".format(doc_root, f)
@@ -85,7 +86,7 @@ class SimplePlugin(BasePlugin):
                         except Exception as e:
                             print("ERROR: {}.. skipping {}".format(e, orig))
 
-            dirs[:] = [d for d in dirs if self._in_search_dir(d)]
+            dirs[:] = [d for d in dirs if self.in_search_dir(d)]
         return paths
 
     def copy_docs_dir(self, root_src_dir, root_dst_dir):

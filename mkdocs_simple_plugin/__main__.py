@@ -85,14 +85,12 @@ def install_modules():
 @click.option('--install/--no-install', default=False, help="install required packages listed in requirements.txt")
 @click.option('--serve/--no-serve', default=False, help="serve the site locally")
 @click.option('--dev-addr',  default="127.0.0.1:8000", type=str, help="Local server address")
-@click.option('-d', '--site-dir', default="site", type=click.Path(),
-              help="The directory to output the result of the documentation build.")
-def main(build, install, serve, dev_addr, site_dir):
+def main(build, install, serve, dev_addr):
     if install:
         install_modules()
     setup_config()
     if build:
-        os.system('mkdocs build --site-dir=' + site_dir)
+        os.system('mkdocs build')
     if serve:
         os.system('mkdocs serve --dev-addr=' + dev_addr)
 

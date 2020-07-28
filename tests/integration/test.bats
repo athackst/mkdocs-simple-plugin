@@ -26,12 +26,6 @@ debugger() {
   echo "--------------"
 }
 
-assertGen() {
-  run mkdocs_simple_gen --build
-  debugger
-  [ "$status" -eq 0 ]
-}
-
 assertFileExists() {
   run cat $1
   [ "$status" -eq 0 ]
@@ -43,12 +37,16 @@ assertFileNotExists() {
 }
 
 assertGenSuccess() {
-  assertGen
+  run mkdocs_simple_gen
+  debugger
+  [ "$status" -eq 0 ]
   assertFileExists site/index.html
 }
 
 assertGenEmpty() {
-  assertGen
+  run mkdocs_simple_gen
+  debugger
+  [ "$status" -eq 0 ]
   assertFileNotExists site/index.html
 }
 

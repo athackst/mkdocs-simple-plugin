@@ -26,6 +26,12 @@ debugger() {
   echo "--------------"
 }
 
+assertGenSuccess() {
+  run mkdocs_simple_gen
+  debugger
+  [ "$status" -eq 0 ]
+}
+
 assertFileExists() {
   run cat $1
   [ "$status" -eq 0 ]
@@ -36,17 +42,11 @@ assertFileNotExists() {
   [ "$status" -ne 0 ]
 }
 
-assertGenSuccess() {
-  run mkdocs_simple_gen
-  debugger
-  [ "$status" -eq 0 ]
+assertValidSite() {
   assertFileExists site/index.html
 }
 
-assertGenEmpty() {
-  run mkdocs_simple_gen
-  debugger
-  [ "$status" -eq 0 ]
+assertEmptySite() {
   assertFileNotExists site/index.html
 }
 
@@ -71,22 +71,26 @@ teardown() {
 
 @test "build an empty mkdocs site with minimal configuration" {
   cd ${fixturesDir}/ok-empty
-  assertGenEmpty
+  assertGenSuccess
+  assertEmptySite
 }
 
 @test "build an empty mkdocs site with a config" {
   cd ${fixturesDir}/ok-mkdocs-config
-  assertGenEmpty
+  assertGenSuccess
+  assertEmptySite
 }
 
 @test "build a mkdocs site with just a docs folder" {
   cd ${fixturesDir}/ok-mkdocs-docs
   assertGenSuccess
+  assertValidSite
 }
 
 @test "build a mkdocs site with just a readme" {
   cd ${fixturesDir}/ok-mkdocs-readme
   assertGenSuccess
+  assertValidSite
 }
 
 @test "build a mkdocs site that merges docs folder and other documentation" {
@@ -98,7 +102,7 @@ teardown() {
 
 @test "build a mkdocs site that specifies a specific folder to include" {
   cd ${fixturesDir}/ok-mkdocs-docs-include
-  assertGenEmpty
+  assertGenSuccess
   assertFileExists site/subfolder/draft/index.html
   assertFileExists site/subfolder/index.html
 }
@@ -119,7 +123,9 @@ teardown() {
 
 @test "serve a mkdocs site" {
   cd ${fixturesDir}/ok-mkdocs-docs
-  mkdocs_simple_gen --serve &
+  assertGenSuccess
+  assertValidSite
+  mkdocs serve &
   sleep 5
   assertServeSuccess
   pkill mkdocs

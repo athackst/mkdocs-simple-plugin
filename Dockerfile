@@ -1,4 +1,4 @@
-FROM python:3.8.1-alpine3.11
+FROM python:3.8-alpine
 
 WORKDIR /tmp
 COPY mkdocs_simple_plugin mkdocs_simple_plugin
@@ -11,6 +11,8 @@ RUN \
     git-fast-import \
     openssh \
   && apk add --no-cache --virtual .build gcc musl-dev \
+  && apk add --no-cache --upgrade bash \
+  && pip install --upgrade pip \
   && pip install --no-cache-dir . \
   && apk del .build gcc musl-dev \
   && rm -rf /tmp/*
@@ -19,6 +21,11 @@ WORKDIR /docs
 
 EXPOSE 8000
 
-ENTRYPOINT ["mkdocs_simple_gen"]
+RUN mkdir -p /home/mkdocs && chmod 777 /home/mkdocs
+ENV HOME=/home/mkdocs
+ENV PATH=/home/mkdocs/.local/bin:${PATH}
 
-CMD ["--install", "--serve"]
+COPY entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["entrypoint.sh"]
+
+CMD ["mkdocs", "serve"]

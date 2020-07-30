@@ -61,38 +61,24 @@ def setup_config():
                 # If the docs_dir is not specified, check if the default dir exists
                 config["docs_dir"] = docs_dir
             if(not os.path.exists(config["docs_dir"])):
-                print("making docs dir {}".format(config["docs_dir"]))
+                print("making docs_dir {}".format(config["docs_dir"]))
                 os.makedirs(config["docs_dir"], exist_ok=True)
         except yaml.YAMLError as exc:
             print(exc)
 
 
-def install_modules():
-    """
-    Install modules in requirements.txt
-    :param modules: str - List of modules to install
-    :return:
-    """
-    requirements_file = "requirements.txt"
-    if not os.path.exists(requirements_file):
-        print(requirements_file, " doesn't exist -- skip installing modules")
-        return
-    os.system("pip install -r " + requirements_file)
-
-
 @click.command()
 @click.option('--build/--no-build', default=True, help="build the site using mkdocs build")
-@click.option('--install/--no-install', default=False, help="install required packages listed in requirements.txt")
-@click.option('--serve/--no-serve', default=False, help="serve the site locally")
-@click.option('--dev-addr',  default="127.0.0.1:8000", type=str, help="Local server address")
-def main(build, install, serve, dev_addr):
-    if install:
-        install_modules()
+@click.argument('build-args', nargs=-1)
+def main(build, build_args):
+    """
+    Generate and build a mkdocs site.
+
+    See mkdocs build -h for additional build args.
+    """
     setup_config()
     if build:
-        os.system('mkdocs build')
-    if serve:
-        os.system('mkdocs serve --dev-addr=' + dev_addr)
+        os.system("mkdocs build " + " ".join(build_args))
 
 
 if __name__ == "__main__":

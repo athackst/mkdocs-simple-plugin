@@ -25,6 +25,7 @@ RUN mkdir -p /home/mkdocs && chmod 777 /home/mkdocs
 ENV HOME=/home/mkdocs
 ENV PATH=/home/mkdocs/.local/bin:${PATH}
 
+COPY deploy.sh /usr/local/bin/
 COPY entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["entrypoint.sh"]
 

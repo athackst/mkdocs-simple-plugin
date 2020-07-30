@@ -1,0 +1,17 @@
+name: 'mkdocs-simple-action'
+description: 'Generate a configuration free mkdocs site'
+branding:
+  icon: 'book'  
+  color: 'green'
+inputs:
+  publish_branch:
+    description: 'Set a target branch for deployment.'
+    required: false
+    default: 'gh-pages'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env: 
+    BRANCH_NAME: ${{ inputs.publish_branch }}
+  args:
+    - deploy.sh

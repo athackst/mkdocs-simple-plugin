@@ -6,6 +6,8 @@
 
 This plugin enables you to build documentation from markdown files interspersed within your code using [mkdocs](https://www.mkdocs.org/).  It is designed for the way developers commonly write documentation in their own code -- with simple markdown files.
 
+...Now with a [github action](#deploy-from-github-actions) to make it _even easier_ to deploy.
+
 ## About
 
 You may be wondering why you would want to generate a static site for your project, without doing the typical "wiki" thing of consolidating all documentation within a single `docs` folder or using a single `README` file.
@@ -142,34 +144,16 @@ Then push the results to your repository (or wherever you'd like to host your si
 Create a yaml file with the following contents in the `.github/workflows` directory in your repository
 
 ```yaml
-name: Docs
-
-on:
-  push:
-    branches: [master]
-
 jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v1
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build docs
+        uses: athackst/mkdocs-simple-plugin
         with:
-          python-version: "3.x"
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - name: Build Docs
-        run: |
-          mkdocs_simple_gen
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./site
+          publish_branch: gh-pages # optionally specify branch
 ```
 
 ## Build plugin from source

@@ -8,6 +8,7 @@ import os
 import shutil
 import sys
 
+
 # TODO(athackst): Use TemporaryDirectory for docs_dir
 # from tempfile import TemporaryDirectory
 
@@ -89,10 +90,12 @@ class SimplePlugin(BasePlugin):
                         try:
                             os.makedirs(doc_root, exist_ok=True)
                             shutil.copy(orig, new)
-                            print("{} --> {}".format(orig, new))
+                            utils.log.debug(
+                                "mkdocs-simple-plugin: {} --> {}".format(orig, new))
                             paths.append((orig, new))
                         except Exception as e:
-                            print("ERROR: {}.. skipping {}".format(e, orig))
+                            utils.log.warn(
+                                "mkdocs-simple-plugin: error! {}.. skipping {}".format(e, orig))
 
             dirs[:] = [d for d in dirs if self.in_search_dir(d, root)]
         return paths
@@ -101,7 +104,8 @@ class SimplePlugin(BasePlugin):
         if(sys.version_info >= (3, 8)):
             # pylint: disable=unexpected-keyword-arg
             shutil.copytree(root_src_dir, root_dst_dir, dirs_exist_ok=True)
-            print("copying from {} --> {}".format(root_src_dir, root_dst_dir))
+            utils.log.debug(
+                "mkdocs-simple-plugin: {}/* --> {}/*".format(root_src_dir, root_dst_dir))
         else:
             for src_dir, _, files in os.walk(root_src_dir):
                 dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
@@ -113,4 +117,5 @@ class SimplePlugin(BasePlugin):
                     if os.path.exists(dst_file):
                         os.remove(dst_file)
                     shutil.copy(src_file, dst_dir)
-                    print("copying from docs {} --> {}".format(src_file, dst_file))
+                    utils.log.debug(
+                        "mkdocs-simple-plugin: {}/* --> {}/*".format(src_file, dst_file))

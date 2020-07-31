@@ -1,43 +1,29 @@
-# Development
+# mkdocs-simple-plugin
 
-## Prerequisites
+| [Docs](http://athackst.github.io/mkdocs-simple-plugin) | [Code](http://github.com/athackst/mkdocs-simple-plugin)  | [PyPi](https://pypi.org/project/mkdocs-simple-plugin/) | [Docker](https://hub.docker.com/r/athackst/mkdocs-simple-plugin) |
 
-You will need to have [mkdocs](https://www.mkdocs.org/) installed on your system.  I recommend installing it via pip to get the latest version.
+![Test](https://github.com/athackst/mkdocs-simple-plugin/workflows/Test/badge.svg) ![Docs](https://github.com/athackst/mkdocs-simple-plugin/workflows/Docs/badge.svg) ![Docker](https://img.shields.io/docker/pulls/athackst/mkdocs-simple-plugin?color=blue) ![pypi](https://img.shields.io/pypi/dm/mkdocs-simple-plugin?color=blue)
 
-```bash
-sudo apt-get install python-pip
-pip install --upgrade pip --user
-pip install mkdocs --user
-```
+This plugin enables you to build documentation from markdown files interspersed within your code using [mkdocs](https://www.mkdocs.org/).  It is designed for the way developers commonly write documentation in their own code -- with simple markdown files.
 
-If you want to run the test suite, you'll also need 'bats'
+## About
 
-```bash
-sudo apt-get install bats
-```
+You may be wondering why you would want to generate a static site for your project, without doing the typical "wiki" thing of consolidating all documentation within a single `docs` folder or using a single `README` file.
 
-## Testing
+* **My repository is too big for a single documentation source.**
 
-Install the package locally with
+    Sometimes it isn't really feasible to consolidate all documentation within an upper level `docs` directory.  This is often the case with medium/large repositories.  In general, if your code base is too large to fit well within a single `include` directory, your code base is probably also too large for documentation to fit within a single `docs` directory.  
 
-```bash
-pip install -e .
-```
+    Since it's typically easier to keep documentation up to date when it lives as close to the code as possible, it is better to create multiple sources for documentation.
 
-Testing involves both linting with flake8
+* **My repository is too simple for advanced documentation.**
 
-```bash
-./tests/test_flake8.sh
-```
+    If your code base is _very very_ large, something like the [monorepo plugin](https://github.com/spotify/mkdocs-monorepo-plugin) might better fit your needs.
 
-and testing with `bats`
+    For most other medium+ repositories that have grown over time, you probably have scattered documentation throughout your code.  By combining all of that documentation while keeping folder structure, you can better surface and collaborate with others. And, let's face it.  That documentation is probably all in markdown, since github renders it nicely.
 
-```bash
-./tests/integration/test.bats
-```
+* **I want a pretty documentation site without the hassle.**
 
-If you want to test against all the different versions of python, run the local test script.
+    Finally, you may be interested in this plugin if you have a desire for stylized documentation, but don't want to invest the time/energy in replicating information you already have in your README.md files, and you want to keep them where they are (thank you very much).
 
-```bash
-./tests/test_local.sh
-```
+See [mkdocs-simple-plugin](http://athackst.github.io/mkdocs-simple-plugin) for usage.

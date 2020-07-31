@@ -6,8 +6,6 @@
 
 This plugin enables you to build documentation from markdown files interspersed within your code using [mkdocs](https://www.mkdocs.org/).  It is designed for the way developers commonly write documentation in their own code -- with simple markdown files.
 
-...Now with a [github action](#deploy-from-github-actions) to make it _even easier_ to deploy.
-
 ## About
 
 You may be wondering why you would want to generate a static site for your project, without doing the typical "wiki" thing of consolidating all documentation within a single `docs` folder or using a single `README` file.
@@ -32,173 +30,14 @@ You may be wondering why you would want to generate a static site for your proje
 
 This plugin was made to be super simple to use.
 
-Install the plugin with pip.
+* [github action](docs/action.md)
+* [docker container](docs/docker.md)
+* [mkdocs plugin](docs/plugin.md)
+* [command line tool](docs/commandline.md)
 
-```bash
-pip install mkdocs-simple-plugin
-```
+## Contributing
 
-_Python 3.x, 3.5, 3.6, 3.7, 3.8 supported._
-
-### Build the docs
-
-It's easy to use this plugin.  You can either use the generation script included, or set up your own custom config.
-
-#### Basic
-
-Basic usage was optimized around ease of use.  Simply run
-
-```bash
-mkdocs_simple_gen
-```
-
-and you're all set!
-
-See [mkdocs_simple_gen](mkdocs_simple_plugin/README.md#mkdocs_simple_gen) for more info.
-
-#### Advanced
-
-Advanced usage is _also_ easy.
-
-Create a `mkdocs.yml` file in the root of your directory and add this plugin to it's plugin list.
-
-```yaml
-site_name: your_site_name
-plugins:
-  - simple
-```
-
-See [mkdocs-simple-plugin](mkdocs_simple_plugin/README.md#mkdocs-simple-plugin) for more info.
-
-Then, you can build the mkdocs from the command line.
-
-```bash
-mkdocs build
-```
-
-### Run a local server
-
-One of the best parts of mkdocs is it's ability to serve (and update!) your documentation site locally.
-
-```bash
-mkdocs serve
-```
-
-## Run in a docker container
-
-Additionally, you can use this plugin with the [athackst/mkdocs-simple-plugin](https://hub.docker.com/r/athackst/mkdocs-simple-plugin) docker image.
-
-By using the docker image, you don't need to have the plugin or its dependencies installed on your system.
-
-Install, build and serve your docs:
-
-```bash
-docker run --rm -it --network=host -v ${PWD}:/docs --user $(id -u):$(id -g) athackst/mkdocs-simple-plugin
-```
-
-Explanation of docker command line options
-
-<!-- markdownlint-disable MD038 -->
-| command                    | description                                                                 |
-| :------------------------- | :-------------------------------------------------------------------------- |
-| `--rm`                     | [optional] remove the docker image after it finishes running.               |
-| `-it`                      | [optional] run in an interactive terminal.                                  |
-| `-p 8000:8000`             | [required] Map the mkdocs server port to a port on your localhost.          |
-| `-v ${PWD}:/docs`          | [required] Mount the local directory into the docs directory to build site. |
-| `--user $(id -u):$(id -g)` | [recommended] Run the docker container with the current user and group.     |
-<!-- markdownlint-enable MD038 -->
-
-See [mkdocs_simple_gen](mkdocs_simple_plugin/README.md#mkdocs_simple_gen) for a list of command line options you can set.
-
-<!-- markdownlint-disable MD046 -->
-!!! tip
-    Add an alias for the docker command to serve docs from any workspace.
-
-    ```bash
-    echo 'function mkdocs_simple() { 
-        docker run --rm -it --network=host -v ${PWD}:/docs --user $(id -u):$(id -g) athackst/mkdocs-simple-plugin $@ 
-    }' >> ~/.bashrc
-    ```
-<!-- markdownlint-enable MD046 -->
-
-## Deploy
-
-### Enable GitHub pages
-
-First, set up your github repository to enable gh-pages support.
-
-See [Github Pages](https://pages.github.com/) for more information.
-
-### Deploy from the command line
-
-Mkdocs includes an easy command to initialize your deployment from the command line. This will set up the gh-pages branch and copy the site over.
-
-```bash
-mkdocs gh-deploy
-```
-
-Then push the results to your repository (or wherever you'd like to host your site).
-
-### Deploy from GitHub Actions
-
-Create a yaml file with the following contents in the `.github/workflows` directory in your repository
-
-```yaml
-jobs:
-  docs:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Build docs
-        uses: athackst/mkdocs-simple-plugin
-        with:
-          publish_branch: gh-pages # optionally specify branch
-```
-
-## Build plugin from source
-
-### Prerequisites
-
-You will need to have [mkdocs](https://www.mkdocs.org/) installed on your system.  I recommend installing it via pip to get the latest version.
-
-```bash
-sudo apt-get install python-pip
-pip install --upgrade pip --user
-pip install mkdocs --user
-```
-
-If you want to run the test suite, you'll also need 'bats'
-
-```bash
-sudo apt-get install bats
-```
-
-### Develop
-
-Install the package locally with
-
-```bash
-pip install -e .
-```
-
-Testing involves both linting with flake8
-
-```bash
-./tests/test_flake8.sh
-```
-
-and testing with `bats`
-
-```bash
-./tests/integration/test.bats
-```
-
-If you want to test against all the different versions of python, run the local test script.
-
-```bash
-./tests/test_local.sh
-```
+See the [contributing guide](CONTRIBUTING.md)
 
 ## License
 

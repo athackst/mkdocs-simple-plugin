@@ -1,8 +1,10 @@
-name: Docs
+name: Publish Docs
 
 on:
+  release:
+    types: [published]
   push:
-    branches: [master]
+    branches: [docs/**]
 
 jobs:
   docs:

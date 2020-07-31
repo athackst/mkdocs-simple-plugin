@@ -1,4 +1,4 @@
-name: 'mkdocs-simple-action'
+name: 'MkDocs Simple action'
 description: 'Generate a configuration free mkdocs site'
 branding:
   icon: 'book'  

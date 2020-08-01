@@ -3,8 +3,7 @@ name: Publish Docs
 on:
   release:
     types: [published]
-  push:
-    branches: [docs/**]
+  workflow_dispatch:
 
 jobs:
   docs:

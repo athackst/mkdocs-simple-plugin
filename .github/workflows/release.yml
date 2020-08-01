@@ -15,8 +15,8 @@ jobs:
       - name: Bump version
         run: |
           sed "s/^    version=.*/    version='${{ env.VERSION }}',/" -i setup.py
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git config --local user.name "${GITHUB_ACTOR}"
           git add setup.py
           git commit -m "releasing v${{ env.VERSION }}"
           git tag -f "v${{ env.VERSION }}"

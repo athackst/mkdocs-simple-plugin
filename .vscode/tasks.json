@@ -21,7 +21,7 @@
     {
       "label": "mkdocs build",
       "type": "shell",
-      "command": "mkdocs build",
+      "command": "mkdocs build --verbose",
       "problemMatcher": []
     },
     {

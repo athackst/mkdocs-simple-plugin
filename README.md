@@ -1,8 +1,8 @@
 # mkdocs-simple-plugin
 
-| [Docs](http://athackst.github.io/mkdocs-simple-plugin) | [Code](http://github.com/athackst/mkdocs-simple-plugin)  | [PyPi](https://pypi.org/project/mkdocs-simple-plugin/) | [Docker](https://hub.docker.com/r/athackst/mkdocs-simple-plugin) |
+[![Test](https://github.com/athackst/mkdocs-simple-plugin/workflows/Test/badge.svg)](https://github.com/athackst/mkdocs-simple-plugin) [![Docs](https://github.com/athackst/mkdocs-simple-plugin/workflows/Docs/badge.svg)](https://athackst.github.io/mkdocs-simple-plugin) [![Docker](https://img.shields.io/docker/pulls/athackst/mkdocs-simple-plugin?color=blue)](https://hub.docker.com/r/athackst/mkdocs-simple-plugin) [![pypi](https://img.shields.io/pypi/dm/mkdocs-simple-plugin?label=pypi%20downloads&color=blue)](https://pypi.org/project/mkdocs-simple-plugin/) [![Github Action](https://img.shields.io/badge/github%20action-download-blue)](https://github.com/marketplace/actions/mkdocs-simple-action)
 
-![Test](https://github.com/athackst/mkdocs-simple-plugin/workflows/Test/badge.svg) ![Docs](https://github.com/athackst/mkdocs-simple-plugin/workflows/Docs/badge.svg) ![Docker](https://img.shields.io/docker/pulls/athackst/mkdocs-simple-plugin?color=blue) ![pypi](https://img.shields.io/pypi/dm/mkdocs-simple-plugin?color=blue)
+| [Code](https://github.com/athackst/mkdocs-simple-plugin) | [Docs](https://athackst.github.io/mkdocs-simple-plugin)  | [PyPi](https://pypi.org/project/mkdocs-simple-plugin/) | [Docker](https://hub.docker.com/r/athackst/mkdocs-simple-plugin) | [GitHub Action](https://github.com/marketplace/actions/mkdocs-simple-action) |
 
 This plugin enables you to build documentation from markdown files interspersed within your code using [mkdocs](https://www.mkdocs.org/).  It is designed for the way developers commonly write documentation in their own code -- with simple markdown files.
 

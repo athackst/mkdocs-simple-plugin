@@ -48,3 +48,14 @@ jobs:
       - name: Test with bats
         run: |
           ./tests/integration/test.bats
+      - name: Build site
+        run: |
+          mkdocs_simple_gen
+      - name: Test html
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7 # Not needed with a .ruby-version file
+      - run: |
+          bundle install
+          bundle exec jekyll build
+          bundle exec htmlproofer ./site

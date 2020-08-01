@@ -1,4 +1,5 @@
 plugins:
+    - search
     - simple:
           ignore_folders: ["tests", "mkdocs_simple_plugin"]
 site_name: athackst/mkdocs-simple-plugin

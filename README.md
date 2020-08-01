@@ -32,8 +32,8 @@ This plugin was made to be super simple to use.
 
 * [github action](docs/action.md)
 * [docker container](docs/docker.md)
-* [mkdocs plugin](docs/plugin.md)
-* [command line tool](docs/commandline.md)
+* [mkdocs plugin](docs/mkdocs-simple-plugin.md)
+* [command line tool](docs/mkdocs-simple-gen.md)
 
 ## Contributing
 

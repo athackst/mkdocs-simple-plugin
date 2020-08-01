@@ -21,7 +21,7 @@
     {
       "label": "mkdocs build",
       "type": "shell",
-      "command": "mkdocs build",
+      "command": "mkdocs build --verbose",
       "problemMatcher": []
     },
     {
@@ -33,7 +33,7 @@
     {
       "label": "clean",
       "type": "shell",
-      "command": "sudo rm -rf build/ dist/ docs/ site/ *.egg-info/ **/__pycache__/ && for dir in ${fixturesDir}/*; do (cd $dir && sudo ./clean.sh); done",
+      "command": "sudo rm -rf build/ dist/ site/ *.egg-info/ **/__pycache__/ && for dir in ${fixturesDir}/*; do (cd $dir && sudo ./clean.sh); done",
       "problemMatcher": [],
       "options": {
         "env": {"fixturesDir": "tests/integration/fixtures"}

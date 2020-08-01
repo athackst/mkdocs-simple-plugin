@@ -1,6 +1,6 @@
 # mkdocs-simple-plugin
 
-| [Docs](http://athackst.github.io/mkdocs-simple-plugin) | [Code](http://github.com/athackst/mkdocs-simple-plugin)  | [PyPi](https://pypi.org/project/mkdocs-simple-plugin/) | [Docker](https://hub.docker.com/r/athackst/mkdocs-simple-plugin) |
+| [Docs](http://athackst.github.io/mkdocs-simple-plugin) | [Code](http://github.com/athackst/mkdocs-simple-plugin)  | [PyPi](https://pypi.org/project/mkdocs-simple-plugin/) | [Docker](https://hub.docker.com/r/athackst/mkdocs-simple-plugin) | [GitHub Action](https://github.com/marketplace/actions/mkdocs-simple-action) |
 
 ![Test](https://github.com/athackst/mkdocs-simple-plugin/workflows/Test/badge.svg) ![Docs](https://github.com/athackst/mkdocs-simple-plugin/workflows/Docs/badge.svg) ![Docker](https://img.shields.io/docker/pulls/athackst/mkdocs-simple-plugin?color=blue) ![pypi](https://img.shields.io/pypi/dm/mkdocs-simple-plugin?color=blue)
 
@@ -32,8 +32,8 @@ This plugin was made to be super simple to use.
 
 * [github action](docs/action.md)
 * [docker container](docs/docker.md)
-* [mkdocs plugin](docs/plugin.md)
-* [command line tool](docs/commandline.md)
+* [mkdocs plugin](docs/mkdocs-simple-plugin.md)
+* [command line tool](docs/mkdocs-simple-gen.md)
 
 ## Contributing
 

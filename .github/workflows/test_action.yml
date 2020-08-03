@@ -6,11 +6,32 @@ on:
 
 jobs:
   docs:
+    if: ${{ contains( github.ref , 'docs' ) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build Docs
+        
         uses: ./
         with:
           publish_branch: gh-pages-test
+  tagging:
+    if: ${{ contains( github.ref , 'tagging' ) }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: tag
+        run: |
+          git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git config --local user.name "${GITHUB_ACTOR}"
+          git remote add action https://x-access-token:${RELEASEBOT_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+          git tag "test-tag"
+          git push --tags --force
+          sed "s/^    version=.*/    version='0.0.0',/" -i setup.py
+          git add setup.py
+          git commit -m "testing bump commit"
+          git push action ${GITHUB_REF#refs/heads/}
+          git tag -f "test-tag"
+          git push --tags --force action

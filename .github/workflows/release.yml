@@ -24,7 +24,7 @@ jobs:
           git tag -f "v${{ env.VERSION }}"
           git push --tags --force action
       - name: Set up Python
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v2.1.1
         with:
           python-version: "3.x"
       - name: Install dependencies

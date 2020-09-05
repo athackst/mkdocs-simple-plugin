@@ -21,4 +21,9 @@ jobs:
         uses: athackst/mkdocs-simple-plugin
         with:
           publish_branch: gh-pages # optionally specify branch
+        env:
+          # Optional environment parameters for mkdocs.yml generation
+          REPO_URL: # The URL of the repository the docs should point to
+          SITE_NAME: # The name of the site
+          SITE_URL: # The URL of the site
 ```

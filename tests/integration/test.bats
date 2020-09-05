@@ -27,6 +27,10 @@ debugger() {
 }
 
 assertGen() {
+  if [ -f mkdocs-test.yml ]
+  then
+    cp mkdocs-test.yml mkdocs.yml
+  fi
   run mkdocs_simple_gen
   debugger
   [ "$status" -eq 0 ]
@@ -62,7 +66,12 @@ assertServeSuccess() {
 #
 
 teardown() {
-  for dir in ${fixturesDir}/*; do (cd "$dir" && ./clean.sh); done
+  for dir in ${fixturesDir}/*
+  do
+    rm -rf ${dir}/site/
+    rm -rf ${dir}/docs_/
+    rm -f mkdocs.yml
+  done
 }
 
 ##

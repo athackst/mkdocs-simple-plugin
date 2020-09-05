@@ -1,15 +1,25 @@
-plugins:
-    - search
-    - simple:
-          ignore_folders: ["tests", "mkdocs_simple_plugin"]
 site_name: athackst/mkdocs-simple-plugin
-theme: readthedocs
+docs_dir: docs
+plugins:
+- search
+- simple:
+    ignore_folders:
+    - tests
+    - mkdocs_simple_plugin
+repo_url: https://github.com/athackst/mkdocs-simple-plugin
+edit_uri: ''
+theme:
+  name: material
+  palette:
+    primary: green
+    accent: green
+extra:
+  social:
+  - icon: fontawesome/brands/twitter
+    link: https://twitter.com/althack
+  - icon: fontawesome/regular/laugh
+    link: https://allisonthackston.com
 markdown_extensions:
-    - admonition
-    - smarty
-    - toc:
-          permalink: True
-    - pymdownx.superfences
-    - pymdownx.emoji:
-          emoji_index: !!python/name:pymdownx.emoji.twemoji
-          emoji_generator: !!python/name:pymdownx.emoji.to_png
+- pymdownx.emoji:
+    emoji_index: !!python/name:materialx.emoji.twemoji ''
+    emoji_generator: !!python/name:materialx.emoji.to_svg ''

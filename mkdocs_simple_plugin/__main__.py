@@ -6,7 +6,14 @@ import yaml
 def default_config():
     config = {}
     config['site_name'] = os.path.basename(os.path.abspath("."))
-    config['plugins'] = ["simple"]
+    if "SITE_NAME" in os.environ.keys():
+        config['site_name'] = os.environ["SITE_NAME"]
+    if "SITE_URL" in os.environ.keys():
+        config['site_url'] = os.environ["SITE_URL"]
+    if "REPO_URL" in os.environ.keys():
+        config['repo_url'] = os.environ["REPO_URL"]
+    config['docs_dir'] = "docs"
+    config['plugins'] = ["simple", "search"]
     return config
 
 
@@ -31,40 +38,34 @@ def get_plugins(config):
 def setup_config():
     """
     Create all the files, including the mkdocs.yml file if it doesn't exist.
-    :return:
     """
-    docs_dir = "docs"
     config_file = "mkdocs.yml"
+    config = default_config()
     if not os.path.exists(config_file):
         # If config file doesn't exit, create a simple one, guess the site name from the folder name.
-        write_config(config_file, default_config())
+        write_config(config_file, config)
     # Open the config file to verify settings.
     with open(config_file, 'r') as stream:
         try:
-            config = yaml.load(stream, yaml.Loader)
-            if not config:
-                # If config is not able to be loaded, replace with default config.
-                config = default_config()
-                write_config(config_file, config)
-            if("plugins" not in config):
-                # If no plugins are specified in the config, add the simple plugin
-                config["plugins"].append("simple")
-                write_config(config_file, config)
-            if ("simple" not in get_plugins(config)):
-                # If the simple plugin isn't included, add it.
-                config["plugins"].append("simple")
-                write_config(config_file, config)
-            if ("site_name" not in config):
-                config['site_name'] = os.path.basename(os.path.abspath("."))
-                write_config(config_file, config)
-            if ("docs_dir" not in config):
-                # If the docs_dir is not specified, check if the default dir exists
-                config["docs_dir"] = docs_dir
-            if(not os.path.exists(config["docs_dir"])):
+            local_config = yaml.load(stream, yaml.Loader)
+            if local_config:
+                if "plugins" in local_config.keys():
+                    # Merge plugin lists
+                    config_plugins = config["plugins"]
+                    local_plugins = local_config["plugins"]
+                    [i for i in local_plugins if i not in config_plugins
+                        or config_plugins.remove(i)]
+                config.update(local_config)
+                print(config)
+            if not os.path.exists(config["docs_dir"]):
+                #  Ensure docs directory exists.
                 print("making docs_dir {}".format(config["docs_dir"]))
                 os.makedirs(config["docs_dir"], exist_ok=True)
+
         except yaml.YAMLError as exc:
             print(exc)
+            raise
+    write_config(config_file, config)
 
 
 @click.command()

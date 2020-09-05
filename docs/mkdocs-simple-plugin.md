@@ -27,7 +27,8 @@ plugins:
       # Optional setting to specify if hidden folders should be ignored
       ignore_hidden: True
       # Optional setting to specify other extensions besides md files to be copied
-      include_extensions: [""]
+      include_extensions: [".tif", ".tiff", ".gif", ".jpeg", ".jpg", ".jif", ".jfif",
+            ".jp2", ".jpx", ".j2k", ".j2c", ".fpx", ".pcd", ".png", ".pdf"]
 ```
 
 ### Build

@@ -33,7 +33,7 @@
     {
       "label": "clean",
       "type": "shell",
-      "command": "sudo rm -rf build/ dist/ site/ *.egg-info/ **/__pycache__/ && for dir in ${fixturesDir}/*; do (cd $dir && sudo ./clean.sh); done",
+      "command": "sudo rm -rf build/ dist/ site/ *.egg-info/ **/__pycache__/  docs_/ && for dir in ${fixturesDir}/*; do (cd $dir && sudo ./clean.sh); done",
       "problemMatcher": [],
       "options": {
         "env": {"fixturesDir": "tests/integration/fixtures"}
@@ -53,6 +53,13 @@
       "type": "shell",
       "command": "python3 setup.py sdist bdist_wheel",
       "problemMatcher": []
-    }
+    },
+    
+    {
+      "label": "update",
+      "type": "shell",
+      "command": "pip3 install --user -r requirements.txt --upgrade",
+      "problemMatcher": []
+    },
   ]
 }

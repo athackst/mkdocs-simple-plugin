@@ -12,13 +12,34 @@ import sys
 # TODO(athackst): Use TemporaryDirectory for docs_dir
 # from tempfile import TemporaryDirectory
 
+def common_extensions():
+    return [".bmp", ".tif", ".tiff", ".gif", ".svg", ".jpeg", ".jpg", ".jif", ".jfif",
+            ".jp2", ".jpx", ".j2k", ".j2c", ".fpx", ".pcd", ".png", ".pdf"]
+
 
 class SimplePlugin(BasePlugin):
+    """ SimplePlugin adds documentation throughout your repo to a mkdocs wiki.
+
+    Usage:
+
+        site_name: your_site_name
+        plugins:
+        - simple:
+            # Optional setting to only include specific folders
+            include_folders: ["*"]
+            # Optional setting to ignore specific folders
+            ignore_folders: [""]
+            # Optional setting to specify if hidden folders should be ignored
+            ignore_hidden: True
+            # Optional setting to specify other extensions besides md files to be copied
+            include_extensions: [""]
+    """
     config_scheme = (
         ('include_folders', config_options.Type(list, default=['*'])),
         ('ignore_folders', config_options.Type(list, default=[])),
         ('ignore_hidden', config_options.Type(bool, default=True)),
-        ('include_extensions', config_options.Type(list, default=[]))
+        ('include_extensions', config_options.Type(
+            list, default=common_extensions()))
     )
 
     def on_pre_build(self, config, **kwargs):

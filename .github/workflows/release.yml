@@ -40,7 +40,7 @@ jobs:
           python setup.py sdist bdist_wheel
           twine upload dist/*
       - name: Build and publish docker image
-        uses: docker/build-push-action@v1.1.0
+        uses: docker/build-push-action@v2
         with:
           repository: athackst/mkdocs-simple-plugin
           dockerfile: Dockerfile

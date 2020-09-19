@@ -4,11 +4,11 @@ on:
   pull_request:
     branches: [master]
   issues:
-    types: labeled
+    types: [labeled]
 
 jobs:
-  docs:
-    if: contains(github.event.label.name, 'docs' )
+  test-docs:
+    if: contains(github.event.label.name, 'test-docs' )
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -17,8 +17,8 @@ jobs:
         uses: ./
         with:
           publish_branch: gh-pages-test
-  tagging:
-    if: contains(github.event.label.name, 'tagging' )
+  test-tagging:
+    if: contains(github.event.label.name, 'test-tagging' )
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

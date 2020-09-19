@@ -54,9 +54,6 @@ jobs:
         uses: ./
         env:
           DRY_RUN: true
-      - name: echo
-        run: |
-          ls -la ./site
       - name: Test html
         uses: chabad360/htmlproofer@v1.1
         with:

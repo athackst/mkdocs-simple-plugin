@@ -1,23 +1,32 @@
-docs_dir: docs
+theme:
+  name: "material"
+  palette:
+    primary: green
+    accent: green
+
 plugins:
   - search
   - simple:
       ignore_folders:
         - tests
         - mkdocs_simple_plugin
-edit_uri: ""
-# theme:
-#   name: material
-#   palette:
-#     primary: green
-#     accent: green
+
+markdown_extensions:
+  - admonition
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      use_pygments: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
 extra:
   social:
     - icon: fontawesome/brands/twitter
       link: https://twitter.com/althack
+    - icon: fontawesome/brands/docker
+      link: https://hub.docker.com/u/athackst
     - icon: fontawesome/regular/laugh
       link: https://allisonthackston.com
-markdown_extensions:
-  - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+edit_uri: ""

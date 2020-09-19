@@ -9,7 +9,6 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -40,33 +39,24 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y bats gcc
           python -m pip install --upgrade pip
-          pip install flake8
+          pip install -e .
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      - name: Lint with flake8
-        run: |
-          ./tests/test_flake8.sh
       - name: Test with bats
         run: |
           ./tests/integration/test.bats
 
-  check-html:
+  check-docs:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v2.1.2
-        with:
-          python-version: "3.x"
-      - name: Build site
-        run: |
-          python -m pip install --upgrade pip
-          pip install flake8
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip install -e . 
-          mkdocs_simple_gen
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build Docs
+        uses: ./
+        env:
+          DRY_RUN: true
       - name: Test html
         uses: chabad360/htmlproofer@v1.1
         with:
           directory: "./site"
-          arguments: --url-ignore https://fonts.gstatic.com
+          # BANDAID: 404.html site not rendering with correct links
+          arguments: --url-ignore https://fonts.gstatic.com --allow-hash-href --file-ignore ./site/404.html

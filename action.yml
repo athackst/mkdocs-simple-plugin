@@ -15,11 +15,11 @@ inputs:
   site_name:
     description: "Set the site name."
     required: false
-    default: "${{ github.event.repository.name }}"
+    default: "${{ github.repository }}"
   site_url:
     description: "Set the site url."
     required: false
-    default: "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+    default: "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
 runs:
   using: "docker"
   image: "Dockerfile"

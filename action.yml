@@ -15,7 +15,7 @@ inputs:
   site_name:
     description: "Set the site name."
     required: false
-    default: "${{ github.repository }}"
+    default: "${{ github.event.repository.name }}"
   site_url:
     description: "Set the site url."
     required: false

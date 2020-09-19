@@ -1,4 +1,4 @@
-site_name: athackst/mkdocs-simple-plugin
+# site_name: athackst/mkdocs-simple-plugin
 docs_dir: docs
 plugins:
   - search
@@ -6,7 +6,7 @@ plugins:
       ignore_folders:
         - tests
         - mkdocs_simple_plugin
-repo_url: https://github.com/athackst/mkdocs-simple-plugin
+# repo_url: https://github.com/athackst/mkdocs-simple-plugin
 edit_uri: ""
 # theme:
 #   name: material

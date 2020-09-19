@@ -6,11 +6,11 @@ plugins:
         - tests
         - mkdocs_simple_plugin
 edit_uri: ""
-theme:
-  name: material
-  palette:
-    primary: green
-    accent: green
+# theme:
+#   name: material
+#   palette:
+#     primary: green
+#     accent: green
 extra:
   social:
     - icon: fontawesome/brands/twitter

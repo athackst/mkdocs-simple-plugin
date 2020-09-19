@@ -23,7 +23,7 @@ jobs:
           publish_branch: gh-pages # optionally specify branch
         env:
           # Optional environment parameters for mkdocs.yml generation
-          REPO_URL: # The URL of the repository the docs should point to
-          SITE_NAME: # The name of the site
-          SITE_URL: # The URL of the site
+          REPO_URL: https://github.com/${{ github.repository }} # The URL of the repository the docs should point to
+          SITE_NAME: ${{ github.repository }} # The name of the site
+          SITE_URL: https://{{ github.repository_owner }}.github.io/${{ github.event.repository.name }} # The URL of the site
 ```

@@ -1,20 +1,32 @@
-name: 'MkDocs Simple action'
-description: 'Generate a configuration free mkdocs site'
+name: "MkDocs Simple action"
+description: "Generate a configuration free mkdocs site"
 branding:
-  icon: 'book'  
-  color: 'green'
+  icon: "book"
+  color: "green"
 inputs:
   publish_branch:
-    description: 'Set a target branch for deployment.'
+    description: "Set a target branch for deployment."
     required: false
-    default: 'gh-pages'
+    default: "gh-pages"
+  repo_url:
+    description: "Set the repository url."
+    required: false
+    default: "https://github.com/${{ github.repository }}"
+  site_name:
+    description: "Set the site name."
+    required: false
+    default: "${{ github.repository }}"
+  site_url:
+    description: "Set the site url."
+    required: false
+    default: "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  env: 
+  using: "docker"
+  image: "Dockerfile"
+  env:
     BRANCH_NAME: ${{ inputs.publish_branch }}
-    REPO_URL: http://github.com/${{ github.repository }} 
-    SITE_NAME: ${{ github.repository }}
-    SITE_URL: http://{{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+    REPO_URL: ${{ inputs.repo_url }}
+    SITE_NAME: ${{ inputs.site_name }}
+    SITE_URL: ${{ inputs.site_url }}
   args:
     - deploy.sh

@@ -1,23 +1,24 @@
-name: Test Action
+name: Test Workflows
 
 on:
-  push:
-    branches: [workflows/**]
+  pull_request:
+    branches: [master]
+  issues:
+    types: labeled
 
 jobs:
   docs:
-    if: ${{ contains( github.ref , 'docs' ) }}
+    if: contains(github.event.label.name, 'docs' )
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build Docs
-        
         uses: ./
         with:
           publish_branch: gh-pages-test
   tagging:
-    if: ${{ contains( github.ref , 'tagging' ) }}
+    if: contains(github.event.label.name, 'tagging' )
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

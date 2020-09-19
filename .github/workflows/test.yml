@@ -51,7 +51,6 @@ jobs:
 
   check-html:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -70,3 +69,13 @@ jobs:
         with:
           directory: "./site"
           arguments: --url-ignore https://fonts.gstatic.com
+
+  action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build Docs
+        uses: ./
+        env:
+          DRY_RUN: true

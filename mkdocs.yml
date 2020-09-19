@@ -8,11 +8,11 @@ plugins:
         - mkdocs_simple_plugin
 repo_url: https://github.com/athackst/mkdocs-simple-plugin
 edit_uri: ""
-theme:
-  name: material
-  palette:
-    primary: green
-    accent: green
+# theme:
+#   name: material
+#   palette:
+#     primary: green
+#     accent: green
 extra:
   social:
     - icon: fontawesome/brands/twitter

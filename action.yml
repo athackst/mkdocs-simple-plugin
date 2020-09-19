@@ -13,5 +13,8 @@ runs:
   image: 'Dockerfile'
   env: 
     BRANCH_NAME: ${{ inputs.publish_branch }}
+    REPO_URL: http://github.com/${{ github.repository }} 
+    SITE_NAME: ${{ github.repository }}
+    SITE_URL: http://{{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
   args:
     - deploy.sh

@@ -25,6 +25,7 @@ jobs:
           git add setup.py
           git commit -m "releasing v${{ env.VERSION }}"
           echo "Pushing to release/v${{ env.VERSION }}"
+          git checkout -b release/v${{ env.VERSION }}
           git push action release/v${{ env.VERSION }}
           git tag -f "v${{ env.VERSION }}"
           git push --tags --force action
@@ -54,4 +55,4 @@ jobs:
           tags: latest,v${{ env.VERSION }}
       - name: Update master
         run: |
-          git push action master --force
+          git push action HEAD:master --force

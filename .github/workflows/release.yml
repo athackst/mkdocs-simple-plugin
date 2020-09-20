@@ -53,6 +53,3 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           tags: latest,v${{ env.VERSION }}
-      - name: Update master
-        run: |
-          git push action HEAD:master --force

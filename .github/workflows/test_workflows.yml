@@ -8,7 +8,7 @@ on:
 
 jobs:
   test-docs:
-    if: contains(github.event.label.name, 'test-docs' )
+    if: contains(github.event.pull_request.labels.*.name, 'test-docs' )
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -18,7 +18,7 @@ jobs:
         with:
           publish_branch: gh-pages-test
   test-tagging:
-    if: contains(github.event.label.name, 'test-tagging' )
+    if: contains(github.event.pull_request.labels.*.name, 'test-tagging')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,6 +33,9 @@ jobs:
           sed "s/^    version=.*/    version='0.0.0',/" -i setup.py
           git add setup.py
           git commit -m "testing bump commit"
-          git push action ${GITHUB_REF#refs/heads/}
+          git checkout -b release/v0.0.0-test
+          git show-ref
+          echo "Pushing to release/v0.0.0-test"
+          git push action release/v0.0.0-test
           git tag -f "test-tag"
           git push --tags --force action

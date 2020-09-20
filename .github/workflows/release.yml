@@ -12,15 +12,20 @@ jobs:
       - name: Get version
         run: |
           echo "::set-env name=VERSION::$(/usr/bin/git tag --list | sed 's|.*v\([0-9\.]*\).*|\1|')"
-      - name: Bump version
+      - name: Set up github remote
         run: |
+          echo "Setting up action remote"
           git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.com"
           git config --local user.name "${GITHUB_ACTOR}"
           git remote add action https://x-access-token:${RELEASEBOT_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+      - name: Bump version
+        run: |
+          echo "Bumping version to ${{ env.VERSION }}"
           sed "s/^    version=.*/    version='${{ env.VERSION }}',/" -i setup.py
           git add setup.py
           git commit -m "releasing v${{ env.VERSION }}"
-          git push action ${GITHUB_REF#refs/heads/}
+          echo "Pushing to release/v${{ env.VERSION }}"
+          git push action release/v${{ env.VERSION }}
           git tag -f "v${{ env.VERSION }}"
           git push --tags --force action
       - name: Set up Python
@@ -47,3 +52,6 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           tags: latest,v${{ env.VERSION }}
+      - name: Update master
+        run: |
+          git push action master --force

@@ -3,8 +3,12 @@ name: Test Workflows
 on:
   pull_request:
     branches: [master]
-  issues:
-    types: [labeled]
+    types:
+        - "labeled"
+        - "opened"
+        - "reopened"
+        - "synchronize"
+  workflow_dispatch:
 
 jobs:
   test-docs:

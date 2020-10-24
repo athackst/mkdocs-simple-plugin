@@ -1,7 +1,9 @@
-name-template: 'Release v$NEXT_PATCH_VERSION'
-tag-template: 'v$NEXT_PATCH_VERSION'
+name-template: "Release v$NEXT_PATCH_VERSION"
+tag-template: "v$NEXT_PATCH_VERSION"
 template: |
   ## Get it
+
+  ### Python
 
   Install it with pip
 
@@ -9,6 +11,20 @@ template: |
   pip install mkdocs-simple-plugin==$NEXT_PATCH_VERSION
   ```
   See it on pypi: [https://pypi.org/project/mkdocs-simple-plugin](https://pypi.org/project/mkdocs-simple-plugin/$NEXT_PATCH_VERSION/)
+
+  ### Docker 
+
+  Pull it with docker
+
+  ```bash
+  docker pull athackst/mkdocs-simple-plugin:latest
+  ```
+
+  See it on dockerhub: [https://hub.docker.com/repository/docker/athackst/mkdocs-simple-plugin](https://hub.docker.com/repository/docker/athackst/mkdocs-simple-plugin)
+
+  ### Github
+
+  See it in the actions marketplace: [https://github.com/marketplace/actions/mkdocs-simple-action](https://github.com/marketplace/actions/mkdocs-simple-action)
 
   ## What’s Changed
 

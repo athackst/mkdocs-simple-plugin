@@ -31,30 +31,29 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: git setup
+        with:
+          token: ${{ secrets.RELEASEBOT_TOKEN }} 
+      - name: tag
         run: |
           git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.com"
           git config --local user.name "${GITHUB_ACTOR}"
-          git remote add action https://x-access-token:${RELEASEBOT_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-      - name: tag
-        run: |
           git tag --force ${TEST_TAG}
-          git push --force action ${TEST_TAG}
+          git push --force origin ${TEST_TAG}
           sed "s/^    version=.*/    version='0.0.0',/" -i setup.py
           git add setup.py
           git commit -m "testing bump commit"
           git checkout -b ${TEST_RELEASE}
           git show-ref
           echo "Pushing to ${TEST_RELEASE}"
-          git push --force action ${TEST_RELEASE}
+          git push --force origin ${TEST_RELEASE}
           git tag --force ${TEST_TAG}
-          git push --force action ${TEST_TAG}
+          git push --force origin ${TEST_TAG}
       - name: cleanup tag
         if: ${{ always() }}
-        run: git push --delete action ${TEST_TAG}
+        run: git push --delete origin ${TEST_TAG}
       - name: cleanup branch
         if: ${{ always() }}
-        run: git push --delete action ${TEST_RELEASE}
+        run: git push --delete origin ${TEST_RELEASE}
 
   test-docker:
     if: contains(github.event.pull_request.labels.*.name, 'test-docker')

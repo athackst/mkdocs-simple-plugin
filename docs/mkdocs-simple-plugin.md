@@ -10,7 +10,7 @@ Install the plugin with pip.
 pip install mkdocs-simple-plugin
 ```
 
-_Python 3.x, 3.5, 3.6, 3.7, 3.8 supported._
+_Python 3.x, 3.5, 3.6, 3.7, 3.8, 3.9 supported._
 
 ### Plugin usage
 

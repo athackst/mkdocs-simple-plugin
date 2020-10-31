@@ -43,7 +43,7 @@ setuptools.setup(
             "simple = mkdocs_simple_plugin.plugin:SimplePlugin"
         ],
         'console_scripts': [
-            "mkdocs_simple_gen = mkdocs_simple_plugin.__main__:main"
+            "mkdocs_simple_gen = mkdocs_simple_plugin.gen:main"
         ]
     }
 )

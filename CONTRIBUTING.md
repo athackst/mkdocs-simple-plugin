@@ -1,4 +1,4 @@
-# Contributing
+# Contributing Guide
 
 First off, thanks for taking the time to contribute! :rocket:
 

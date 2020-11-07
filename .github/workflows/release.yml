@@ -60,7 +60,6 @@ jobs:
           push: true
       - name: Merge release
         uses: everlytic/branch-merge@1.1.0
-        if: steps.waitforstatuschecks.outputs.status == 'success'
         with:
           github_token: ${{ secrets.RELEASEBOT_TOKEN }}
           source_ref: release/v${{ env.VERSION }}

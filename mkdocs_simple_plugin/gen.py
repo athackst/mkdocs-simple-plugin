@@ -70,16 +70,17 @@ def setup_config():
 
 @click.command()
 @click.option('--build/--no-build', default=True, help="build the site using mkdocs build")
-@click.argument('build-args', nargs=-1)
-def main(build, build_args):
+@click.option('--serve/--no-serve', default=False, help="serve the site using mkdocs serve")
+@click.argument('mkdocs-args', nargs=-1)
+def main(build, serve, mkdocs_args):
     """
     Generate and build a mkdocs site.
-
-    See mkdocs build -h for additional build args.
     """
     setup_config()
     if build:
-        os.system("mkdocs build " + " ".join(build_args))
+        os.system("mkdocs build " + " ".join(mkdocs_args))
+    if serve:
+        os.system("mkdocs serve " + " ".join(mkdocs_args))
 
 
 if __name__ == "__main__":

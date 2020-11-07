@@ -1,6 +1,6 @@
-# MkDocs Simple Gen
+# Mkdocs Simple Generator
 
-A program that will automatically create a `mkdocs.yml` configuration file (only if needed) and optionally install dependencies, build, and serve the site.
+`mkdocs_simple_gen` is a program that will automatically create a `mkdocs.yml` configuration file (only if needed) and optionally install dependencies, build, and serve the site.
 
 ## Installation
 
@@ -11,7 +11,6 @@ pip install mkdocs-simple-plugin
 ```
 
 _Python 3.x, 3.5, 3.6, 3.7, 3.8, 3.9 supported._
-
 
 ### Command line options
 

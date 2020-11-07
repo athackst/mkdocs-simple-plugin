@@ -59,4 +59,4 @@ jobs:
         with:
           directory: "./site"
           # BANDAID: 404.html site not rendering with correct links
-          arguments: --url-ignore https://fonts.gstatic.com --allow-hash-href --file-ignore ./site/404.html
+          arguments: --url-ignore https://fonts.gstatic.com --allow-hash-href --file-ignore ./site/404.html --internal-domains "${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"

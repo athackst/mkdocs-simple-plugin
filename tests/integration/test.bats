@@ -106,7 +106,8 @@ teardown() {
   cd ${fixturesDir}/ok-mkdocs-docs-merge
   assertGen
   assertFileExists site/test/index.html
-  # TODO: check that drafts isn't in nav
+  assertFileExists site/draft/index.html
+  assertFileExists site/index.html
 }
 
 @test "build a mkdocs site that specifies a specific folder to include" {

@@ -14,7 +14,7 @@ import sys
 
 def common_extensions():
     return [".bmp", ".tif", ".tiff", ".gif", ".svg", ".jpeg", ".jpg", ".jif", ".jfif",
-            ".jp2", ".jpx", ".j2k", ".j2c", ".fpx", ".pcd", ".png", ".pdf"]
+            ".jp2", ".jpx", ".j2k", ".j2c", ".fpx", ".pcd", ".png", ".pdf", "CNAME"]
 
 
 class SimplePlugin(BasePlugin):
@@ -33,13 +33,16 @@ class SimplePlugin(BasePlugin):
             ignore_hidden: True
             # Optional setting to specify other extensions besides md files to be copied
             include_extensions: [""]
+            # Optional setting to specify if docs directory is merge with other documentation
+            merge_docs_dir: True
     """
     config_scheme = (
         ('include_folders', config_options.Type(list, default=['*'])),
         ('ignore_folders', config_options.Type(list, default=[])),
         ('ignore_hidden', config_options.Type(bool, default=True)),
         ('include_extensions', config_options.Type(
-            list, default=common_extensions()))
+            list, default=common_extensions())),
+        ('merge_docs_dir', config_options.Type(bool, default=True))
     )
 
     def on_pre_build(self, config, **kwargs):
@@ -54,6 +57,7 @@ class SimplePlugin(BasePlugin):
         self.ignore_hidden = self.config['ignore_hidden']
         self.include_extensions = utils.markdown_extensions + \
             self.config['include_extensions']
+        self.merge_docs_dir = self.config['merge_docs_dir']
         # Update the docs_dir with our temporary one!
         self.orig_docs_dir = config['docs_dir']
         config['docs_dir'] = self.docs_dir
@@ -61,8 +65,8 @@ class SimplePlugin(BasePlugin):
         self.paths = self.get_doc_files()
         # Add any files in the original docs directory
         docs_dir_dest = self.docs_dir
-        # If there were found .md files, keep the original directory name
-        if len(self.paths) > 0:
+        # If not merging docs directory, create a new docs directory
+        if not self.merge_docs_dir and len(self.paths) > 0:
             docs_dir_dest = self.docs_dir + \
                 self.orig_docs_dir.replace(self.config_dir, "")
         if os.path.exists(self.orig_docs_dir):

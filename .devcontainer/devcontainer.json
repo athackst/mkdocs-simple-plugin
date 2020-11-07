@@ -36,9 +36,11 @@
 		"yzhang.markdown-all-in-one",
 		"shakram02.bash-beautify"
 	],
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [
+	"appPort": [
 		8000
+	],
+	"forwardPorts": [
+		80, 440
 	],
 	"mounts": [
 		"source=/${env:HOME}/.bash_aliases,target=/home/vscode/.bash_aliases,type=bind,consistency=cached"

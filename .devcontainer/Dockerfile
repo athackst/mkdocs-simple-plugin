@@ -15,8 +15,14 @@ RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requ
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
-   && apt-get -y install --no-install-recommends bats gcc\
-   #
+   && apt-get -y install --no-install-recommends bats gcc \
+   # Ruby for html-proofer
+   && apt-get install -y --no-install-recommends ruby ruby-dev \
+   && mkdir -p /home/vscode/.ruby \
+   && echo 'export GEM_HOME=~/.ruby/' >> /home/vscode/.bashrc \
+   && echo 'export PATH="$PATH:~/.ruby/bin"' >> /home/vscode/.bashrc \
+   && . /home/vscode/.bashrc \
+   && gem install html-proofer \
    # Clean up
    && apt-get autoremove -y \
    && apt-get clean -y \

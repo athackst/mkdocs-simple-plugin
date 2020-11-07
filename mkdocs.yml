@@ -1,16 +1,15 @@
-theme:
-  name: "material"
-  palette:
-    primary: green
-    accent: green
-
+site_name: athackst/mkdocs-simple-plugin
+docs_dir: docs
 plugins:
   - search
   - simple:
       ignore_folders:
         - tests
-        - mkdocs_simple_plugin
-
+theme:
+  name: material
+  palette:
+    primary: green
+    accent: green
 markdown_extensions:
   - admonition
   - pymdownx.superfences
@@ -19,7 +18,6 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
-
 extra:
   social:
     - icon: fontawesome/brands/twitter
@@ -28,5 +26,13 @@ extra:
       link: https://hub.docker.com/u/athackst
     - icon: fontawesome/regular/laugh
       link: https://allisonthackston.com
-
 edit_uri: ""
+nav:
+  - About: README.md
+  - Mkdocs Simple Generator: mkdocs_simple_plugin/generator.md
+  - Mkdocs Simple Plugin: mkdocs_simple_plugin/plugin.md
+  - Github Action: action.md
+  - Docker: docker.md
+  - Developers:
+      - Developing: mkdocs_simple_plugin/README.md
+      - Contributing Guide: CONTRIBUTING.md

@@ -26,34 +26,20 @@ jobs:
     if: contains(github.event.pull_request.labels.*.name, 'test-tagging')
     runs-on: ubuntu-latest
     env:
-      TEST_TAG: "test-tag-${{ github.run_number }}"
-      TEST_RELEASE: "test/v0.0.0-${{ github.run_number }}"
+      VERSION: "test-tag-${{ github.run_number }}"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           token: ${{ secrets.RELEASEBOT_TOKEN }} 
       - name: tag
-        run: |
-          git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-          git config --local user.name "${GITHUB_ACTOR}"
-          git tag --force ${TEST_TAG}
-          git push --force origin ${TEST_TAG}
-          sed "s/^    version=.*/    version='0.0.0',/" -i setup.py
-          git add setup.py
-          git commit -m "testing bump commit"
-          git checkout -b ${TEST_RELEASE}
-          git show-ref
-          echo "Pushing to ${TEST_RELEASE}"
-          git push --force origin ${TEST_RELEASE}
-          git tag --force ${TEST_TAG}
-          git push --force origin ${TEST_TAG}
+        run: ./.github/bump_tag.sh
       - name: cleanup tag
         if: ${{ always() }}
-        run: git push --delete origin ${TEST_TAG}
+        run: git push --delete origin v${VERSION}
       - name: cleanup branch
         if: ${{ always() }}
-        run: git push --delete origin ${TEST_RELEASE}
+        run: git push --delete origin release/v${VERSION}
 
   test-docker:
     if: contains(github.event.pull_request.labels.*.name, 'test-docker')

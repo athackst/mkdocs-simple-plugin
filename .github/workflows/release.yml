@@ -14,21 +14,8 @@ jobs:
       - name: Get version
         run: |
           echo "::set-env name=VERSION::$(/usr/bin/git tag --list | sed 's|.*v\([0-9\.]*\).*|\1|')"
-      - name: Set up github remote
-        run: |
-          echo "Setting up remote"
-          git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-          git config --local user.name "${GITHUB_ACTOR}"
       - name: Bump version
-        run: |
-          echo "Bumping version to ${{ env.VERSION }}"
-          sed "s/^    version=.*/    version='${{ env.VERSION }}',/" -i setup.py
-          git add setup.py
-          git commit -m "releasing v${{ env.VERSION }}"
-          echo "Update tag and push"
-          git push --force origin master
-          git tag --force "v${{ env.VERSION }}"
-          git push --force origin v${{ env.VERSION }}
+        run: ./.github/bump_tag.sh
       - name: Set up Python
         uses: actions/setup-python@v2.1.4
         with:

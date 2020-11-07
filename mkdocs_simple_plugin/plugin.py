@@ -32,8 +32,8 @@ class SimplePlugin(BasePlugin):
             # Optional setting to specify if hidden folders should be ignored
             ignore_hidden: True
             # Optional setting to specify other extensions besides md files to be copied
-            include_extensions: [""]
-            # Optional setting to specify if docs directory is merge with other documentation
+            include_extensions: eval(common_extensions())
+            # Optional setting to merge the docs directory with other documentation
             merge_docs_dir: True
     """
     config_scheme = (

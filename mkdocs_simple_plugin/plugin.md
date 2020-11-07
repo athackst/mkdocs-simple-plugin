@@ -28,8 +28,8 @@ plugins:
       ignore_hidden: True
       # Optional setting to specify other extensions besides md files to be copied
       include_extensions: [".tif", ".tiff", ".gif", ".jpeg", ".jpg", ".jif", ".jfif",
-            ".jp2", ".jpx", ".j2k", ".j2c", ".fpx", ".pcd", ".png", ".pdf"]
-      # Optional setting to specify if docs directory is merge with other documentation
+            ".jp2", ".jpx", ".j2k", ".j2c", ".fpx", ".pcd", ".png", ".pdf", "CNAME"]
+      # Optional setting to merge the docs directory with other documentation
       merge_docs_dir: True
 ```
 

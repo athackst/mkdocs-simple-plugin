@@ -26,18 +26,11 @@ You may be wondering why you would want to generate a static site for your proje
 
     Finally, you may be interested in this plugin if you have a desire for stylized documentation, but don't want to invest the time/energy in replicating information you already have in your README.md files, and you want to keep them where they are (thank you very much).
 
-## Getting Started
-
-This plugin was made to be super simple to use.
-
-* [github action](docs/action.md)
-* [docker container](docs/docker.md)
-* [mkdocs plugin](docs/mkdocs-simple-plugin.md)
-* [command line tool](docs/mkdocs-simple-gen.md)
+See [mkdocs-simple-plugin](http://athackst.github.io/mkdocs-simple-plugin) for usage.
 
 ## Contributing
 
-See the [contributing guide](CONTRIBUTING.md)
+See the [contributing guide](http://athackst.github.io/mkdocs-simple-plugin/CONTRIBUTING)
 
 ## License
 

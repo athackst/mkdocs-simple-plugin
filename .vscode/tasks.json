@@ -9,7 +9,9 @@
       "command": "pip install -e . && mkdocs_simple_gen",
       "problemMatcher": [],
       "options": {
-        "env": {"PATH": "${env:PATH}:/home/vscode/.local/bin"}
+        "env": {
+          "PATH": "${env:PATH}:/home/vscode/.local/bin"
+        }
       }
     },
     {
@@ -36,7 +38,9 @@
       "command": "sudo rm -rf build/ dist/ **/site/ *.egg-info/ **/__pycache__/  **/docs_/ ${fixturesDir}/*/mkdocs.yml",
       "problemMatcher": [],
       "options": {
-        "env": {"fixturesDir": "tests/integration/fixtures"}
+        "env": {
+          "fixturesDir": "tests/integration/fixtures"
+        }
       }
     },
     {
@@ -45,7 +49,9 @@
       "command": "./tests/test_flake8.sh && ./tests/integration/test.bats",
       "problemMatcher": [],
       "options": {
-        "env": {"PATH": "${env:PATH}:/home/vscode/.local/bin"}
+        "env": {
+          "PATH": "${env:PATH}:/home/vscode/.local/bin"
+        }
       }
     },
     {
@@ -54,12 +60,17 @@
       "command": "python3 setup.py sdist bdist_wheel",
       "problemMatcher": []
     },
-    
     {
       "label": "update",
       "type": "shell",
       "command": "pip3 install --upgrade pip && pip3 install --user -r requirements.txt --upgrade",
       "problemMatcher": []
     },
+    {
+      "label": "htmlproofer",
+      "type": "shell",
+      "command": "htmlproofer --url-ignore https://fonts.gstatic.com --allow-hash-href --file-ignore ./site/404.html --internal-domains 'athackst.github.io/mkdocs-simple-plugin' ./site/",
+      "problemMatcher": []
+    }
   ]
 }

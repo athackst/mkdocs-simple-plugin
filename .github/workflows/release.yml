@@ -47,7 +47,9 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          tags: athackst/mkdocs-simple-plugin:latest,athackst/mkdocs-simple-plugin:v${{ env.VERSION }}
+          tags: |
+            athackst/mkdocs-simple-plugin:latest
+            athackst/mkdocs-simple-plugin:v${{ env.VERSION }}
           push: true
       - name: Merge release
         uses: everlytic/branch-merge@1.1.0

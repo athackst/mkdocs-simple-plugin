@@ -19,10 +19,12 @@ RUN apt-get update \
    # Ruby for html-proofer
    && apt-get install -y --no-install-recommends ruby ruby-dev \
    && mkdir -p /home/vscode/.ruby \
-   && echo 'export GEM_HOME=~/.ruby/' >> /home/vscode/.bashrc \
-   && echo 'export PATH="$PATH:~/.ruby/bin"' >> /home/vscode/.bashrc \
+   && echo 'export GEM_HOME=/home/vscode/.ruby/' >> /home/vscode/.bashrc \
+   && echo 'export PATH="$PATH:/home/vscode/.ruby/bin"' >> /home/vscode/.bashrc \
    && . /home/vscode/.bashrc \
    && gem install html-proofer \
+   # Add local bin to path
+   && echo 'export PATH=/home/vscode/.local/bin:$PATH' >> /home/vscode/.bashrc \
    # Clean up
    && apt-get autoremove -y \
    && apt-get clean -y \

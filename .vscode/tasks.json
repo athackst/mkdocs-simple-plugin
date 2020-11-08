@@ -4,15 +4,24 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "printenv",
+      "type": "shell",
+      "command": "printenv",
+      "problemMatcher": []
+    },
+    {
       "label": "mkdocs_simple_gen",
       "type": "shell",
-      "command": "pip install -e . && mkdocs_simple_gen",
-      "problemMatcher": [],
+      "command": "mkdocs_simple_gen",
       "options": {
         "env": {
           "PATH": "${env:PATH}:/home/vscode/.local/bin"
         }
-      }
+      },
+      "dependsOn": [
+        "pip install"
+      ],
+      "problemMatcher": []
     },
     {
       "label": "pip install",
@@ -24,35 +33,49 @@
       "label": "mkdocs build",
       "type": "shell",
       "command": "mkdocs build --verbose",
+      "options": {
+        "env": {
+          "PATH": "${env:PATH}:/home/vscode/.local/bin"
+        }
+      },
+      "dependsOn": [
+        "pip install"
+      ],
       "problemMatcher": []
     },
     {
       "label": "mkdocs serve",
       "type": "shell",
       "command": "mkdocs serve",
+      "options": {
+        "env": {
+          "PATH": "${env:PATH}:/home/vscode/.local/bin"
+        }
+      },
+      "dependsOn": [
+        "pip install"
+      ],
       "problemMatcher": []
     },
     {
       "label": "clean",
       "type": "shell",
-      "command": "sudo rm -rf build/ dist/ **/site/ *.egg-info/ **/__pycache__/  **/docs_/ ${fixturesDir}/*/mkdocs.yml",
-      "problemMatcher": [],
-      "options": {
-        "env": {
-          "fixturesDir": "tests/integration/fixtures"
-        }
-      }
+      "command": "sudo rm -rf site/ build/ dist/ **/site/ *.egg-info/ **/__pycache__/  **/docs_/ ${fixturesDir}/*/mkdocs.yml",
+      "problemMatcher": []
     },
     {
       "label": "test",
       "type": "shell",
       "command": "./tests/test_flake8.sh && ./tests/integration/test.bats",
-      "problemMatcher": [],
       "options": {
         "env": {
           "PATH": "${env:PATH}:/home/vscode/.local/bin"
         }
-      }
+      },
+      "dependsOn": [
+        "pip install"
+      ],
+      "problemMatcher": []
     },
     {
       "label": "package",
@@ -69,7 +92,17 @@
     {
       "label": "htmlproofer",
       "type": "shell",
-      "command": "htmlproofer --url-ignore https://fonts.gstatic.com --allow-hash-href --file-ignore ./site/404.html --internal-domains 'athackst.github.io/mkdocs-simple-plugin' ./site/",
+      "command": "htmlproofer",
+      "args": [
+        "--url-ignore=https://fonts.gstatic.com",
+        "--allow-hash-href",
+        "--file-ignore=./site/404.html",
+        "--internal-domains='athackst.github.io/mkdocs-simple-plugin'",
+        "./site/"
+      ],
+      "dependsOn": [
+        "mkdocs build"
+      ],
       "problemMatcher": []
     }
   ]

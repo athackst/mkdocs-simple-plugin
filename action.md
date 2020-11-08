@@ -2,13 +2,13 @@
 
 ## Enable GitHub pages
 
-First, set up your github repository to enable gh-pages support.
+First, set up your github repository to enable GitHub Pages support.
 
 See [Github Pages](https://pages.github.com/) for more information.
 
 ## Deploy from GitHub Actions
 
-Create a yaml file with the following contents in the `.github/workflows` directory in your repository
+Create a YAML file with the following contents in the `.github/workflows` directory in your repository
 
 ```yaml
 jobs:

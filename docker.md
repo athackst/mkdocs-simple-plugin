@@ -12,7 +12,7 @@ Install, build and serve your docs:
 docker run --rm -it --network=host -v ${PWD}:/docs --user $(id -u):$(id -g) athackst/mkdocs-simple-plugin
 ```
 
-Explanation of docker command line options
+Explanation of docker command-line options
 
 <!-- markdownlint-disable MD038 -->
 | command                    | description                                                                 |
@@ -27,7 +27,7 @@ Explanation of docker command line options
 
 The docker image by default runs `mkdocs serve`.
 
-## Set up an command line alias
+## Set up a command-line alias
 
 Add an alias for the docker command to serve docs from any workspace.
 

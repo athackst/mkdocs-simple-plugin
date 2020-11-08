@@ -21,19 +21,12 @@ Usage: mkdocs_simple_gen [OPTIONS]
 
 Options:
   --build / --no-build      build the site using mkdocs build
+  --serve / --no-serve      serve the site using mkdocs serve
   --help                    Show this message and exit.
 ```
 
 default flags:
 
 ```bash
-mkdocs_simple_gen --build
-```
-
-### Run a local server
-
-One of the best parts of mkdocs is it's ability to serve (and update!) your documentation site locally.
-
-```bash
-mkdocs serve
+mkdocs_simple_gen --build --no-serve
 ```

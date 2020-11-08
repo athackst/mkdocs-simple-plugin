@@ -32,7 +32,7 @@ nav:
 - Mkdocs Simple Generator: mkdocs_simple_plugin/generator.md
 - Mkdocs Simple Plugin: mkdocs_simple_plugin/plugin.md
 - Github Action: action.md
-- Docker: docker.md
+- Docker: docker/docker.md
 - Developers:
   - Developing: mkdocs_simple_plugin/README.md
   - Contributing Guide: CONTRIBUTING.md

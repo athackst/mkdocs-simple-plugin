@@ -1,6 +1,6 @@
 # MkDocs Simple Plugin
 
-A plugin to the mkdocs package that builds a documentation website from .md files interspersed with in your code
+A plugin for MKDocs that builds a documentation website from .md files interspersed within your code.
 
 ## Installation
 
@@ -14,7 +14,7 @@ _Python 3.x, 3.5, 3.6, 3.7, 3.8, 3.9 supported._
 
 ### Plugin usage
 
-Create a `mkdocs.yml` file in the root of your directory and add this plugin to it's plugin list.
+Create a `mkdocs.yml` file in the root of your directory and add this plugin to its plugin list.
 
 ```yaml
 site_name: your_site_name
@@ -43,7 +43,7 @@ mkdocs build
 
 ### Run a local server
 
-One of the best parts of mkdocs is it's ability to serve (and update!) your documentation site locally.
+One of the best parts of mkdocs is the ability to serve (and update!) your documentation site locally.
 
 ```bash
 mkdocs serve

@@ -6,7 +6,7 @@
 
 | [Code](https://github.com/athackst/mkdocs-simple-plugin) | [Docs](https://athackst.github.io/mkdocs-simple-plugin)  | [PyPi](https://pypi.org/project/mkdocs-simple-plugin/) | [Docker](https://hub.docker.com/r/athackst/mkdocs-simple-plugin) | [GitHub Action](https://github.com/marketplace/actions/mkdocs-simple-action) |
 
-This plugin enables you to build documentation from markdown files interspersed within your code using [mkdocs](https://www.mkdocs.org/).  It is designed for the way developers commonly write documentation in their own code -- with simple markdown files.
+This plugin enables you to build a documentation site from markdown files interspersed within your code using [mkdocs](https://www.mkdocs.org/).  It is designed for the way developers commonly write documentation in their code -- with simple markdown files.
 
 ## About
 
@@ -14,15 +14,15 @@ You may be wondering why you would want to generate a static site for your proje
 
 * **My repository is too big for a single documentation source.**
 
-    Sometimes it isn't really feasible to consolidate all documentation within an upper level `docs` directory.  This is often the case with medium/large repositories.  In general, if your code base is too large to fit well within a single `include` directory, your code base is probably also too large for documentation to fit within a single `docs` directory.  
+    Sometimes it isn't feasible to consolidate all documentation within an upper level `docs` directory.  This is often the case with medium/large repositories.  In general, if your codebase is too large to fit well within a single `include` directory, your codebase is probably also too large for documentation to fit within a single `docs` directory.  
 
     Since it's typically easier to keep documentation up to date when it lives as close to the code as possible, it is better to create multiple sources for documentation.
 
 * **My repository is too simple for advanced documentation.**
 
-    If your code base is _very very_ large, something like the [monorepo plugin](https://github.com/spotify/mkdocs-monorepo-plugin) might better fit your needs.
+    If your codebase is _very very_ large, something like the [monorepo plugin](https://github.com/spotify/mkdocs-monorepo-plugin) might better fit your needs.
 
-    For most other medium+ repositories that have grown over time, you probably have scattered documentation throughout your code.  By combining all of that documentation while keeping folder structure, you can better surface and collaborate with others. And, let's face it.  That documentation is probably all in markdown, since github renders it nicely.
+    For most other medium+ repositories that have grown over time, you probably have scattered documentation throughout your code.  By combining all of that documentation while keeping folder structure, you can better surface and collaborate with others. And, let's face it.  That documentation is probably all in markdown since Github renders it nicely.
 
 * **I want a pretty documentation site without the hassle.**
 

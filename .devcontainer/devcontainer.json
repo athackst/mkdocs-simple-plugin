@@ -32,7 +32,7 @@
 	"extensions": [
 		"ms-python.python",
 		"redhat.vscode-yaml",
-		"streetsidesoftware.code-spell-checker",
+		"znck.grammarly",
 		"yzhang.markdown-all-in-one",
 		"shakram02.bash-beautify"
 	],

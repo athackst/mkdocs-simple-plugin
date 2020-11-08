@@ -1,5 +1,5 @@
 {
-  "cSpell.words": [
+  "grammarly.userWords": [
     "Buildx",
     "QEMU",
     "WORKDIR",
@@ -48,13 +48,6 @@
     "thackston",
     "twemoji",
     "wheel"
-  ],
-  "cSpell.enableFiletypes": [
-    "dockerfile",
-    "markdown",
-    "python",
-    "shellscript",
-    "yaml"
   ],
   "files.associations": {
     "*.bats": "shellscript"

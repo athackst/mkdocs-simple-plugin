@@ -1,0 +1,4 @@
+plugins:
+- simple:
+    merge_docs_dir: false
+site_name: ok-mkdocs-docs-merge

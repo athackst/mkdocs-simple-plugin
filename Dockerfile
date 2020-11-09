@@ -9,6 +9,7 @@ RUN \
   apk add --no-cache \
     git \
     git-fast-import \
+    git-lfs \
     openssh \
   && apk add --no-cache --virtual .build gcc musl-dev \
   && apk add --no-cache --upgrade bash \

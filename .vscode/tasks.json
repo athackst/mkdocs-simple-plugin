@@ -84,9 +84,9 @@
       "problemMatcher": []
     },
     {
-      "label": "update",
+      "label": "upgrade",
       "type": "shell",
-      "command": "pip3 install --upgrade pip && pip3 install --user -r requirements.txt --upgrade",
+      "command": "pip3 install --upgrade pip && upgrade-requirements",
       "problemMatcher": []
     },
     {
@@ -94,7 +94,7 @@
       "type": "shell",
       "command": "htmlproofer",
       "args": [
-        "--url-ignore=https://fonts.gstatic.com",
+        "--url-ignore=https://fonts.gstatic.com,https://twitter.com/althack",
         "--allow-hash-href",
         "--file-ignore=./site/404.html",
         "--internal-domains='athackst.github.io/mkdocs-simple-plugin'",

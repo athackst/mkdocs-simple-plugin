@@ -17,7 +17,7 @@ jobs:
       - name: Bump version
         run: ./.github/bump_tag.sh
       - name: Set up Python
-        uses: actions/setup-python@v2.1.4
+        uses: actions/setup-python@v2.2.1
         with:
           python-version: "3.x"
       - name: Install dependencies

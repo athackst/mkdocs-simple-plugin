@@ -13,7 +13,7 @@ jobs:
           token: ${{ secrets.RELEASEBOT_TOKEN}}
       - name: Get version
         run: |
-          echo "::set-env name=VERSION::$(/usr/bin/git tag --list | sed 's|.*v\([0-9\.]*\).*|\1|')"
+          echo "VERSION=$(/usr/bin/git tag --list | sed 's|.*v\([0-9\.]*\).*|\1|')" >> $GITHUB_ENV
       - name: Bump version
         run: ./.github/bump_tag.sh
       - name: Set up Python

@@ -24,6 +24,12 @@ debugger() {
     echo "--- OUTPUT ---"
     echo $output
     echo "--------------"
+    echo "--- CONFIG ---"
+    cat mkdocs.yml
+    echo "--------------"
+    echo "--- FILES ----"
+    ls -R
+    echo "--------------"
 }
 
 assertGen() {

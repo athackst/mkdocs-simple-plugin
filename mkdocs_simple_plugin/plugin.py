@@ -7,10 +7,8 @@ import fnmatch
 import os
 import shutil
 import sys
+import tempfile
 
-
-# TODO(athackst): Use TemporaryDirectory for docs_dir
-# from tempfile import TemporaryDirectory
 
 def common_extensions():
     return [".bmp", ".tif", ".tiff", ".gif", ".svg", ".jpeg", ".jpg", ".jif", ".jfif",
@@ -46,31 +44,31 @@ class SimplePlugin(BasePlugin):
     )
 
     def on_pre_build(self, config, **kwargs):
-        self.config_dir = os.path.dirname(
-            config.config_file_path) if config.config_file_path else "."
-        self.docs_dir = os.path.join(self.config_dir, "docs_")
         self.include_folders = self.config['include_folders']
         self.ignore_folders = self.config['ignore_folders']
-        self.ignore_paths = [config['docs_dir'],
-                             config['site_dir'],
-                             self.docs_dir]
         self.ignore_hidden = self.config['ignore_hidden']
         self.include_extensions = utils.markdown_extensions + \
             self.config['include_extensions']
         self.merge_docs_dir = self.config['merge_docs_dir']
-        # Update the docs_dir with our temporary one!
+        # The temp folder to dump all the documentation
+        self.build_docs_dir = os.path.join(
+            tempfile.gettempdir(),
+            'mkdocs-simple',
+            os.path.basename(os.getcwd()),
+            "docs_")
+        # Always ignore the output paths
+        self.ignore_paths = [config['site_dir'],
+                             self.build_docs_dir]
+        # Save original docs directory location
         self.orig_docs_dir = config['docs_dir']
-        config['docs_dir'] = self.docs_dir
-        # Add all md files from directory, keeping folder structure
-        self.paths = self.get_doc_files()
-        # Add any files in the original docs directory
-        docs_dir_dest = self.docs_dir
-        # If not merging docs directory, create a new docs directory
-        if not self.merge_docs_dir and len(self.paths) > 0:
-            docs_dir_dest = self.docs_dir + \
-                self.orig_docs_dir.replace(self.config_dir, "")
-        if os.path.exists(self.orig_docs_dir):
-            self.copy_docs_dir(self.orig_docs_dir, docs_dir_dest)
+        # Copy contents of docs directory if merging
+        if self.merge_docs_dir and os.path.exists(self.orig_docs_dir):
+            self.copy_docs_dir(self.orig_docs_dir, self.build_docs_dir)
+            self.ignore_paths += [self.orig_docs_dir]
+        # Copy all of the valid doc files into build_docs_dir
+        self.paths = self.copy_doc_files(self.build_docs_dir)
+        # Update the docs_dir with our temporary one
+        config['docs_dir'] = self.build_docs_dir
 
     def on_serve(self, server, config, **kwargs):
         builder = list(server.watcher._tasks.values())[0]['func']
@@ -86,7 +84,7 @@ class SimplePlugin(BasePlugin):
         return server
 
     def on_post_build(self, config, **kwargs):
-        shutil.rmtree(self.docs_dir)
+        shutil.rmtree(self.build_docs_dir)
 
     def in_search_dir(self, dir, root):
         if self.ignore_hidden and dir[0] == ".":
@@ -103,13 +101,13 @@ class SimplePlugin(BasePlugin):
     def in_extensions(self, file):
         return any(extension in file for extension in self.include_extensions)
 
-    def get_doc_files(self):
+    def copy_doc_files(self, dest_dir):
         paths = []
         for root, dirs, files in os.walk("."):
             if self.in_include_dir(root):
                 for f in files:
                     if self.in_extensions(f):
-                        doc_root = self.docs_dir + root[1:]
+                        doc_root = dest_dir + root[1:]
                         orig = "{}/{}".format(root, f)
                         new = "{}/{}".format(doc_root, f)
                         try:

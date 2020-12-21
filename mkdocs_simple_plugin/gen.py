@@ -1,4 +1,5 @@
 import click
+import tempfile
 import os
 import yaml
 
@@ -12,7 +13,14 @@ def default_config():
         config['site_url'] = os.environ["SITE_URL"]
     if "REPO_URL" in os.environ.keys():
         config['repo_url'] = os.environ["REPO_URL"]
-    config['docs_dir'] = "docs"
+    # Set the docs dir to temporary directory, or docs if the folder exists
+    config['docs_dir'] = os.path.join(
+        tempfile.gettempdir(),
+        'mkdocs-simple',
+        os.path.basename(os.getcwd()),
+        "docs")
+    if os.path.exists(os.path.join(os.getcwd(), "docs")):
+        config['docs_dir'] = "docs"
     config['plugins'] = ["simple", "search"]
     return config
 
@@ -55,6 +63,7 @@ def setup_config():
                     local_plugins = local_config["plugins"]
                     [i for i in local_plugins if i not in config_plugins
                         or config_plugins.remove(i)]
+                # Overwrite default config values with local mkdocs.yml
                 config.update(local_config)
                 print(config)
             if not os.path.exists(config["docs_dir"]):

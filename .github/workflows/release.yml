@@ -3,6 +3,8 @@ name: Release
 on:
   release:
     types: [published]
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -13,10 +15,9 @@ jobs:
           token: ${{ secrets.RELEASEBOT_TOKEN}}
       - name: Setup environment (test)
         if: github.ref != 'refs/heads/main'
-        env:
-          DRY_RUN: 1
-          VERSION: "test-tag-${{ github.run_number }}"
-        run: echo "Setup test environment"
+        run: |
+          echo "DRY_RUN=1" >> $GITHUB_ENV
+          echo "VERSION=test-tag-${{ github.run_number }}" >> $GITHUB_ENV
       - name: Setup environment (release)
         if: github.ref == 'refs/heads/main'
         run: |
@@ -52,4 +53,4 @@ jobs:
           push: ${{ env.DRY_RUN }}
       - name: Cleanup
         run: |
-          ./github/cleanup_tag.sh
+          .github/cleanup_tag.sh

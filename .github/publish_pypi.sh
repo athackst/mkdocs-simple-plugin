@@ -13,6 +13,6 @@ if [ -f requirements.txt ]; then
 fi
 python setup.py sdist bdist_wheel
 
-if [ ! ${DRY_RUN} ]; then
-    twine upload dist/*
+if [ -z ${DRY_RUN} ]; then
+    twine upload dist/* --verbose
 fi

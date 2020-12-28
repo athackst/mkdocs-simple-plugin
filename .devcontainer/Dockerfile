@@ -21,6 +21,8 @@ RUN apt-get update \
    # Ruby for html-proofer
    && apt-get install -y --no-install-recommends ruby ruby-dev \
    && gem install html-proofer \
+   && gem install chef-utils -v 16.6.14 \
+   && gem install mdl \
    # git settings
    && apt-get install -y --no-install-recommends wget \
    && wget -O /etc/profile.d/git_aliases.sh https://github.com/athackst/workstation_setup/raw/main/user/.aliases/git_aliases.sh \

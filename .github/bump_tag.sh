@@ -1,8 +1,5 @@
 #!/bin/bash
 
-echo "Setting up remote"
-git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-git config --local user.name "${GITHUB_ACTOR}"
 echo "Bumping version to ${VERSION}"
 sed "s/^    version=.*/    version='${VERSION}',/" -i setup.py
 git checkout -b release/v${VERSION}

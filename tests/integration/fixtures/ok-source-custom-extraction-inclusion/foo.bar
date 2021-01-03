@@ -1,0 +1,27 @@
+Description: This is a hypothetical file of the bar language
+Explanation: It doesn't really make sense
+---
+## Exposition
+
+However, we can use it to test custom extraction
+---
+
+Information: This is a supposed "source code" section.
+Point: This should be ignored by semiliterate extraction.
+
+---
+And other features, such as extraction resumption.
+
+Not to mention{! baz.qux start: START
+terminate: STOP
+replace: ['^\|(.*)$'] !}syntax and `{! escaped syntax !}`.
+---
+
+Unfortunate: the bar language has no real structure
+
+!!!
+
+---
+But at least this stuff down here will go ignored
+
+

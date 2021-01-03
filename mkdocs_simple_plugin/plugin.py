@@ -9,6 +9,7 @@ import re
 import shutil
 import sys
 import tempfile
+import yaml
 
 
 class LazyFile:
@@ -61,6 +62,11 @@ class StreamExtract:
         self.wrote_something = False
         self.extracting = False
         self.extract()
+
+    include_open = re.compile(r'''(?<![`\\])(\{\!\s*)([\s'"])''')
+    include_quoted_file = re.compile(
+        r'''(['"])(?P<fn>.*?)\1\s+(?P<yml>[\s\S]*?)\s\!\}''')
+    include_bare_file = re.compile(r'\s(?P<fn>.*?)\s+(?P<yml>[\s\S]*?)\s\!\}')
 
     def transcribe(self, text):
         self.output_stream.write(text)
@@ -118,7 +124,36 @@ class StreamExtract:
            specified replacements.
         """
         line = self.replace_line(line)
-        self.transcribe(line)
+        include_match = StreamExtract.include_open.search(line)
+        if not include_match:
+            self.transcribe(line)
+            return
+        # OK, we have found (the start of) an inclusion and must process it
+        preamble = line[:include_match.start()]
+        remainder = line[include_match.end(1):]
+        body_pattern = StreamExtract.include_quoted_file
+        if include_match[2].isspace():
+            body_pattern = StreamExtract.include_bare_file
+        body_match = body_pattern.search(remainder)
+        if not body_match:
+            for extra_line in self.input_stream:
+                remainder += self.replace_line(extra_line)
+                body_match = body_pattern.search(remainder)
+                if body_match:
+                    break
+        if not body_match:
+            raise EOFError("semiliterate: End of file while scanning for `!}`")
+        include_path = self.include_root + '/' + body_match['fn']
+        new_root = re.match(r'(.*)/', include_path)[1]
+        include_parameters = yaml.safe_load(body_match['yml'])
+        with open(include_path) as include_file:
+            self.transcribe(preamble)
+            inclusion = StreamExtract(include_file, self.output_stream,
+                                      include_root=new_root,
+                                      **include_parameters)
+            if inclusion.productive():
+                self.wrote_something = True
+        self.transcribe(remainder[body_match.end():])
 
     def productive(self):
         """Returns true if any text was actually extracted"""
@@ -164,8 +199,10 @@ class SimplePlugin(BasePlugin):
         ('ignore_folders', config_options.Type(list, default=[])),
         ('ignore_hidden', config_options.Type(bool, default=True)),
         ('merge_docs_dir', config_options.Type(bool, default=True)),
+        ('keep_generated_docs', config_options.Type(bool, default=False)),
         ('include_extensions', config_options.Type(
             list, default=common_extensions())),
+        ('include_standard_markdown', config_options.Type(bool, default=True)),
         ('semiliterate', config_options.Type(
             list, default=[
                 dict(pattern=r'(\.py)$', start=r'"""\smd', stop='"""'),
@@ -178,8 +215,10 @@ class SimplePlugin(BasePlugin):
         self.include_folders = self.config['include_folders']
         self.ignore_folders = self.config['ignore_folders']
         self.ignore_hidden = self.config['ignore_hidden']
-        self.include_extensions = utils.markdown_extensions + \
-            self.config['include_extensions']
+        self.include_extensions = []
+        if self.config['include_standard_markdown']:
+            self.include_extensions.extend(utils.markdown_extensions)
+        self.include_extensions.extend(self.config['include_extensions'])
         self.merge_docs_dir = self.config['merge_docs_dir']
         self.semiliterate = []
         for item in self.config['semiliterate']:
@@ -221,7 +260,8 @@ class SimplePlugin(BasePlugin):
         return server
 
     def on_post_build(self, config, **kwargs):
-        shutil.rmtree(self.build_docs_dir)
+        if not self.config['keep_generated_docs']:
+            shutil.rmtree(self.build_docs_dir)
 
     def in_search_directory(self, directory, root):
         if self.ignore_hidden and (directory[0] == "."

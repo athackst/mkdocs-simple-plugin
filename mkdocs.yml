@@ -3,7 +3,24 @@ docs_dir: /tmp/mkdocs-simple/mkdocs-simple-plugin
 plugins:
 - search
 - simple:
-    ignore_folders: [tests, site]
+    semiliterate:
+    # To use the default Python extraction with other patterns, we
+    # must re-specify it:
+    - pattern: '(\.py)$'
+      start: '"""\smd'
+      stop: '"""'
+    # Line comment example:
+    - pattern: Dockerfile()$|(\.yml)$
+      start: '###\smd'
+      stop: '###\s*$'
+      # Remove the leading `#` from all normally-extracted lines:
+      replace: ['^#(.*\s*)$']
+    # Enable inclusion directive in .md files:
+    - pattern: '(\.md)'
+      start: '^(.*\s*)$'
+      replace: [['^(.*)<!-- repo: -->.*<!-- docs:(.*)-->(.*\s*)$', '\1\2\3']]
+    include_standard_markdown: false
+    ignore_folders: [tests]
 theme:
   name: material
   palette:

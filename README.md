@@ -4,9 +4,9 @@
 
 [![Test](https://github.com/athackst/mkdocs-simple-plugin/workflows/Test/badge.svg)](https://github.com/athackst/mkdocs-simple-plugin) [![Docs](https://github.com/athackst/mkdocs-simple-plugin/workflows/Docs/badge.svg)](https://athackst.github.io/mkdocs-simple-plugin) [![Docker](https://img.shields.io/docker/pulls/athackst/mkdocs-simple-plugin?color=blue)](https://hub.docker.com/r/athackst/mkdocs-simple-plugin) [![pypi](https://img.shields.io/pypi/dm/mkdocs-simple-plugin?label=pypi%20downloads&color=blue)](https://pypi.org/project/mkdocs-simple-plugin/) [![Github Action](https://img.shields.io/badge/github%20action-download-blue)](https://github.com/marketplace/actions/mkdocs-simple-action)
 
-| [Code](https://github.com/athackst/mkdocs-simple-plugin) | [Docs](https://athackst.github.io/mkdocs-simple-plugin)  | [PyPi](https://pypi.org/project/mkdocs-simple-plugin/) | [Docker](https://hub.docker.com/r/athackst/mkdocs-simple-plugin) | [GitHub Action](https://github.com/marketplace/actions/mkdocs-simple-action) |
+| [Code](https://github.com/athackst/mkdocs-simple-plugin) |<!-- repo: --> [Docs](https://athackst.github.io/mkdocs-simple-plugin) <!-- docs: Docs -->| [PyPi](https://pypi.org/project/mkdocs-simple-plugin/) | [Docker](https://hub.docker.com/r/athackst/mkdocs-simple-plugin) | [GitHub Action](https://github.com/marketplace/actions/mkdocs-simple-action) |
 
-This plugin enables you to build a documentation site from markdown interspersed within your code using [mkdocs](https://www.mkdocs.org/).  It is designed for the way developers commonly write documentation in their code -- with simple markdown files and/or markdown comment blocks in the code.
+This plugin enables you to build a documentation site from markdown interspersed within your code using [mkdocs](https://www.mkdocs.org/).  It is designed for the way developers commonly write documentation in their code -- with simple markdown files and/or markdown comment blocks in the code. It also provides an easy way to interpolate content from other files (code or text) into your markdown documentation.
 
 ## About
 
@@ -28,7 +28,7 @@ You may be wondering why you would want to generate a static site for your proje
 
     Finally, you may be interested in this plugin if you have a desire for stylized documentation, but don't want to invest the time/energy in replicating information you already have in your README.md files or in block comments in your code, and you want to keep them where they are (thank you very much).
 
-See [mkdocs-simple-plugin](http://athackst.github.io/mkdocs-simple-plugin) for usage.
+See <!-- repo: -->[mkdocs-simple-plugin](http://athackst.github.io/mkdocs-simple-plugin/mkdocs_simple_plugin/plugin)<!-- docs:[mkdocs-simple-plugin](mkdocs_simple_plugin/plugin.md)--> for usage.
 
 ## Contributing
 

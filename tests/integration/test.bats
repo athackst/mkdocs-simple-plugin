@@ -185,3 +185,11 @@ teardown() {
     assertParGrep main
     assertParGrep module
 }
+
+@test "build a site with custom extraction and recursive inclusion" {
+    cd ${fixturesDir}/ok-source-custom-extraction-inclusion
+    assertGen
+    assertValidSite
+    assertFileExists site/foo/index.html
+    assertParGrep foo
+}

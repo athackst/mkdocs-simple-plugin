@@ -1,0 +1,9 @@
+I'd like you to know that
+really just about anything can go up here.
+START right here, because everything else on this line is ignored:
+| file
+ in{! xyzzy start: '(.*)' !}ion
+STOP that distraction!
+Now we can get back to our originally
+scheduled qux.
+Thanks very much!

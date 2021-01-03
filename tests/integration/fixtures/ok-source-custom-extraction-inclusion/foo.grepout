@@ -1,0 +1,5 @@
+<p>However, we can use it to test custom extraction
+And other features, such as extraction resumption.</p>
+<p>Not to mention file inclusion
+syntax and <code>{! escaped syntax !}</code>.</p></div>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>

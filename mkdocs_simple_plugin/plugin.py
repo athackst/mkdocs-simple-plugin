@@ -5,9 +5,124 @@ from mkdocs import utils
 
 import fnmatch
 import os
+import re
 import shutil
 import sys
 import tempfile
+
+
+class LazyFile:
+    """
+    Like a file object, but only ever creates the directory and opens the
+    file if a non-empty string is written.
+    """
+    def __init__(self, directory, name):
+        self.file_directory = directory
+        self.file_name = name
+        self.file_object = None
+
+    def write(self, arg):
+        if arg == '':
+            return
+        if self.file_object is None:
+            os.makedirs(self.file_directory, exist_ok=True)
+            self.file_object = open(
+                f"{self.file_directory}/{self.file_name}", 'w')
+        self.file_object.write(arg)
+
+    def close(self):
+        if self.file_object is not None:
+            self.file_object.close()
+
+
+class StreamExtract:
+    """
+    Instantiating a StreamExtract object copies _input_stream_ to
+    _output_stream_, extracting portions of the input_stream as specified
+    by the keyword arguments to the constructor as documented for the
+    "semiliterate" parameter of the `simple` plugin.
+    """
+    def __init__(self, input_stream, output_stream,
+                 start=None, terminate=None, stop=None, replace=[],
+                 include_root=None,
+                 **ignore_other_kwargs):
+        self.input_stream = input_stream
+        self.output_stream = output_stream
+        self.start = re.compile(start)
+        self.terminate = (terminate is not None) and re.compile(terminate)
+        self.stop = (stop is not None) and re.compile(stop)
+        self.replace = []
+        for item in replace:
+            if isinstance(item, str):
+                self.replace.append(re.compile(item))
+            else:
+                self.replace.append((re.compile(item[0]), item[1]))
+        self.include_root = include_root
+        self.wrote_something = False
+        self.extracting = False
+        self.extract()
+
+    def transcribe(self, text):
+        self.output_stream.write(text)
+        if text:
+            self.wrote_something = True
+
+    def check_pattern(self, pattern, line, emit_last=True):
+        """ If _pattern_ is not false-y and is contained in _line_,
+            returns true (and if the _emit_last_ flag is true,
+            emits the last group of the match if any). Otherwise,
+            check_pattern does nothing but return false.
+        """
+        if not pattern:
+            return False
+        match_object = pattern.search(line)
+        if not match_object:
+            return False
+        if match_object.lastindex and emit_last:
+            self.transcribe(match_object[match_object.lastindex])
+        return True
+
+    def extract(self):
+        """ Actually performs the extraction """
+        for line in self.input_stream:
+            # Check terminate, regardless of state:
+            if self.check_pattern(self.terminate, line, self.extracting):
+                return
+            # Change state if flagged to do so:
+            if not self.extracting:
+                if self.check_pattern(self.start, line):
+                    self.extracting = True
+                continue
+            # We are extracting. See if we should stop:
+            if self.check_pattern(self.stop, line):
+                self.extracting = False
+                continue
+            # Extract all other lines in the normal way:
+            self.extract_line(line)
+
+    def replace_line(self, line):
+        """Apply the specified replacements to the line and return it"""
+        for item in self.replace:
+            pattern = item[0] if isinstance(item, tuple) else item
+            match_object = pattern.search(line)
+            if match_object:
+                if isinstance(item, tuple):
+                    return match_object.expand(item[1])
+                if match_object.lastindex:
+                    return match_object[match_object.lastindex]
+                return ''
+        return line
+
+    def extract_line(self, line):
+        """Copy line to the output stream, applying all of the
+           specified replacements.
+        """
+        line = self.replace_line(line)
+        self.transcribe(line)
+
+    def productive(self):
+        """Returns true if any text was actually extracted"""
+        return self.wrote_something
 
 
 def common_extensions():
@@ -36,7 +151,7 @@ class SimplePlugin(BasePlugin):
             # Optional setting to only include specific folders
             include_folders: ["*"]
             # Optional setting to ignore specific folders
-            ignore_folders: [""]
+            ignore_folders: []
             # Optional setting to specify if hidden folders should be ignored
             ignore_hidden: True
             # Optional setting to specify other extensions besides md files to be copied
@@ -48,9 +163,15 @@ class SimplePlugin(BasePlugin):
         ('include_folders', config_options.Type(list, default=['*'])),
         ('ignore_folders', config_options.Type(list, default=[])),
         ('ignore_hidden', config_options.Type(bool, default=True)),
+        ('merge_docs_dir', config_options.Type(bool, default=True)),
         ('include_extensions', config_options.Type(
             list, default=common_extensions())),
-        ('merge_docs_dir', config_options.Type(bool, default=True))
+        ('semiliterate', config_options.Type(
+            list, default=[
+                dict(pattern=r'(\.py)$', start=r'"""\smd', stop='"""'),
+                dict(pattern=r'(\.[^.]*)$', start=r'/\*\* md', stop=r'\*\*/')
+            ]
+        ))
     )
 
     def on_pre_build(self, config, **kwargs):
@@ -60,6 +181,11 @@ class SimplePlugin(BasePlugin):
         self.include_extensions = utils.markdown_extensions + \
             self.config['include_extensions']
         self.merge_docs_dir = self.config['merge_docs_dir']
+        self.semiliterate = []
+        for item in self.config['semiliterate']:
+            item['pattern'] = re.compile(item['pattern'])
+            self.semiliterate.append(item)
+
         # The temp folder to dump all the documentation
         self.build_docs_dir = os.path.join(
             tempfile.gettempdir(),
@@ -74,7 +200,7 @@ class SimplePlugin(BasePlugin):
         self.orig_docs_dir = config['docs_dir']
         # Copy contents of docs directory if merging
         if self.merge_docs_dir and os.path.exists(self.orig_docs_dir):
-            self.copy_docs_dir(self.orig_docs_dir, self.build_docs_dir)
+            self.copy_docs_directory(self.orig_docs_dir, self.build_docs_dir)
             self.ignore_paths += [self.orig_docs_dir]
         # Copy all of the valid doc files into build_docs_dir
         self.paths = self.copy_doc_files(self.build_docs_dir)
@@ -97,59 +223,108 @@ class SimplePlugin(BasePlugin):
     def on_post_build(self, config, **kwargs):
         shutil.rmtree(self.build_docs_dir)
 
-    def in_search_dir(self, dir, root):
-        if self.ignore_hidden and dir[0] == ".":
+    def in_search_directory(self, directory, root):
+        if self.ignore_hidden and (directory[0] == "."
+                                   or directory == "__pycache__"):
             return False
-        if any(fnmatch.fnmatch(dir, filter) for filter in self.ignore_folders):
+        if any(fnmatch.fnmatch(directory, filter)
+               for filter in self.ignore_folders):
             return False
-        if os.path.abspath(os.path.join(root, dir)) in self.ignore_paths:
+        if os.path.abspath(os.path.join(root, directory)) in self.ignore_paths:
             return False
         return True
 
-    def in_include_dir(self, dir):
-        return any(fnmatch.fnmatch(dir, filter) for filter in self.include_folders)
+    def in_include_directory(self, directory):
+        return any(fnmatch.fnmatch(directory, filter)
+                   for filter in self.include_folders)
 
     def in_extensions(self, file):
         return any(extension in file for extension in self.include_extensions)
 
-    def copy_doc_files(self, dest_dir):
+    def copy_doc_files(self, destination_directory):
         paths = []
-        for root, dirs, files in os.walk("."):
-            if self.in_include_dir(root):
+        for root, directories, files in os.walk("."):
+            if self.in_include_directory(root):
+                document_root = destination_directory + root[1:]
                 for f in files:
                     if self.in_extensions(f):
-                        doc_root = dest_dir + root[1:]
-                        orig = "{}/{}".format(root, f)
-                        new = "{}/{}".format(doc_root, f)
-                        try:
-                            os.makedirs(doc_root, exist_ok=True)
-                            shutil.copy(orig, new)
-                            utils.log.debug(
-                                "mkdocs-simple-plugin: {} --> {}".format(orig, new))
-                            paths.append((orig, new))
-                        except Exception as e:
-                            utils.log.warn(
-                                "mkdocs-simple-plugin: error! {}.. skipping {}".format(e, orig))
-
-            dirs[:] = [d for d in dirs if self.in_search_dir(d, root)]
+                        paths.extend(self.copy_file(root, f, document_root))
+                    else:
+                        paths.extend(self.extract_from(root, f, document_root))
+            directories[:] = [d for d in directories
+                              if self.in_search_directory(d, root)]
         return paths
 
-    def copy_docs_dir(self, root_src_dir, root_dst_dir):
-        if(sys.version_info >= (3, 8)):
+    def copy_file(self, from_directory, name, destination_directory):
+        """Copy the file in _from_directory_ named _name_ to the
+           destination_directory.
+        """
+        original = "{}/{}".format(from_directory, name)
+        if self.in_extensions(name):
+            new_file = "{}/{}".format(destination_directory, name)
+            try:
+                os.makedirs(destination_directory, exist_ok=True)
+                shutil.copy(original, new_file)
+                utils.log.debug("mkdocs-simple-plugin: {} --> {}".format(
+                    original, new_file))
+                return [(original, new_file)]
+            except Exception as e:
+                utils.log.warn(
+                    "mkdocs-simple-plugin: error! {}.. skipping {}".format(
+                        e, original))
+        return []
+
+    def extract_from(self, from_directory, name, destination_directory):
+        """Extract content from the file in _from_directory_ named _name_
+           to a file or files in _destination_directory_, as specified by
+           the semiliterate parameters.
+        """
+        new_paths = []
+        original = "{}/{}".format(from_directory, name)
+        for item in self.semiliterate:
+            name_match = item['pattern'].search(name)
+            if name_match:
+                new_name = (name[:name_match.start(name_match.lastindex)]
+                            + '.md'
+                            + name[name_match.end(name_match.lastindex):])
+                if 'destination' in item:
+                    new_name = name_match.expand(item['destination'])
+                new_file = LazyFile(destination_directory, new_name)
+                with open(original) as original_file:
+                    extraction = StreamExtract(original_file, new_file,
+                                               include_root=from_directory,
+                                               **item)
+                    new_file.close()
+                    if extraction.productive():
+                        new_path = "{}/{}".format(destination_directory,
+                                                  new_name)
+                        utils.log.debug(
+                            "mkdocs-simple-plugin: {} --> {}".format(
+                                original, new_path))
+                        new_paths.append((original, new_path))
+        return new_paths
+
+    def copy_docs_directory(self, root_source_directory,
+                            root_destination_directory):
+        if sys.version_info >= (3, 8):
             # pylint: disable=unexpected-keyword-arg
-            shutil.copytree(root_src_dir, root_dst_dir, dirs_exist_ok=True)
+            shutil.copytree(root_source_directory, root_destination_directory,
+                            dirs_exist_ok=True)
             utils.log.debug(
-                "mkdocs-simple-plugin: {}/* --> {}/*".format(root_src_dir, root_dst_dir))
+                "mkdocs-simple-plugin: {}/* --> {}/*".format(
+                    root_source_directory, root_destination_directory))
         else:
-            for src_dir, _, files in os.walk(root_src_dir):
-                dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
-                if not os.path.exists(dst_dir):
-                    os.makedirs(dst_dir)
+            for source_directory, _, files in os.walk(root_source_directory):
+                destination_directory = source_directory.replace(
+                    root_source_directory, root_destination_directory, 1)
+                os.makedirs(destination_directory, exist_ok=True)
                 for file_ in files:
-                    src_file = os.path.join(src_dir, file_)
-                    dst_file = os.path.join(dst_dir, file_)
-                    if os.path.exists(dst_file):
-                        os.remove(dst_file)
-                    shutil.copy(src_file, dst_dir)
+                    source_file = os.path.join(source_directory, file_)
+                    destination_file = os.path.join(destination_directory,
+                                                    file_)
+                    if os.path.exists(destination_file):
+                        os.remove(destination_file)
+                    shutil.copy(source_file, destination_directory)
                     utils.log.debug(
-                        "mkdocs-simple-plugin: {}/* --> {}/*".format(src_file, dst_file))
+                        "mkdocs-simple-plugin: {}/* --> {}/*".format(
+                            source_file, destination_file))

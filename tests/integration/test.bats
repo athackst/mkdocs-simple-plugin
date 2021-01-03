@@ -28,6 +28,7 @@ debugger() {
     cat mkdocs.yml
     echo "--------------"
     echo "--- FILES ----"
+    pwd
     ls -R
     echo "--------------"
 }
@@ -64,6 +65,12 @@ assertServeSuccess() {
     run pgrep -x mkdocs
     debugger
     [ ! -z "$status" ]
+}
+
+assertParGrep() {
+    grep -E '<.?p>' site/$1/index.html > site/$1.grepout
+    run diff $1.grepout site/$1.grepout
+    [ "$status" -eq 0 ]
 }
 
 ##
@@ -167,4 +174,14 @@ teardown() {
     sleep 5
     assertServeSuccess
     pkill mkdocs
+}
+
+@test "build a site extracted from source files" {
+    cd ${fixturesDir}/ok-source-extract
+    assertGen
+    assertValidSite
+    assertFileExists site/main/index.html
+    assertFileExists site/module/index.html
+    assertParGrep main
+    assertParGrep module
 }

@@ -3,8 +3,7 @@ docs_dir: /tmp/mkdocs-simple/mkdocs-simple-plugin
 plugins:
 - search
 - simple:
-    ignore_folders:
-    - tests
+    ignore_folders: [tests, site]
 theme:
   name: material
   palette:

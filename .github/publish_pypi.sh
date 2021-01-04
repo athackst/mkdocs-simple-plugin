@@ -14,5 +14,6 @@ fi
 python setup.py sdist bdist_wheel
 
 if [ -z ${DRY_RUN} ]; then
+    echo "***** Uploading to Pypi ********"
     twine upload dist/* --verbose
 fi

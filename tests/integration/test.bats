@@ -37,7 +37,7 @@ assertGen() {
     then
         cp mkdocs-test.yml mkdocs.yml
     fi
-    run mkdocs_simple_gen
+    run mkdocs_simple_gen -- --verbose
     debugger
     [ "$status" -eq 0 ]
 }
@@ -147,6 +147,16 @@ teardown() {
     cd ${fixturesDir}/ok-mkdocs-docs-extensions
     assertGen
     assertFileExists site/test.txt
+}
+
+@test "ignore site directory" {
+    cd ${fixturesDir}/ok-mkdocs-ignore-site-dir
+    assertGen
+    cp index.md site/test.md
+    mkdocs build -d test_site
+    assertFileExists test_site/index.html
+    assertFileNotExists test_site/site/test/index.html
+    rm -fr test_site
 }
 
 @test "serve a mkdocs site" {

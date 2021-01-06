@@ -6,7 +6,7 @@
 
 | [Code](https://github.com/athackst/mkdocs-simple-plugin) | [Docs](https://athackst.github.io/mkdocs-simple-plugin)  | [PyPi](https://pypi.org/project/mkdocs-simple-plugin/) | [Docker](https://hub.docker.com/r/athackst/mkdocs-simple-plugin) | [GitHub Action](https://github.com/marketplace/actions/mkdocs-simple-action) |
 
-This plugin enables you to build a documentation site from markdown files interspersed within your code using [mkdocs](https://www.mkdocs.org/).  It is designed for the way developers commonly write documentation in their code -- with simple markdown files.
+This plugin enables you to build a documentation site from markdown interspersed within your code using [mkdocs](https://www.mkdocs.org/).  It is designed for the way developers commonly write documentation in their code -- with simple markdown files and/or markdown comment blocks in the code.
 
 ## About
 
@@ -26,7 +26,7 @@ You may be wondering why you would want to generate a static site for your proje
 
 * **I want a pretty documentation site without the hassle.**
 
-    Finally, you may be interested in this plugin if you have a desire for stylized documentation, but don't want to invest the time/energy in replicating information you already have in your README.md files, and you want to keep them where they are (thank you very much).
+    Finally, you may be interested in this plugin if you have a desire for stylized documentation, but don't want to invest the time/energy in replicating information you already have in your README.md files or in block comments in your code, and you want to keep them where they are (thank you very much).
 
 See [mkdocs-simple-plugin](http://athackst.github.io/mkdocs-simple-plugin) for usage.
 

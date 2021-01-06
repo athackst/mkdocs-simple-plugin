@@ -1,0 +1,5 @@
+site_name: Example source extraction
+nav:
+- About: README.md
+- C Implementation: main.md
+- Python Implementation: module.md

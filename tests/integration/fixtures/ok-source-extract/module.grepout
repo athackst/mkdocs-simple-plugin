@@ -1,0 +1,6 @@
+<p>You can put <em>markdown</em> in triple-quoted strings in Python.</p>
+<p>It works in docstrings, too. The start and end quotes must be on their own lines.
+Drawback: <code>simple</code> does not remove leading whitespace.</p></div>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+                <p>
+                </p>

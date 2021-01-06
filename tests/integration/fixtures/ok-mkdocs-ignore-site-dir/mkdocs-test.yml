@@ -1,0 +1,4 @@
+plugins:
+- simple:
+
+site_name: ok-mkdocs-docs-ignore-site-dir

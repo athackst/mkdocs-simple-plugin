@@ -1,6 +1,6 @@
-
 from mkdocs.plugins import BasePlugin
 from mkdocs.config import config_options
+from mkdocs import config as mkdocs_config
 from mkdocs import utils
 
 import fnmatch
@@ -13,6 +13,16 @@ import tempfile
 def common_extensions():
     return [".bmp", ".tif", ".tiff", ".gif", ".svg", ".jpeg", ".jpg", ".jif", ".jfif",
             ".jp2", ".jpx", ".j2k", ".j2c", ".fpx", ".pcd", ".png", ".pdf", "CNAME"]
+
+
+def get_config_site_dir(config_file_path):
+    orig_config = mkdocs_config.load_config(config_file_path)
+    utils.log.debug(
+        "mkdocs-simple-plugin: loading file: {}".format(config_file_path))
+
+    utils.log.debug(
+        "mkdocs-simple-plugin: User config site_dir: {}".format(orig_config.data['site_dir']))
+    return orig_config.data['site_dir']
 
 
 class SimplePlugin(BasePlugin):
@@ -56,8 +66,9 @@ class SimplePlugin(BasePlugin):
             'mkdocs-simple',
             os.path.basename(os.getcwd()),
             "docs_")
-        # Always ignore the output paths
-        self.ignore_paths = [config['site_dir'],
+        # # Always ignore the output paths
+        self.ignore_paths = [get_config_site_dir(config.config_file_path),
+                             config['site_dir'],
                              self.build_docs_dir]
         # Save original docs directory location
         self.orig_docs_dir = config['docs_dir']

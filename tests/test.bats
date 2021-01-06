@@ -38,7 +38,7 @@ assertGen() {
     then
         cp mkdocs-test.yml mkdocs.yml
     fi
-    run mkdocs_simple_gen 
+    run mkdocs_simple_gen
     run mkdocs build --verbose
     debugger
     [ "$status" -eq 0 ]

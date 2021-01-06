@@ -22,10 +22,9 @@ Explanation of docker command-line options
 | `--user $(id -u):$(id -g)` | [recommended] Run the docker container with the current user and group.     |
 | `--rm`                     | [optional] remove the docker image after it finishes running.               |
 | `-it`                      | [optional] run in an interactive terminal.                                  |
-
 <!-- markdownlint-enable MD038 -->
 
-The docker image by default runs `mkdocs serve`.
+The docker image runs `mkdocs serve` by default.
 
 ## Set up a command-line alias
 
@@ -33,6 +32,7 @@ Add an alias for the docker command to serve docs from any workspace.
 
 ```bash
 echo 'function mkdocs_simple() { 
-    docker run --rm -it --network=host -v ${PWD}:/docs --user $(id -u):$(id -g) athackst/mkdocs-simple-plugin $@ 
+    local port=${1:-"8000"}
+    docker run --rm -p ${port}:8000 -v ${PWD}:/docs --user $(id -u):$(id -g) athackst/mkdocs-simple-plugin
 }' >> ~/.bashrc
 ```

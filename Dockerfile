@@ -30,4 +30,4 @@ COPY docker/deploy.sh /usr/local/bin/
 COPY docker/entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["entrypoint.sh"]
 
-CMD ["mkdocs", "serve"]
+CMD ["mkdocs", "serve", "-a", "0.0.0.0:8000"]

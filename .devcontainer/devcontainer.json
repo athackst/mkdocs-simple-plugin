@@ -42,9 +42,6 @@
 	"appPort": [
 		8000
 	],
-	"forwardPorts": [
-		80, 443
-	],
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "pip3 install --upgrade pip && pip3 install --user -r requirements.txt",
 

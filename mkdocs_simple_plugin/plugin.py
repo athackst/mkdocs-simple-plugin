@@ -16,6 +16,7 @@ class LazyFile:
     Like a file object, but only ever creates the directory and opens the
     file if a non-empty string is written.
     """
+
     def __init__(self, directory, name):
         self.file_directory = directory
         self.file_name = name
@@ -42,6 +43,7 @@ class StreamExtract:
     by the keyword arguments to the constructor as documented for the
     "semiliterate" parameter of the `simple` plugin.
     """
+
     def __init__(self, input_stream, output_stream,
                  start=None, terminate=None, stop=None, replace=[],
                  include_root=None,
@@ -174,6 +176,23 @@ class SimplePlugin(BasePlugin):
         ))
     )
 
+    def on_config(self, config, **kwargs):
+        # Create a temporary build directory, and set some options to serve it
+        # PY2 returns a byte string by default. The Unicode prefix ensures a Unicode
+        # string is returned. And it makes MkDocs temp dirs easier to identify.
+        self.build_docs_dir = tempfile.mkdtemp(
+            prefix="mkdocs_simple_{}".format(os.path.basename(os.path.dirname(config.config_file_path))))
+        utils.log.debug("mkdocs-simple-plugin: build_docs_dir: {}".format(
+            self.build_docs_dir))
+        # Clean out build folder on config
+        shutil.rmtree(self.build_docs_dir, ignore_errors=True)
+        os.makedirs(self.build_docs_dir, exist_ok=True)
+        # Save original docs directory location
+        self.orig_docs_dir = config['docs_dir']
+        # Update the docs_dir with our temporary one
+        config['docs_dir'] = self.build_docs_dir
+        return config
+
     def on_pre_build(self, config, **kwargs):
         self.include_folders = self.config['include_folders']
         self.ignore_folders = self.config['ignore_folders']
@@ -186,26 +205,16 @@ class SimplePlugin(BasePlugin):
             item['pattern'] = re.compile(item['pattern'])
             self.semiliterate.append(item)
 
-        # The temp folder to dump all the documentation
-        self.build_docs_dir = os.path.join(
-            tempfile.gettempdir(),
-            'mkdocs-simple',
-            os.path.basename(os.getcwd()),
-            "docs_")
         # # Always ignore the output paths
         self.ignore_paths = [get_config_site_dir(config.config_file_path),
                              config['site_dir'],
                              self.build_docs_dir]
-        # Save original docs directory location
-        self.orig_docs_dir = config['docs_dir']
         # Copy contents of docs directory if merging
         if self.merge_docs_dir and os.path.exists(self.orig_docs_dir):
             self.copy_docs_directory(self.orig_docs_dir, self.build_docs_dir)
             self.ignore_paths += [self.orig_docs_dir]
         # Copy all of the valid doc files into build_docs_dir
-        self.paths = self.copy_doc_files(self.build_docs_dir)
-        # Update the docs_dir with our temporary one
-        config['docs_dir'] = self.build_docs_dir
+        self.paths = self.build_docs()
 
     def on_serve(self, server, config, **kwargs):
         builder = list(server.watcher._tasks.values())[0]['func']
@@ -219,9 +228,6 @@ class SimplePlugin(BasePlugin):
             server.watch(orig, builder)
 
         return server
-
-    def on_post_build(self, config, **kwargs):
-        shutil.rmtree(self.build_docs_dir)
 
     def in_search_directory(self, directory, root):
         if self.ignore_hidden and (directory[0] == "."
@@ -241,11 +247,11 @@ class SimplePlugin(BasePlugin):
     def in_extensions(self, file):
         return any(extension in file for extension in self.include_extensions)
 
-    def copy_doc_files(self, destination_directory):
+    def build_docs(self):
         paths = []
         for root, directories, files in os.walk("."):
             if self.in_include_directory(root):
-                document_root = destination_directory + root[1:]
+                document_root = self.build_docs_dir + root[1:]
                 for f in files:
                     if self.in_extensions(f):
                         paths.extend(self.copy_file(root, f, document_root))

@@ -115,7 +115,7 @@ template, or by just a regular expression. In each line that `simple` extracts,
 the regular expression from each substitution in turn is searched for.
 If none match, the line is transcribed unchanged. However, for the first one
 that matches, the template expanded by the Python Match.expand function
-(using the succesful match object) is transcribed in place of the line.
+(using the successful match object) is transcribed in place of the line.
 If there is no template, then just the last matching group is transcribed
 if there is one, or nothing at all is transcribed if there is no last
 matching group. This latter convention makes it easy to selectively drop

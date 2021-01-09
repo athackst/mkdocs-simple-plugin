@@ -1,0 +1,8 @@
+<p>You can put <em>markdown</em> in triple-quoted strings in Python.</p>
+<p>You can even use macros to inject other markdown here!</p>
+<p>For example, here's the readme file:</p>
+<p>Here is the introductory documentation</p>
+<p>Here's a print out of the config file</p>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+                <p>
+                </p>

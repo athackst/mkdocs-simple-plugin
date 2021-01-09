@@ -69,6 +69,10 @@ assertServeSuccess() {
 
 assertParGrep() {
     grep -E '<.?p>' site/$1/index.html > site/$1.grepout
+    echo "------File-------"
+    cat site/$1/index.html
+    echo "-----Grep results-----"
+    cat site/$1.grepout
     run diff $1.grepout site/$1.grepout
     [ "$status" -eq 0 ]
 }
@@ -183,5 +187,20 @@ teardown() {
     assertFileExists site/main/index.html
     assertFileExists site/module/index.html
     assertParGrep main
+    assertParGrep module
+}
+
+@test "build a site extracted from source with mkdocstrings" {
+    cd ${fixturesDir}/ok-with-mkdocstrings
+    assertGen
+    assertValidSite
+    assertFileExists site/module/index.html
+    assertParGrep module
+}
+
+@test "build a site extracted from source with macros" {
+    cd ${fixturesDir}/ok-with-macros
+    assertGen
+    assertValidSite
     assertParGrep module
 }

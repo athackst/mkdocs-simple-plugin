@@ -57,5 +57,12 @@
   "yaml.customTags": [
     "tag:yaml.org,2002:python/name:materialx.emoji.twemoji",
     "tag:yaml.org,2002:python/name:materialx.emoji.to_svg"
-  ]
+  ],
+  "python.formatting.autopep8Args": [
+    "--aggressive",
+    "--aggressive",
+  ],
+  "editor.rulers": [
+    80
+  ],
 }

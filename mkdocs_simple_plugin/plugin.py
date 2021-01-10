@@ -127,23 +127,20 @@ class StreamExtract:
         return self.wrote_something
 
 
-def common_extensions():
-    return [".bmp", ".tif", ".tiff", ".gif", ".svg", ".jpeg", ".jpg", ".jif", ".jfif",
-            ".jp2", ".jpx", ".j2k", ".j2c", ".fpx", ".pcd", ".png", ".pdf", "CNAME"]
-
-
 def get_config_site_dir(config_file_path):
     orig_config = mkdocs_config.load_config(config_file_path)
     utils.log.debug(
         "mkdocs-simple-plugin: loading file: {}".format(config_file_path))
 
     utils.log.debug(
-        "mkdocs-simple-plugin: User config site_dir: {}".format(orig_config.data['site_dir']))
+        "mkdocs-simple-plugin: User config site_dir: {}".format(
+            orig_config.data['site_dir']))
     return orig_config.data['site_dir']
 
 
 class SimplePlugin(BasePlugin):
-    """ SimplePlugin adds documentation throughout your repo to a mkdocs wiki.
+    """
+    SimplePlugin adds documentation throughout your repo to a mkdocs wiki.
 
     Usage:
 
@@ -166,14 +163,33 @@ class SimplePlugin(BasePlugin):
         ('ignore_folders', config_options.Type(list, default=[])),
         ('ignore_hidden', config_options.Type(bool, default=True)),
         ('merge_docs_dir', config_options.Type(bool, default=True)),
-        ('include_extensions', config_options.Type(
-            list, default=common_extensions())),
-        ('semiliterate', config_options.Type(
-            list, default=[
-                dict(pattern=r'(\.py)$', start=r'"""\smd', stop='"""'),
-                dict(pattern=r'(\.[^.]*)$', start=r'/\*\* md', stop=r'\*\*/')
-            ]
-        ))
+        ('include_extensions',
+            config_options.Type(
+                list,
+                default=[
+                    ".bmp", ".tif", ".tiff", ".gif", ".svg", ".jpeg",
+                    ".jpg", ".jif", ".jfif", ".jp2", ".jpx", ".j2k",
+                    ".j2c", ".fpx", ".pcd", ".png", ".pdf", "CNAME"
+                ])),
+        ('semiliterate',
+            config_options.Type(
+                list,
+                default=[
+                    {
+                        'pattern': r'(\.py)$',
+                        'start': r'"""\smd',
+                        'stop': r'"""'
+                    },
+                    {
+                        'pattern': r'(\.py)$',
+                        'start': r'"""\smd',
+                        'stop': r'"""'
+                    },
+                    {
+                        'pattern': r'(\.[^.]*)$',
+                        'start': r'/\*\* md',
+                        'stop': r'\*\*/'
+                    }]))
     )
 
     def on_config(self, config, **kwargs):
@@ -181,7 +197,8 @@ class SimplePlugin(BasePlugin):
         # PY2 returns a byte string by default. The Unicode prefix ensures a Unicode
         # string is returned. And it makes MkDocs temp dirs easier to identify.
         self.build_docs_dir = tempfile.mkdtemp(
-            prefix="mkdocs_simple_{}".format(os.path.basename(os.path.dirname(config.config_file_path))))
+            prefix="mkdocs_simple_{}".format(
+                os.path.basename(os.path.dirname(config.config_file_path))))
         utils.log.debug("mkdocs-simple-plugin: build_docs_dir: {}".format(
             self.build_docs_dir))
         # Clean out build folder on config
@@ -206,9 +223,10 @@ class SimplePlugin(BasePlugin):
             self.semiliterate.append(item)
 
         # # Always ignore the output paths
-        self.ignore_paths = [get_config_site_dir(config.config_file_path),
-                             config['site_dir'],
-                             self.build_docs_dir]
+        self.ignore_paths = [
+            get_config_site_dir(config.config_file_path), config['site_dir'],
+            self.build_docs_dir
+        ]
         # Copy contents of docs directory if merging
         if self.merge_docs_dir and os.path.exists(self.orig_docs_dir):
             self.copy_docs_directory(self.orig_docs_dir, self.build_docs_dir)
@@ -234,7 +252,7 @@ class SimplePlugin(BasePlugin):
                                    or directory == "__pycache__"):
             return False
         if any(fnmatch.fnmatch(directory, filter)
-               for filter in self.ignore_folders):
+                for filter in self.ignore_folders):
             return False
         if os.path.abspath(os.path.join(root, directory)) in self.ignore_paths:
             return False
@@ -257,8 +275,9 @@ class SimplePlugin(BasePlugin):
                         paths.extend(self.copy_file(root, f, document_root))
                     else:
                         paths.extend(self.extract_from(root, f, document_root))
-            directories[:] = [d for d in directories
-                              if self.in_search_directory(d, root)]
+            directories[:] = [
+                d for d in directories if self.in_search_directory(d, root)
+            ]
         return paths
 
     def copy_file(self, from_directory, name, destination_directory):
@@ -290,14 +309,15 @@ class SimplePlugin(BasePlugin):
         for item in self.semiliterate:
             name_match = item['pattern'].search(name)
             if name_match:
-                new_name = (name[:name_match.start(name_match.lastindex)]
-                            + '.md'
-                            + name[name_match.end(name_match.lastindex):])
+                new_name = (name[:name_match.start(name_match.lastindex)] +
+                            '.md' +
+                            name[name_match.end(name_match.lastindex):])
                 if 'destination' in item:
                     new_name = name_match.expand(item['destination'])
                 new_file = LazyFile(destination_directory, new_name)
                 with open(original) as original_file:
-                    extraction = StreamExtract(original_file, new_file,
+                    extraction = StreamExtract(original_file,
+                                               new_file,
                                                include_root=from_directory,
                                                **item)
                     new_file.close()
@@ -314,11 +334,11 @@ class SimplePlugin(BasePlugin):
                             root_destination_directory):
         if sys.version_info >= (3, 8):
             # pylint: disable=unexpected-keyword-arg
-            shutil.copytree(root_source_directory, root_destination_directory,
+            shutil.copytree(root_source_directory,
+                            root_destination_directory,
                             dirs_exist_ok=True)
-            utils.log.debug(
-                "mkdocs-simple-plugin: {}/* --> {}/*".format(
-                    root_source_directory, root_destination_directory))
+            utils.log.debug("mkdocs-simple-plugin: {}/* --> {}/*".format(
+                root_source_directory, root_destination_directory))
         else:
             for source_directory, _, files in os.walk(root_source_directory):
                 destination_directory = source_directory.replace(

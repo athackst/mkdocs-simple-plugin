@@ -36,7 +36,7 @@ def write_config(config_file, config):
 def get_plugins(config):
     plugins = []
     for item in config["plugins"]:
-        if type(item) == dict:
+        if isinstance(item, dict):
             plugins = plugins + list(item.keys())
         else:
             plugins.append(item)
@@ -50,7 +50,8 @@ def setup_config():
     config_file = "mkdocs.yml"
     config = default_config()
     if not os.path.exists(config_file):
-        # If config file doesn't exit, create a simple one, guess the site name from the folder name.
+        # If config file doesn't exit, create a simple one, guess the site name
+        # from the folder name.
         write_config(config_file, config)
     # Open the config file to verify settings.
     with open(config_file, 'r') as stream:
@@ -78,8 +79,10 @@ def setup_config():
 
 
 @click.command()
-@click.option('--build/--no-build', default=True, help="build the site using mkdocs build")
-@click.option('--serve/--no-serve', default=False, help="serve the site using mkdocs serve")
+@click.option('--build/--no-build', default=True,
+              help="build the site using mkdocs build")
+@click.option('--serve/--no-serve', default=False,
+              help="serve the site using mkdocs serve")
 @click.argument('mkdocs-args', nargs=-1)
 def main(build, serve, mkdocs_args):
     """

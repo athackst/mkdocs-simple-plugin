@@ -11,7 +11,7 @@ pip install -e . --quiet >&2
 #
 
 rootDir=$(pwd)
-fixturesDir=${rootDir}/tests/integration/fixtures
+fixturesDir=${rootDir}/examples
 
 debugger() {
     echo "--- STATUS ---"
@@ -134,7 +134,7 @@ teardown() {
     assertGen
     assertFileExists site/test/index.html
     assertFileNotExists site/draft/index.html
-    assertFileNotExists site/index.html
+    assertFileExists site/index.html
     assertFileExists site/docs/draft/index.html
     assertFileExists site/docs/index.html
 }
@@ -170,16 +170,6 @@ teardown() {
     rm -fr test_site
 }
 
-@test "serve a mkdocs site" {
-    cd ${fixturesDir}/ok-mkdocs-docs
-    assertGen
-    assertValidSite
-    mkdocs serve &
-    sleep 5
-    assertServeSuccess
-    pkill mkdocs
-}
-
 @test "build a site extracted from source files" {
     cd ${fixturesDir}/ok-source-extract
     assertGen
@@ -203,4 +193,14 @@ teardown() {
     assertGen
     assertValidSite
     assertParGrep module
+}
+
+@test "serve a mkdocs site" {
+    cd ${fixturesDir}/ok-mkdocs-docs
+    assertGen
+    assertValidSite
+    mkdocs serve &
+    sleep 5
+    assertServeSuccess
+    pkill mkdocs
 }

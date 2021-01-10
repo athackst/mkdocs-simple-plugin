@@ -6,4 +6,6 @@ plugins:
     include_extensions:
       - '.yml'
 - macros:
-    verbose: true
+    verbose: True
+extra:
+    test: True

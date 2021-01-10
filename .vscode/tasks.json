@@ -66,7 +66,7 @@
     {
       "label": "test",
       "type": "shell",
-      "command": "./tests/test_flake8.sh && ./tests/integration/test.bats",
+      "command": "./tests/test_flake8.sh && ./tests/test.bats",
       "options": {
         "env": {
           "PATH": "${env:PATH}:/home/vscode/.local/bin"

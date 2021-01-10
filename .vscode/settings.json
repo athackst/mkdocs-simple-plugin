@@ -26,6 +26,7 @@
     "materialx",
     "mkdir",
     "mkdocs",
+    "mkdocstrings",
     "musl",
     "name",
     "nargs",
@@ -59,10 +60,13 @@
     "tag:yaml.org,2002:python/name:materialx.emoji.to_svg"
   ],
   "python.formatting.autopep8Args": [
+    "--max-line-length=80",
     "--aggressive",
     "--aggressive",
+    "--aggressive"
   ],
   "editor.rulers": [
-    80
-  ],
+    80,
+    127
+  ]
 }

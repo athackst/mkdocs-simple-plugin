@@ -1,3 +1,28 @@
+# md
+# ## Deploy from GitHub Actions
+# 
+# Create a YAML file with the following contents in the `.github/workflows` directory in your repository
+# 
+# ```yaml
+# jobs:
+#   docs:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
+#       - name: Build docs
+#         uses: athackst/mkdocs-simple-plugin
+#         with:
+#           # (optional) Specify branch 
+#           publish_branch: gh-pages 
+#           # (optional) The URL of the repository the docs should point to
+#           repo_url: https://github.com/owner/repository 
+#           # (optional) The name of the site
+#           site_name: owner/repository 
+#           # (optional) The URL of the site
+#           site_url: https://owner.github.io/repository 
+# ```
+# /md
 name: "MkDocs Simple action"
 description: "Generate a configuration free mkdocs site"
 branding:

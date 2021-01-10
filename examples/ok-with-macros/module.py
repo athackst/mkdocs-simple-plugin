@@ -5,9 +5,11 @@ You can put _markdown_ in triple-quoted strings in Python.
 
 You can even use macros to inject other markdown here!
 
-For example, here's the readme file:
+For example, here's the config file:
 
-{% include 'README.md' %}
+```yaml
+{% include 'mkdocs.yml' %}
+```
 
 """
 

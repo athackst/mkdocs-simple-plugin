@@ -11,7 +11,6 @@ You can even combine it with mkdocstrings to automatically generate your source 
         show_root_heading: true
         show_source: false
         heading_level: 3
-
 """
 
 

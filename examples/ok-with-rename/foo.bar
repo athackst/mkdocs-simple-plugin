@@ -1,0 +1,4 @@
+## Actually baz
+
+This is some documentation in a file that for some reason must be named
+foo.bar, but which we actually want to show up in baz.md.

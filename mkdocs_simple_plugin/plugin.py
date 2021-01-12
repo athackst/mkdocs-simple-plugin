@@ -104,7 +104,7 @@ class LazyFile:
 
 class StreamExtract:
     """
-    Instantiating a StreamExtract object copies _input_stream_ to
+    A StreamExtract object copies _input_stream_ to
     _output_stream_, extracting portions of the input_stream as specified
     by the keyword arguments to the constructor as documented for the
     "semiliterate" parameter of the `simple` plugin.
@@ -128,7 +128,6 @@ class StreamExtract:
         self.include_root = include_root
         self.wrote_something = False
         self.extracting = False
-        self.extract()
 
     def transcribe(self, text):
         self.output_stream.write(text)
@@ -151,11 +150,13 @@ class StreamExtract:
         return True
 
     def extract(self):
-        """ Actually performs the extraction """
+        """ Invoke this method to perform the extraction. Returns true if
+            any text is actually extracted, false otherwise.
+        """
         for line in self.input_stream:
             # Check terminate, regardless of state:
             if self.check_pattern(self.terminate, line, self.extracting):
-                return
+                return self.wrote_something
             # Change state if flagged to do so:
             if not self.extracting:
                 if self.check_pattern(self.start, line):
@@ -167,6 +168,7 @@ class StreamExtract:
                 continue
             # Extract all other lines in the normal way:
             self.extract_line(line)
+        return self.wrote_something
 
     def replace_line(self, line):
         """Apply the specified replacements to the line and return it"""
@@ -187,10 +189,6 @@ class StreamExtract:
         """
         line = self.replace_line(line)
         self.transcribe(line)
-
-    def productive(self):
-        """Returns true if any text was actually extracted"""
-        return self.wrote_something
 
 
 def get_config_site_dir(config_file_path):
@@ -467,26 +465,39 @@ class SimplePlugin(BasePlugin):
         for item in self.semiliterate:
             name_match = item['pattern'].search(name)
             if name_match:
-                new_name = (name[:name_match.start(name_match.lastindex)] +
-                            '.md' +
-                            name[name_match.end(name_match.lastindex):])
                 if 'destination' in item:
                     new_name = name_match.expand(item['destination'])
+                else:
+                    if not name_match.lastindex:
+                        raise LookupError(
+                            "mkdocs-simple-plugin: No last group in match of" +
+                            "{} to {} and no destination".format(
+                                item['pattern'], name))
+                    new_name = (name[:name_match.start(name_match.lastindex)] +
+                                '.md' +
+                                name[name_match.end(name_match.lastindex):])
                 new_file = LazyFile(destination_directory, new_name)
                 with open(original) as original_file:
-                    extraction = StreamExtract(original_file,
-                                               new_file,
-                                               include_root=from_directory,
-                                               **item)
+                    utils.log.debug(
+                        "mkdocs-simple-plugin: Scanning {}...".format(original))
+                    productive = self.try_extraction(
+                        original_file, from_directory, new_file, **item)
                     new_file.close()
-                    if extraction.productive():
+                    if productive:
                         new_path = "{}/{}".format(destination_directory,
                                                   new_name)
                         utils.log.debug(
-                            "mkdocs-simple-plugin: {} --> {}".format(
-                                original, new_path))
+                            "        ... extracted {}".format(new_path))
                         new_paths.append((original, new_path))
         return new_paths
+
+    def try_extraction(self, original_file, root, new_file, **kwargs):
+        """Attempt to extract documentation from a single file
+           according to specific extraction parameters
+        """
+        extraction = StreamExtract(
+            original_file, new_file, include_root=root, **kwargs)
+        return extraction.extract()
 
     def copy_docs_directory(self, root_source_directory,
                             root_destination_directory):

@@ -30,8 +30,6 @@ setuptools.setup(
         'Intended Audience :: Information Technology',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
@@ -43,7 +41,7 @@ setuptools.setup(
             "simple = mkdocs_simple_plugin.plugin:SimplePlugin"
         ],
         'console_scripts': [
-            "mkdocs_simple_gen = mkdocs_simple_plugin.gen:main"
+            "mkdocs_simple_gen = mkdocs_simple_plugin.generator:main"
         ]
     }
 )

@@ -14,7 +14,7 @@ docker build -t mkdocs-simple-test-runner:$1 -f- . <<EOF
   RUN pip install -r /workspace/requirements.txt
   COPY . /workspace
   ENTRYPOINT ["bats"]
-  CMD ["/workspace/tests/integration/test.bats"]
+  CMD ["/workspace/tests/test.bats"]
 EOF
 
 echo "Running E2E tests via Bats in Docker (python:$1) -------->"

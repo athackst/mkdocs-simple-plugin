@@ -1,37 +1,43 @@
 site_name: athackst/mkdocs-simple-plugin
 docs_dir: /tmp/mkdocs-simple/mkdocs-simple-plugin
 plugins:
-- search
-- simple:
-    ignore_folders: [tests, site]
+  - search
+  - simple:
+      include_extensions:
+        - ".yml"
+        - ".png"
+  - macros:
+  - awesome-pages:
+      collapse_single_pages: true
 theme:
   name: material
   palette:
     primary: green
     accent: green
 markdown_extensions:
-- admonition
-- pymdownx.superfences
-- pymdownx.highlight:
-    use_pygments: true
-- pymdownx.emoji:
-    emoji_index: !!python/name:materialx.emoji.twemoji ''
-    emoji_generator: !!python/name:materialx.emoji.to_svg ''
+  - admonition
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      use_pygments: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji ""
+      emoji_generator: !!python/name:materialx.emoji.to_svg ""
 extra:
   social:
-  - icon: fontawesome/brands/twitter
-    link: https://twitter.com/althack
-  - icon: fontawesome/brands/docker
-    link: https://hub.docker.com/u/athackst
-  - icon: fontawesome/regular/laugh
-    link: https://allisonthackston.com
-edit_uri: ''
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/althack
+    - icon: fontawesome/brands/docker
+      link: https://hub.docker.com/u/athackst
+    - icon: fontawesome/regular/laugh
+      link: https://allisonthackston.com
+edit_uri: ""
 nav:
-- About: README.md
-- Mkdocs Simple Generator: mkdocs_simple_plugin/generator.md
-- Mkdocs Simple Plugin: mkdocs_simple_plugin/plugin.md
-- Github Action: action.md
-- Docker: docker/docker.md
-- Developers:
-  - Developing: mkdocs_simple_plugin/README.md
-  - Contributing Guide: CONTRIBUTING.md
+  - About: README.md
+  - Mkdocs Simple Generator: mkdocs_simple_plugin/generator.md
+  - Mkdocs Simple Plugin: mkdocs_simple_plugin/plugin.md
+  - Github Action: action.md
+  - Docker: docker/README.md
+  - ... | examples/**/README.md
+  - Developers:
+      - Developing: mkdocs_simple_plugin/README.md
+      - Contributing Guide: CONTRIBUTING.md

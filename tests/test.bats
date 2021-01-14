@@ -188,6 +188,13 @@ teardown() {
     assertParGrep module
 }
 
+@test "one-off file rename" {
+    cd ${fixturesDir}/ok-with-rename
+    assertGen
+    assertValidSite
+    assertFileExists site/baz/index.html
+}
+
 @test "build a site extracted from source with macros" {
     cd ${fixturesDir}/ok-with-macros
     assertGen

@@ -1,0 +1,8 @@
+plugins:
+  - simple:
+      semiliterate:
+      - pattern: '^foo.bar$'
+        destination: baz.md
+        start: '^(.*\s*)$'
+
+site_name: ok-with-rename

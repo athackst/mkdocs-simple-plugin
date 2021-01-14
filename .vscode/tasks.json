@@ -104,6 +104,14 @@
         "mkdocs build"
       ],
       "problemMatcher": []
+    },
+    {
+      "label": "debugger prelaunch",
+      "type": "shell",
+      "command": "pwd; cp mkdocs-test.yml mkdocs.yml; /home/vscode/.local/bin/mkdocs_simple_gen --no-build",
+      "options": {
+        "cwd": "${fileDirname}"
+      }
     }
   ]
 }

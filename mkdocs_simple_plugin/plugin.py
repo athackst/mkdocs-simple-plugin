@@ -1,6 +1,5 @@
 """ md
-MkDocs Simple Plugin
-====================
+# MkDocs Simple Plugin
 
 A plugin for MkDocs that builds a documentation website from markdown content
 interspersed within your code, in markdown files or in block comments in your
@@ -111,23 +110,29 @@ class StreamExtract:
     """
 
     def __init__(self, input_stream, output_stream,
-                 start=None, terminate=None, stop=None, replace=[],
-                 include_root=None,
+                 terminate=None, include_root=None, extract={},
                  **ignore_other_kwargs):
         self.input_stream = input_stream
         self.output_stream = output_stream
-        self.start = re.compile(start)
         self.terminate = (terminate is not None) and re.compile(terminate)
-        self.stop = (stop is not None) and re.compile(stop)
-        self.replace = []
-        for item in replace:
-            if isinstance(item, str):
-                self.replace.append(re.compile(item))
-            else:
-                self.replace.append((re.compile(item[0]), item[1]))
         self.include_root = include_root
+        self.active_mode = None
+        self.modes = []
+        for mode in extract if isinstance(extract, list) else [extract]:
+            add_mode = {}
+            add_mode['stop'] = ('stop' in mode) and re.compile(mode['stop'])
+            add_mode['replace'] = []
+            for item in mode.get('replace', []):
+                if isinstance(item, str):
+                    add_mode['replace'].append(re.compile(item))
+                else:
+                    add_mode['replace'].append((re.compile(item[0]), item[1]))
+            if 'start' in mode:
+                add_mode['start'] = re.compile(mode['start'])
+                self.modes.append(add_mode)
+            else:
+                self.active_mode = add_mode
         self.wrote_something = False
-        self.extracting = False
 
     def transcribe(self, text):
         self.output_stream.write(text)
@@ -155,16 +160,18 @@ class StreamExtract:
         """
         for line in self.input_stream:
             # Check terminate, regardless of state:
-            if self.check_pattern(self.terminate, line, self.extracting):
+            if self.check_pattern(self.terminate, line, self.active_mode):
                 return self.wrote_something
             # Change state if flagged to do so:
-            if not self.extracting:
-                if self.check_pattern(self.start, line):
-                    self.extracting = True
+            if self.active_mode is None:
+                for mode in self.modes:
+                    if self.check_pattern(mode['start'], line):
+                        self.active_mode = mode
+                        break
                 continue
-            # We are extracting. See if we should stop:
-            if self.check_pattern(self.stop, line):
-                self.extracting = False
+            # We are extracting in some mode. See if we should stop:
+            if self.check_pattern(self.active_mode['stop'], line):
+                self.active_mode = None
                 continue
             # Extract all other lines in the normal way:
             self.extract_line(line)
@@ -172,7 +179,7 @@ class StreamExtract:
 
     def replace_line(self, line):
         """Apply the specified replacements to the line and return it"""
-        for item in self.replace:
+        for item in self.active_mode['replace']:
             pattern = item[0] if isinstance(item, tuple) else item
             match_object = pattern.search(line)
             if match_object:
@@ -257,7 +264,9 @@ class SimplePlugin(BasePlugin):
         # #### semiliterate
         # The semiliterate settings allows the extraction of markdown from
         # inside source files.
-        # It is defined as a list of blocks of extraction settings.
+        # It is defined as a list of blocks of settings for different
+        # filename patterns (typically matching filename extensions).
+        # All regular expression parameters use ordinary Python `re` syntax.
         # The settings in each block are:
         #
         # ##### pattern
@@ -270,41 +279,47 @@ class SimplePlugin(BasePlugin):
         # original filename, if any, and appending `.md`. However, if this
         # parameter is specified, it will be expanded as a template using
         # the match object from matching "pattern" against the filename,
-        # to produce the name of the extracted file.
-        #
-        # ##### start
-        # Lines from the scanned file will be ignored until a line
-        # containing this required regular expression parameter is
-        # encountered. As with the other parameters ("stop" and "terminate")
-        # controlling extraction, the last matching group in the "start"
-        # expression, if any, will be written to the extracted file.
-        # Subsequent lines, possibly with the transformations specified
-        # by the "replace" parameter below, will be written to the
-        # extracted file.
-        #
-        # ##### stop
-        # Whenever a line containing this optional regexp is encountered,
-        # extraction of the file will be suspended until the next occurrence
-        # of "start" (if any) is encountered.
+        # to produce the name of the destination file.
         #
         # ##### terminate
         # If specified, all extraction from the file is terminated when
-        # a line containing this regexp is encountered. Note that if
-        # "terminate" occurs before "start" nothing will be extracted
-        # from the file.
+        # a line containing this regexp is encountered (whether or not
+        # any extraction is currently active per the parameters below).
+        # The last matching group in the `terminate` expression, if any,
+        # is written to the destination file; note that "start" and "stop"
+        # below share that same behavior.
         #
-        # ##### replace
+        # ##### extract
+        # This parameter determines what will be extracted from a scanned
+        # file that matches the pattern above. Its value should be a block
+        # or list of blocks of settings. Each block determines one mode of
+        # extraction from the scanned file, and can specify:
+        #
+        # ###### start
+        # If no mode of extraction is active, and a line in the scanned
+        # file matches this regexp, then this mode of extraction begins
+        # with the next line. Only the first mode whose `start` expression
+        # matches is activated, so at most one mode of extraction can be active
+        # at any time. When an extraction is active, lines from the scanned
+        # file are copied to the destination file (possibly modified by
+        # the "replace" parameter below).
+        #
+        # ###### stop
+        # When this extraction mode is active and a line containing this
+        # (optional) regexp is encountered, this mode becomes inactive.
+        # The `simple` plugin will begin searching for further occurrences
+        # of `start` expressions on the _next_ line of the scanned file.
+        #
+        # ###### replace
         #
         # The `replace` parameter allows extracted lines from a file to
-        # be transformed in simple ways by regular expressions.
-        # One possible use of `replace` is to strip leading line-comment
-        # symbols from documentation embedded in such places as YAML files that
-        # only have line comments, rather than block comments.
+        # be transformed in simple ways by regular expressions, for
+        # example to strip leading comment symbols if necessary.
         #
         # The `replace` parameter is a list of substitutions to attempt. Each
-        # substitution is specified either by a two-element list of a (Python)
+        # substitution is specified either by a two-element list of a
         # regular expression and a template, or by just a regular expression. In
-        # each line that `simple` extracts, the regular expression from each
+        # each extracted line, the regular expression from each
         # substitution in turn is searched for.
         # If none match, the line is transcribed unchanged.
         # For the first one that matches, the template (expanded with the
@@ -318,6 +333,13 @@ class SimplePlugin(BasePlugin):
         # Once one of the
         # `replace` patterns matches, processing stops; no further expressions
         # are checked.
+        #
+        # Note that the (last) extraction mode (if any) with no `start`
+        # parameter is active beginning with the first line of the scanned file;
+        # there is no way such a mode can be reactivated if it stops.
+        # This convention allows for convenient "front-matter" extraction.
+        #
+        # ##### Standard behavior
         #
         # The default semiliterate patterns invoke the following automatic
         # extraction of markdown content from your source files: (Note that if you
@@ -333,27 +355,32 @@ class SimplePlugin(BasePlugin):
                     {
                         # md
                         # * From Python (`.py`) files: triple-quoted strings
-                        #   starting with `""" md` and ending with `"""` on its
-                        #   own line, and line-comment blocks
-                        #   starting with `# md` and ending with `# /md`.
+                        #   starting with `""" md` and ending with `"""`, as
+                        #   well as line-comment blocks
+                        #   starting with `# md` and ending with `# /md`, from
+                        #   which leading `# ` is stripped.
                         # /md
                         'pattern': r'\.py$',
-                        'start': r'"""\smd$|#\smd$',
-                        'stop': r'^\s*"""|#\s\/md$',
-                        # md
-                        #   Leading `#` is stripped from all extracted lines.
-                        # /md
-                        'replace': [(r'^\s*#\s(.*)$', r'\1\n')]
+                        'extract': [
+                            {'start': r'"""\smd$', 'stop': r'"""'},
+                            {
+                                'start': r'#\smd$',
+                                'stop': r'#\s\/md$',
+                                'replace': [r'^\s*# ?(.*\n?)$']
+                            }
+                        ]
                     },
                     {
                         # md
                         #
                         # * From C, C++, and Javascript files: block comments
-                        #   starting with `/** md`.
+                        #   starting with `/** md` and ending with `**/`.
                         # /md
                         'pattern': r'\.(cpp|cc?|h|hpp|js)$',
-                        'start': r'/\*\* md',
-                        'stop': r'\*\*/'
+                        'extract': {
+                            'start': r'/\*\* md',
+                            'stop': r'\*\*/'
+                        }
                     },
                     {
                         # md
@@ -362,10 +389,12 @@ class SimplePlugin(BasePlugin):
                         #   starting with `# md` and ending with `# /md`.
                         # /md
                         'pattern': r'Dockerfile$|\.(dockerfile|ya?ml)$',
-                        'start': r'#\smd$',
-                        'stop': r'#\s\/md$',
-                        # Remove the leading `#` from all extracted lines:
-                        'replace': [(r'^\s*#?\s(.*)$', r'\1\n')]
+                        'extract': {
+                            'start': r'#\smd$',
+                            'stop': r'#\s\/md$',
+                            # Remove the leading `#` from all extracted lines:
+                            'replace': [r'^\s*#? ?(.*\n?)$']
+                        }
                     },
                 ]))
     )
@@ -405,8 +434,11 @@ class SimplePlugin(BasePlugin):
         self.merge_docs_dir = self.config['merge_docs_dir']
         self.semiliterate = []
         for item in self.config['semiliterate']:
-            item['pattern'] = re.compile(item['pattern'])
-            self.semiliterate.append(item)
+            self.semiliterate.append(
+                # Note it is critical that the original item not be modified,
+                # so if this code is changed, the entry added to semiliterate
+                # needs to remain at least a shallow copy of `item`.
+                dict(item, pattern=re.compile(item['pattern'])))
 
         # Always ignore the output paths
         self.ignore_paths = [get_config_site_dir(config.config_file_path),

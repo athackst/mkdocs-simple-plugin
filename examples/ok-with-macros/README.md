@@ -10,7 +10,7 @@ Here's a print out of the plugin's config file, which I've included using a jinj
 {% include "mkdocs.yml" %}
 ```
 
-And the extracted module documentation includes the readme.
+And the extracted module documentation also includes the config file.
 
 extracted:
 

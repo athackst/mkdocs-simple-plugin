@@ -34,7 +34,7 @@ project
 |   |    index.md
 │
 └───site
-│   │   index.html
+│   │   index.html  [From docs/index.md, _not_ from README]
 |   |   
 |   └───draft
 │   │   |    index.html

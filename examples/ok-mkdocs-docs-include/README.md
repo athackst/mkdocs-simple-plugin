@@ -34,8 +34,10 @@ project
 |   |    index.md
 │
 └───site
-│   │   index.html
-|   |   
-|   └───draft
-│   │   |    index.html
+|   |
+|   └───subfolder
+│       │   index.html  [From subfolder/index.md, not from README.md]
+|       |
+|       └───draft
+│       │   |    index.html
 ```

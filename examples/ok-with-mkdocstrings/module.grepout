@@ -1,5 +1,5 @@
 <p>You can put <em>markdown</em> in triple-quoted strings in Python.</p>
 <p>You can even combine it with mkdocstrings to automatically generate your source documentation!</p>
-<p>This is a test function.  It takes no paramers.</p>
+<p>This is a test function.  It takes no parameters.</p>
 <p>It says "Hello, world!"</p>
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>

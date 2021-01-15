@@ -16,7 +16,7 @@ You can even combine it with mkdocstrings to automatically generate your source 
 
 def main():
     """
-    This is a test function.  It takes no paramers.
+    This is a test function.  It takes no parameters.
 
     It says "Hello, world!"
     """

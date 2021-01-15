@@ -7,6 +7,12 @@ plugins:
         - ".yml"
         - ".png"
   - macros:
+  - mkdocstrings:
+      handlers:
+        python:
+          setup_commands:
+          - import sys
+          - sys.path.append('examples/ok-with-mkdocstrings')
   - awesome-pages:
       collapse_single_pages: true
 theme:

@@ -1,6 +1,6 @@
 # Don't merge docs folder with other docs
 
-This example shows how to keep the docs folder with your 
+This example shows how to keep the docs folder embedded within your other docs.
 
 ## Configuration
 
@@ -34,14 +34,14 @@ project
 |   |    index.md
 │
 └───site
-│   │   index.html
-|   |   
-|   └───draft
-│   │   |    index.html
+│   │   index.html  [From README.md]
 |   |   
 |   └───test
 │   │   |    index.html
-|   |  
-|   └───index
-│   │   |    index.html
+|   |
+|   └───docs
+│   │   |    index.html  [From docs/index.md]
+|   |   |
+|   |   └───draft
+│   │   |   |    index.html
 ```

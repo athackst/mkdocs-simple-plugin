@@ -4,7 +4,7 @@
 # everything from the beginning of the file to the first line of code
 # (a line indented by at least four spaces), together with any later Markdown
 # block preceded by a comment containing `# DOCPAGE`.
-site_name: Custom Extraction
+site_name: ok-mkdocs-custom-extract
 plugins:
   - simple:
       semiliterate:

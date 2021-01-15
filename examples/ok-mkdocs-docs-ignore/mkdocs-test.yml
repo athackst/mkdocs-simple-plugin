@@ -1,5 +1,5 @@
 # This example shows how a subfolder can be ignored.
-site_name: project
+site_name: ok-mkdocs-docs-ignore
 plugins:
   - simple:
       ignore_folders: ["subfolder"]

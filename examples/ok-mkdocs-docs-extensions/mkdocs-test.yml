@@ -1,5 +1,5 @@
 # This example shows how extensions are copied to the result
-site_name: project
+site_name: ok-mkdocs-docs-extensions
 plugins:
   - simple:
       include_extensions: [".txt"]

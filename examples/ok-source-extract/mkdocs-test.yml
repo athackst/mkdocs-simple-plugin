@@ -1,4 +1,4 @@
 # This examples shows how you can extract markdown from a source file.
-site_name: project
+site_name: ok-source-extract
 plugins:
   - simple

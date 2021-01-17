@@ -22,6 +22,14 @@
             "preLaunchTask": "debugger prelaunch",
             "cwd": "${fileDirname}",
             "console": "integratedTerminal"
-        }
+        },
+        {
+            "name": "mkdocs_simple_gen",
+            "type": "python",
+            "request": "launch",
+            "program": "/home/vscode/.local/bin/mkdocs_simple_gen",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        },
     ]
 }

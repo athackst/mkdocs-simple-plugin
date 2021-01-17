@@ -1,6 +1,6 @@
+# noqa: D205,D400
 """ md
-Mkdocs Simple Generator
-=======================
+# Mkdocs Simple Generator
 
 `mkdocs_simple_gen` is a program that will automatically create a `mkdocs.yml`
 configuration file (only if needed) and optionally install dependencies, build,
@@ -48,6 +48,7 @@ import yaml
 
 
 def default_config():
+    """Get default configuration for mkdocs.yml file."""
     config = {}
     config['site_name'] = os.path.basename(os.path.abspath("."))
     if "SITE_NAME" in os.environ.keys():
@@ -64,32 +65,34 @@ def default_config():
         "docs")
     if os.path.exists(os.path.join(os.getcwd(), "docs")):
         config['docs_dir'] = "docs"
-    config['plugins'] = ["simple", "search"]
+    config['plugins'] = ("simple", "search")
     return config
 
 
+class MkdocsConfigDumper(yaml.Dumper):
+    """Format yaml files better."""
+
+    def increase_indent(self, flow=False, indentless=False):
+        """Indent lists."""
+        return super(MkdocsConfigDumper, self).increase_indent(flow, False)
+
+
 def write_config(config_file, config):
-    with open(config_file, 'w+') as stream:
+    """Write configuration file."""
+    with open(config_file, 'w+') as file:
         try:
-            yaml.dump(config, stream, sort_keys=False)
+            yaml.dump(
+                data=config,
+                stream=file,
+                sort_keys=False,
+                default_flow_style=False,
+                Dumper=MkdocsConfigDumper)
         except yaml.YAMLError as exc:
             print(exc)
 
 
-def get_plugins(config):
-    plugins = []
-    for item in config["plugins"]:
-        if isinstance(item, dict):
-            plugins = plugins + list(item.keys())
-        else:
-            plugins.append(item)
-    return plugins
-
-
 def setup_config():
-    """
-    Create all the files, including the mkdocs.yml file if it doesn't exist.
-    """
+    """Create the mkdocs.yml file with defaults for params that don't exist."""
     config_file = "mkdocs.yml"
     config = default_config()
     if not os.path.exists(config_file):
@@ -101,12 +104,6 @@ def setup_config():
         try:
             local_config = yaml.load(stream, yaml.Loader)
             if local_config:
-                if "plugins" in local_config.keys():
-                    # Merge plugin lists
-                    config_plugins = config["plugins"]
-                    local_plugins = local_config["plugins"]
-                    [i for i in local_plugins if i not in config_plugins
-                        or config_plugins.remove(i)]
                 # Overwrite default config values with local mkdocs.yml
                 config.update(local_config)
                 print(config)
@@ -122,15 +119,13 @@ def setup_config():
 
 
 @click.command()
-@click.option('--build/--no-build', default=True,
+@click.option('--build/--no-build', default=False,
               help="build the site using mkdocs build")
 @click.option('--serve/--no-serve', default=False,
               help="serve the site using mkdocs serve")
 @click.argument('mkdocs-args', nargs=-1)
 def main(build, serve, mkdocs_args):
-    """
-    Generate and build a mkdocs site.
-    """
+    """Generate and build a mkdocs site."""
     setup_config()
     if build:
         os.system("mkdocs build " + " ".join(mkdocs_args))
@@ -139,6 +134,7 @@ def main(build, serve, mkdocs_args):
 
 
 if __name__ == "__main__":
-    # pylint doesn't know how to parse the click decorators, so disable no-value-for-parameter on main
+    # pylint doesn't know how to parse the click decorators,
+    # so disable no-value-for-parameter on main
     # pylint: disable=no-value-for-parameter
     main()

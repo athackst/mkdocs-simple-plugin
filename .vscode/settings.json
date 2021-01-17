@@ -69,5 +69,9 @@
   "editor.rulers": [
     80,
     127
+  ],
+  "python.linting.pydocstyleArgs": [
+    "--convention=google",
+    "--add-ignore=D415"
   ]
 }

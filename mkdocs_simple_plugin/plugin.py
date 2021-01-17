@@ -1,17 +1,18 @@
-""" md
-# MkDocs Simple Plugin
+"""md
+
+# Mkdocs Simple Plugin
 
 A plugin for MkDocs that builds a documentation website from markdown content
 interspersed within your code, in markdown files or in block comments in your
 source files.
 
-To summarize its operation briefly, `simple` will search your project directory
-tree for documentation. By default, Markdown files and graphics files will be
-copied to your documentation site. In addition, source files will be searched
-for markdown embedded in minimally-structured comment blocks; such content will
-be extracted into additional markdown files included in the documentation site.
+`simple` will search your project directory tree for documentation. By default,
+Markdown files and graphics files will be copied to your documentation site.
+Source files will also be searched for markdown embedded in minimally-structured
+comment blocks; these will be extracted into additional markdown files included
+in the documentation site.
 
-## Installation
+# Installation
 
 Install the plugin with pip.
 
@@ -21,9 +22,9 @@ pip install mkdocs-simple-plugin
 
 _Python 3.x, 3.5, 3.6, 3.7, 3.8, 3.9 supported._
 
-## Quick start
+# Quick start
 
-### Configuration file
+# Configuration file
 
 Create a `mkdocs.yml` file in the root of your directory and add the `simple`
 plugin to its plugin list.
@@ -35,7 +36,7 @@ plugins:
 - simple:
 ```
 
-### Build
+# Build
 
 Then, you can build the mkdocs from the command line.
 
@@ -43,22 +44,13 @@ Then, you can build the mkdocs from the command line.
 mkdocs build
 ```
 
-### Run a local server
+# Run a local server
 
 One of the best parts of mkdocs is the ability to serve (and update!) your
 documentation site locally.
 
 ```bash
 mkdocs serve
-```
-
-## Plugin settings
-
-The example YAML below shows all of the configuration parameters for the plugin
-and their default values.
-
-```yaml
-{{ config.mkdocs_simple_config }}
 ```
 
 """
@@ -77,17 +69,25 @@ import yaml
 
 
 class LazyFile:
-    """
+    """Create the file only if a non-empty string is written.
+
     Like a file object, but only ever creates the directory and opens the
     file if a non-empty string is written.
     """
 
     def __init__(self, directory, name):
+        """Initialize with a directory and file name."""
         self.file_directory = directory
         self.file_name = name
         self.file_object = None
 
+    def __eq__(self, other):
+        """Check equality if directory and names are the same."""
+        return self.file_directory == other.file_directory \
+            and self.file_name == other.file_name
+
     def write(self, arg):
+        """Create and write the file, only if not empty."""
         if arg == '':
             return
         if self.file_object is None:
@@ -97,53 +97,42 @@ class LazyFile:
         self.file_object.write(arg)
 
     def close(self):
+        """Finish the file."""
         if self.file_object is not None:
             self.file_object.close()
 
 
 class StreamExtract:
-    """
+    """Extract portions of files to an output stream.
+
     A StreamExtract object copies _input_stream_ to
     _output_stream_, extracting portions of the input_stream as specified
     by the keyword arguments to the constructor as documented for the
     "semiliterate" parameter of the `simple` plugin.
     """
 
-    def __init__(self, input_stream, output_stream,
-                 terminate=None, include_root=None, extract={},
-                 **ignore_other_kwargs):
+    def __init__(self, input_stream, output_folder, output_file, **kwargs):
+        """Initialze StreamExtract with input and output streams."""
         self.input_stream = input_stream
-        self.output_stream = output_stream
-        self.terminate = (terminate is not None) and re.compile(terminate)
-        self.include_root = include_root
-        self.active_mode = None
-        self.modes = []
-        for mode in extract if isinstance(extract, list) else [extract]:
-            add_mode = {}
-            add_mode['stop'] = ('stop' in mode) and re.compile(mode['stop'])
-            add_mode['replace'] = []
-            for item in mode.get('replace', []):
-                if isinstance(item, str):
-                    add_mode['replace'].append(re.compile(item))
-                else:
-                    add_mode['replace'].append((re.compile(item[0]), item[1]))
-            if 'start' in mode:
-                add_mode['start'] = re.compile(mode['start'])
-                self.modes.append(add_mode)
-            else:
-                self.active_mode = add_mode
+        self.output_folder = output_folder
+        self.output_file = output_file
+        self.output_stream = LazyFile(output_folder, output_file)
+        self.output_pattern = re.compile(r"file=(\w+.\w+)\s")
         self.wrote_something = False
 
     def transcribe(self, text):
+        """Write some text and record if something was written."""
         self.output_stream.write(text)
         if text:
             self.wrote_something = True
 
     def check_pattern(self, pattern, line, emit_last=True):
-        """ If _pattern_ is not false-y and is contained in _line_,
-            returns true (and if the _emit_last_ flag is true,
-            emits the last group of the match if any). Otherwise,
-            check_pattern does nothing but return false.
+        """Check if pattern is contained in line.
+
+        If _pattern_ is not false-y and is contained in _line_,
+        returns true (and if the _emit_last_ flag is true,
+        emits the last group of the match if any). Otherwise,
+        check_pattern does nothing but return false.
         """
         if not pattern:
             return False
@@ -154,32 +143,128 @@ class StreamExtract:
             self.transcribe(match_object[match_object.lastindex])
         return True
 
-    def extract(self):
-        """ Invoke this method to perform the extraction. Returns true if
-            any text is actually extracted, false otherwise.
-        """
-        for line in self.input_stream:
-            # Check terminate, regardless of state:
-            if self.check_pattern(self.terminate, line, self.active_mode):
-                return self.wrote_something
-            # Change state if flagged to do so:
-            if self.active_mode is None:
-                for mode in self.modes:
-                    if self.check_pattern(mode['start'], line):
-                        self.active_mode = mode
-                        break
-                continue
-            # We are extracting in some mode. See if we should stop:
-            if self.check_pattern(self.active_mode['stop'], line):
-                self.active_mode = None
-                continue
-            # Extract all other lines in the normal way:
-            self.extract_line(line)
+    def close(self):
+        """Returns true if something was written"""
+        utils.log.debug(
+            "        ... extracted {}".format(self.output_stream.file_name))
+        self.output_stream.close()
         return self.wrote_something
 
+    def set_output_stream(self, line):
+        """Set output stream from pattern match."""
+        match_object = self.output_pattern.search(line)
+        output_stream = LazyFile(self.output_folder, self.output_file)
+        if match_object:
+            output_stream = LazyFile(
+                self.output_folder,
+                match_object[1])
+
+        if self.output_stream != output_stream:
+            self.close()
+            self.output_stream = output_stream
+
+    def extract(self, terminate=None, patterns=None, **kwargs):
+        """Extract from file with semiliterate configuration.
+
+        Invoke this method to perform the extraction. Returns true if
+        any text is actually extracted, false otherwise.
+        """
+        active_pattern = None if patterns else ExtractionPattern()
+        for line in self.input_stream:
+            # Check terminate, regardless of state:
+            if self.check_pattern(terminate, line, active_pattern):
+                return self.close()
+            # Change state if flagged to do so:
+            if active_pattern is None:
+                for pattern in patterns:
+                    if not pattern.start or self.check_pattern(
+                            pattern.start, line):
+                        active_pattern = pattern
+                        self.set_output_stream(line)
+                        break
+                continue
+            # We are extracting. See if we should stop:
+            if self.check_pattern(active_pattern.stop, line):
+                active_pattern = None
+                continue
+            # Extract all other lines in the normal way:
+            self.extract_line(line, active_pattern)
+        return self.close()
+
+    def extract_line(self, line, extraction_pattern):
+        """Copy line to the output stream, applying specified replacements."""
+        line = extraction_pattern.replace_line(line)
+        self.transcribe(line)
+
+
+class Semiliterate:
+    """A semiliterate configuration."""
+
+    def __init__(
+            self,
+            pattern,
+            destination=None,
+            terminate=None,
+            extract=[]):
+        """Initialize semiliterate with pattern from configuration.
+
+        Args:
+            pattern (str): File matching pattern.
+            destination (str): Desitnation file pattern for extracted text.
+            terminate (str): Termination pattern.
+            extract (ExtractionPattern): Extraction parameters.
+
+        """
+        self.file_filter = re.compile(pattern)
+        self.destination = destination
+        self.terminate = (terminate is not None) and re.compile(terminate)
+        self.patterns = []
+        if isinstance(extract, dict):
+            # if there is only one extraction pattern, allow it to be a single
+            # dict entry
+            extract = [extract]
+        for pattern in extract:
+            self.patterns.append(ExtractionPattern(**pattern))
+
+    def filenname_match(self, name):
+        """Get the filename for the match, otherwise return None."""
+        name_match = self.file_filter.search(name)
+        if name_match:
+            new_name = os.path.splitext(name)[0] + '.md'
+            if self.destination:
+                new_name = name_match.expand(self.destination)
+            return new_name
+        return None
+
+
+class ExtractionPattern:
+    """An ExtractionPattern associated with a file pattern."""
+
+    def __init__(
+            self,
+            start=None,
+            stop=None,
+            replace=[]):
+        """Initialize an with an empty extraction pattern.
+
+        Args:
+            start (str): Start regex expression
+            stop (str): Stop regex expression
+            replace (list): List of (From, To) regex expressions
+
+        """
+        self.start = (start is not None) and re.compile(start)
+        self.stop = (stop is not None) and re.compile(stop)
+        self.replace = []
+        for item in replace:
+            if isinstance(item, str):
+                self.replace.append(re.compile(item))
+            else:
+                self.replace.append((re.compile(item[0]), item[1]))
+
     def replace_line(self, line):
-        """Apply the specified replacements to the line and return it"""
-        for item in self.active_mode['replace']:
+        """Apply the specified replacements to the line and return it."""
+        for item in self.replace:
             pattern = item[0] if isinstance(item, tuple) else item
             match_object = pattern.search(line)
             if match_object:
@@ -190,56 +275,36 @@ class StreamExtract:
                 return ''
         return line
 
-    def extract_line(self, line):
-        """Copy line to the output stream, applying all of the
-           specified replacements.
-        """
-        line = self.replace_line(line)
-        self.transcribe(line)
-
-
-def get_config_site_dir(config_file_path):
-    orig_config = mkdocs_config.load_config(config_file_path)
-    utils.log.debug(
-        "mkdocs-simple-plugin: loading file: {}".format(config_file_path))
-
-    utils.log.debug(
-        "mkdocs-simple-plugin: User config site_dir: {}".format(
-            orig_config.data['site_dir']))
-    return orig_config.data['site_dir']
-
 
 class SimplePlugin(BasePlugin):
-    """
-    SimplePlugin adds documentation throughout your repo to a mkdocs wiki.
-    """
+    """SimplePlugin adds documentation throughout your repo to a mkdocs wiki."""
 
     # md
-    # ### Configuration scheme
+    # ## Configuration scheme
     # /md
     config_scheme = (
         # md
-        # #### include_folders
+        # ### include_folders
         # Directories whose name matches a glob pattern in this list will be
         # searched for documentation
         # /md
         ('include_folders', config_options.Type(list, default=['*'])),
 
         # md
-        # #### ignore_folders
+        # ### ignore_folders
         # Directories whose name matches a glob pattern in this list will NOT be
         # searched for documentation.
         # /md
         ('ignore_folders', config_options.Type(list, default=[])),
 
         # md
-        # #### ignore_hidden
+        # ### ignore_hidden
         # Hidden directories will not be searched if this is true.
         # /md
         ('ignore_hidden', config_options.Type(bool, default=True)),
 
         # md
-        # #### merge_docs_dir
+        # ### merge_docs_dir
         # If true, the contents of the docs directory (if any) will be merged
         # at the same level as all other documentation.
         # Otherwise, the docs directory will be retained as a subdirectory in
@@ -248,7 +313,7 @@ class SimplePlugin(BasePlugin):
         ('merge_docs_dir', config_options.Type(bool, default=True)),
 
         # md
-        # #### include_extensions
+        # ### include_extensions
         # Any file in the searched directories whose name contains a string in
         # this list will simply be copied to the generated documentation.
         # /md
@@ -260,8 +325,9 @@ class SimplePlugin(BasePlugin):
                     ".jpg", ".jif", ".jfif", ".jp2", ".jpx", ".j2k",
                     ".j2c", ".fpx", ".pcd", ".png", ".pdf", "CNAME"
                 ])),
+
         # md
-        # #### semiliterate
+        # ### semiliterate
         # The semiliterate settings allows the extraction of markdown from
         # inside source files.
         # It is defined as a list of blocks of settings for different
@@ -269,11 +335,11 @@ class SimplePlugin(BasePlugin):
         # All regular expression parameters use ordinary Python `re` syntax.
         # The settings in each block are:
         #
-        # ##### pattern
+        # #### pattern
         # Any file in the searched directories whose name contains this
         # required regular expression parameter will be scanned.
         #
-        # ##### destination
+        # #### destination
         # By default, the extracted documentation will be copied to a file
         # whose name is generated by removing the (last) extension from the
         # original filename, if any, and appending `.md`. However, if this
@@ -303,6 +369,16 @@ class SimplePlugin(BasePlugin):
         # at any time. When an extraction is active, lines from the scanned
         # file are copied to the destination file (possibly modified by
         # the "replace" parameter below).
+        #
+        # Additionally, start can specify an output path for the extracted
+        # content. Simply add `file=output_path.md` to the start token line.
+        #
+        # Example:
+        #
+        # `````
+        # ```<md file=ouput_path.md>
+        # `````
+        #
         #
         # ###### stop
         # When this extraction mode is active and a line containing this
@@ -342,10 +418,10 @@ class SimplePlugin(BasePlugin):
         # ##### Standard behavior
         #
         # The default semiliterate patterns invoke the following automatic
-        # extraction of markdown content from your source files: (Note that if you
-        # add your own semiliterate patterns but want to also use any of these,
-        # you must reiterate the default pattern or patterns you want in your
-        # `mkdocs.yml` file.)
+        # extraction of markdown content from your source files: (Note that if
+        # you add your own semiliterate patterns but want to also use any of
+        # these, you must reiterate the default pattern or patterns you want in
+        # your `mkdocs.yml` file.)
         #
         # /md
         ('semiliterate',
@@ -353,60 +429,86 @@ class SimplePlugin(BasePlugin):
                 list,
                 default=[
                     {
-                        # md
-                        # * From Python (`.py`) files: triple-quoted strings
-                        #   starting with `""" md` and ending with `"""`, as
-                        #   well as line-comment blocks
-                        #   starting with `# md` and ending with `# /md`, from
-                        #   which leading `# ` is stripped.
-                        # /md
+                        # Python
                         'pattern': r'\.py$',
                         'extract': [
-                            {'start': r'"""\smd$', 'stop': r'"""'},
                             {
-                                'start': r'#\smd$',
-                                'stop': r'#\s\/md$',
-                                'replace': [r'^\s*# ?(.*\n?)$']
+                                # block comments starting with: `"""md`
+                                'start': r'^\s*"""\W?md\b',
+                                'stop': r'"""\s*$',
+                            },
+                            {
+                                # line comments starting with:
+                                # `# md` and ending with `# /md`
+                                'start': r'^\s*#+\W?md\b',
+                                'stop': r'#\s\/md\s*$',
+                                # strip leading spaces and `#``
+                                'replace': [r'^\s*# ?(.*\n?)$'],
                             }
                         ]
                     },
                     {
-                        # md
-                        #
-                        # * From C, C++, and Javascript files: block comments
-                        #   starting with `/** md` and ending with `**/`.
-                        # /md
-                        'pattern': r'\.(cpp|cc?|h|hpp|js)$',
-                        'extract': {
-                            'start': r'/\*\* md',
-                            'stop': r'\*\*/'
-                        }
+                        # C, C++, and Javascript
+                        'pattern': r'\.(cpp|cc?|hh?|hpp|js|css)$',
+                        'extract': [
+                            {
+                                # block comments starting with: `/** md`
+                                'start': r'^\s*/\*+\W?md\b',
+                                'stop': r'\*\*/\s*$',
+                            },
+                            {
+                                # in line comments starting with
+                                # `// md`, ending with `// end md`
+                                'start': r'^\s*\/\/+\W?md\b',
+                                'stop': r'\/\/\send\smd\s*$',
+                                # strip leading spaces and `//`
+                                'replace': [r'^\s*\/\/\s?(.*\n?)$'],
+                            }
+                        ]
+
                     },
                     {
-                        # md
-                        #
-                        # * And from YAML and Dockerfiles: line-comment blocks
-                        #   starting with `# md` and ending with `# /md`.
-                        # /md
+                        # YAML and Dockerfiles
                         'pattern': r'Dockerfile$|\.(dockerfile|ya?ml)$',
-                        'extract': {
-                            'start': r'#\smd$',
-                            'stop': r'#\s\/md$',
-                            # Remove the leading `#` from all extracted lines:
-                            'replace': [r'^\s*#? ?(.*\n?)$']
-                        }
+                        'extract': [{
+                            # line-comment blocks starting with
+                            # `# md` and ending with `# /md`
+                            'start': r'^\s*#+\W?md\b',
+                            'stop': r'#\s\/md\s*$',
+                            # strip leading spaces and `#`
+                            'replace': [r'^\s*#?\s?(.*\n?)$'],
+
+                        }]
+                    },
+                    {
+                        # HTML and xml
+                        'pattern': r'\.(html?|xml)$',
+                        'extract': [{
+                            # line-comment blocks starting with
+                            # `# md` and ending with `# /md`
+                            'start': r'<!--\W?md\b',
+                            'stop': r'-->\s*$',
+                        }]
                     },
                 ]))
     )
 
     def on_config(self, config, **kwargs):
-        # Dump configuration to documentation
+        """Update configuration to use a temporary build directory."""
+        # md
+        # ## Default configuration
+        #
+        # ```yaml
+        # {{ config.mkdocs_simple_config }}
+        # ```
+        # /md
         config['mkdocs_simple_config'] = yaml.dump(
             self.config.data,
             sort_keys=False,
             default_flow_style=False,
             allow_unicode=True,
             encoding=None)
+
         # Create a temporary build directory, and set some options to serve it
         # PY2 returns a byte string by default. The Unicode prefix ensures a
         # Unicode string is returned. And it makes MkDocs temp dirs easier to
@@ -414,7 +516,7 @@ class SimplePlugin(BasePlugin):
         self.build_docs_dir = tempfile.mkdtemp(
             prefix="mkdocs_simple_{}".format(
                 os.path.basename(os.path.dirname(config.config_file_path))))
-        utils.log.debug("mkdocs-simple-plugin: build_docs_dir: {}".format(
+        utils.log.info("mkdocs-simple-plugin: build_docs_dir: {}".format(
             self.build_docs_dir))
         # Clean out build folder on config
         shutil.rmtree(self.build_docs_dir, ignore_errors=True)
@@ -423,9 +525,6 @@ class SimplePlugin(BasePlugin):
         self.orig_docs_dir = config['docs_dir']
         # Update the docs_dir with our temporary one
         config['docs_dir'] = self.build_docs_dir
-        return config
-
-    def on_pre_build(self, config, **kwargs):
         self.include_folders = self.config['include_folders']
         self.ignore_folders = self.config['ignore_folders']
         self.ignore_hidden = self.config['ignore_hidden']
@@ -434,16 +533,33 @@ class SimplePlugin(BasePlugin):
         self.merge_docs_dir = self.config['merge_docs_dir']
         self.semiliterate = []
         for item in self.config['semiliterate']:
-            self.semiliterate.append(
-                # Note it is critical that the original item not be modified,
-                # so if this code is changed, the entry added to semiliterate
-                # needs to remain at least a shallow copy of `item`.
-                dict(item, pattern=re.compile(item['pattern'])))
+            self.semiliterate.append(Semiliterate(**item))
 
         # Always ignore the output paths
-        self.ignore_paths = [get_config_site_dir(config.config_file_path),
+        self.ignore_paths = [self.get_config_site_dir(config.config_file_path),
                              config['site_dir'],
                              self.build_docs_dir]
+        # BANDAID: Update pymdownx.snippets base path to temporary directory
+        # This is because relative paths are not yet supported.
+        if 'pymdownx.snippets' in config['markdown_extensions']:
+            utils.log.info("mkdocs-simple-plugin: found pymdownx.snippets")
+            config['mdx_configs'].update(
+                {'pymdownx.snippets':
+                    {'base_path': self.build_docs_dir}}
+            )
+        # BANDAID: Update markdown_include.include base path to temporary
+        # directory. This is because relative paths are not yet supported.
+        if 'markdown_include.include' in config['markdown_extensions']:
+            utils.log.info(
+                "mkdocs-simple-plugin: found markdown_include.include")
+            config['mdx_configs'].update(
+                {'markdown_include.include':
+                    {'base_path': self.build_docs_dir}}
+            )
+        return config
+
+    def on_pre_build(self, config, **kwargs):
+        """Build documentation directory with files according to settings."""
         # Copy contents of docs directory if merging
         if self.merge_docs_dir and os.path.exists(self.orig_docs_dir):
             self.copy_docs_directory(self.orig_docs_dir, self.build_docs_dir)
@@ -452,6 +568,7 @@ class SimplePlugin(BasePlugin):
         self.paths = self.build_docs()
 
     def on_serve(self, server, config, **kwargs):
+        """Add files to watch server."""
         builder = list(server.watcher._tasks.values())[0]['func']
 
         # still watch the original docs/ directory
@@ -465,6 +582,7 @@ class SimplePlugin(BasePlugin):
         return server
 
     def in_search_directory(self, directory, root):
+        """Check if directory should be searched."""
         if self.ignore_hidden and (directory[0] == "."
                                    or directory == "__pycache__"):
             return False
@@ -476,13 +594,31 @@ class SimplePlugin(BasePlugin):
         return True
 
     def in_include_directory(self, directory):
+        """Check if directory in include list."""
         return any(fnmatch.fnmatch(directory, filter)
                    for filter in self.include_folders)
 
     def in_extensions(self, file):
+        """Check if file is in include extensions."""
         return any(extension in file for extension in self.include_extensions)
 
+    def get_config_site_dir(self, config_file_path):
+        """Get configuration directory from mkdocs.yml file.
+
+        This is needed in the case you are running mkdocs serve, which
+        overwrites the path with a temporary one.
+        """
+        orig_config = mkdocs_config.load_config(config_file_path)
+        utils.log.debug(
+            "mkdocs-simple-plugin: loading file: {}".format(config_file_path))
+
+        utils.log.debug(
+            "mkdocs-simple-plugin: User config site_dir: {}".format(
+                orig_config.data['site_dir']))
+        return orig_config.data['site_dir']
+
     def build_docs(self):
+        """Build the docs directory from workspace files."""
         paths = []
         for root, directories, files in os.walk("."):
             if self.in_include_directory(root):
@@ -495,9 +631,7 @@ class SimplePlugin(BasePlugin):
         return paths
 
     def copy_file(self, from_directory, name, destination_directory):
-        """Copy the file in _from_directory_ named _name_ to the
-           destination_directory.
-        """
+        """Copy file with the same name to a new directory."""
         original = "{}/{}".format(from_directory, name)
         if self.in_extensions(name):
             new_file = "{}/{}".format(destination_directory, name)
@@ -514,43 +648,44 @@ class SimplePlugin(BasePlugin):
         return []
 
     def extract_from(self, from_directory, name, destination_directory):
-        """Extract content from the file in _from_directory_ named _name_
-           to a file or files in _destination_directory_, as specified by
-           the semiliterate parameters.
-        """
+        """Extract content from file into destination."""
         new_paths = []
         original = "{}/{}".format(from_directory, name)
         for item in self.semiliterate:
-            name_match = item['pattern'].search(name)
-            if name_match:
-                new_name = os.path.splitext(name)[0] + '.md'
-                if 'destination' in item:
-                    new_name = name_match.expand(item['destination'])
-                new_file = LazyFile(destination_directory, new_name)
+            filename = item.filenname_match(name)
+            if filename:
                 with open(original) as original_file:
                     utils.log.debug(
                         "mkdocs-simple-plugin: Scanning {}...".format(original))
                     productive = self.try_extraction(
-                        original_file, from_directory, new_file, **item)
-                    new_file.close()
+                        original_file=original_file,
+                        original_folder=from_directory,
+                        output_folder=destination_directory,
+                        output_file=filename,
+                        terminate=item.terminate,
+                        patterns=item.patterns)
                     if productive:
                         new_path = "{}/{}".format(destination_directory,
-                                                  new_name)
-                        utils.log.debug(
-                            "        ... extracted {}".format(new_path))
+                                                  filename)
                         new_paths.append((original, new_path))
         return new_paths
 
-    def try_extraction(self, original_file, root, new_file, **kwargs):
-        """Attempt to extract documentation from a single file
-           according to specific extraction parameters
-        """
+    def try_extraction(
+            self,
+            original_file,
+            output_folder,
+            output_file,
+            **kwargs):
+        """Try to extract from a single file with semiliterate parameters."""
         extraction = StreamExtract(
-            original_file, new_file, include_root=root, **kwargs)
-        return extraction.extract()
+            input_stream=original_file,
+            output_folder=output_folder,
+            output_file=output_file, **kwargs)
+        return extraction.extract(**kwargs)
 
     def copy_docs_directory(self, root_source_directory,
                             root_destination_directory):
+        """Copy all files from source to destination directory."""
         if sys.version_info >= (3, 8):
             # pylint: disable=unexpected-keyword-arg
             shutil.copytree(root_source_directory,

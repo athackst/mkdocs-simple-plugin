@@ -1,9 +1,11 @@
-""" md
+"""md
+
 ## Python Version
 
 You can put _markdown_ in triple-quoted strings in Python.
 
-You can even combine it with mkdocstrings to automatically generate your source documentation!
+You can even combine it with mkdocstrings to automatically generate your source
+documentation!
 
 ::: module.main
     handler: python
@@ -15,8 +17,7 @@ You can even combine it with mkdocstrings to automatically generate your source 
 
 
 def main():
-    """
-    This is a test function.  It takes no parameters.
+    """Test function which takes no parameters.
 
     It says "Hello, world!"
     """

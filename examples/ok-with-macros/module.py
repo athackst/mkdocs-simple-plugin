@@ -1,4 +1,5 @@
-""" md
+"""md
+
 ## Python Version
 
 You can put _markdown_ in triple-quoted strings in Python.
@@ -15,8 +16,7 @@ For example, here's the config file:
 
 
 def main():
-    """
-    This is a test function.  It takes no paramers.
+    """Test function which takes no parameters.
 
     It says "Hello, world!"
     """

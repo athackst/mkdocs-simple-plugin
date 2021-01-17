@@ -22,7 +22,7 @@ debugger() {
         echo "Failed Status Code ($status)"
     fi
     echo "--- OUTPUT ---"
-    echo $output
+    printf '%s\n' "${lines[@]}"
     echo "--------------"
     echo "--- CONFIG ---"
     cat mkdocs.yml
@@ -70,11 +70,14 @@ assertServeSuccess() {
 
 assertParGrep() {
     grep -E '<.?p>' site/$1/index.html > site/$1.grepout
-    echo "------File-------"
+    echo "--------------"
+    echo "-_---File-----"
     cat site/$1/index.html
+    echo "--------------"
     echo "-----Grep results-----"
     cat site/$1.grepout
     run diff $1.grepout site/$1.grepout
+    echo "--------------"
     [ "$status" -eq 0 ]
 }
 

@@ -1,0 +1,8 @@
+<p>You can even make snippets to be included as separate files.</p>
+<p>This is included using <code>pymdownx.snippets</code></p>
+<p>This is a snippet from module.py.</p>
+<p>This is included using <code>markdown_include.include</code></p>
+<p>This is a snippet from module.py.</p></div>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+                <p>
+                </p>

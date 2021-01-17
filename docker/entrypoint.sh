@@ -5,6 +5,7 @@ if [ -f "requirements.txt" ]; then
   pip install -r requirements.txt
 fi
 
-mkdocs_simple_gen --build
+mkdocs_simple_gen
+mkdocs build
 
 exec "$@"

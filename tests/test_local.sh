@@ -2,8 +2,8 @@
 
 set -e
 # Lint via flake8
-echo "Running test_flake8  -------->"
-./tests/test_flake8.sh
+echo "Running test_lint  -------->"
+./tests/test_lint.sh
 
 # End-to-end testing via Bats (Bash automated tests)
 function docker_run_integration_tests() {

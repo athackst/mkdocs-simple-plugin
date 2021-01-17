@@ -1,5 +1,5 @@
-# noqa: D205,D400
-""" md
+"""md
+
 # Mkdocs Simple Generator
 
 `mkdocs_simple_gen` is a program that will automatically create a `mkdocs.yml`

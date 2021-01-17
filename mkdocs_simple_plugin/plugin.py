@@ -122,6 +122,7 @@ class StreamExtract:
         """Initialze StreamExtract with input and output streams."""
         self.input_stream = input_stream
         self.output_stream = output_stream
+        self.output_pattern = re.compile(r"file=(\w+.\w+)\s")
         self.terminate = terminate
         self.patterns = patterns
         self.wrote_something = False
@@ -153,9 +154,24 @@ class StreamExtract:
         """Returns true if something was written"""
         if self.wrote_something:
             utils.log.debug(
-                "        ... extracted {}".format(self.output_stream))
+                "        ... extracted {}".format(self.output_stream.file_name))
         self.output_stream.close()
         return self.wrote_something
+
+    def set_output_stream(self, line):
+        """Set output stream from pattern match."""
+        match_object = self.output_pattern.search(line)
+        if not match_object:
+            return
+        output_stream = self.output_stream
+        if match_object:
+            output_stream = LazyFile(
+                self.output_stream.file_directory,
+                match_object[1])
+
+        if self.output_stream != output_stream:
+            self.close()
+            self.output_stream = output_stream
 
     def extract(self, **kwargs):
         """Extract from file with semiliterate configuration.
@@ -174,6 +190,7 @@ class StreamExtract:
                     if not pattern.start or self.check_pattern(
                             pattern.start, line):
                         active_pattern = pattern
+                        self.set_output_stream(line)
                         break
                 continue
             # We are extracting. See if we should stop:
@@ -244,13 +261,12 @@ class Semiliterate:
             return None
 
         productive = False
-        new_file = LazyFile(destination_directory, filename)
         with open(os.path.join(from_directory, from_file)) as original_file:
             utils.log.debug(
                 "mkdocs-simple-plugin: Scanning {}...".format(from_file))
             extraction = StreamExtract(
                 input_stream=original_file,
-                output_stream=new_file,
+                output_stream=LazyFile(destination_directory, filename),
                 terminate=self.terminate,
                 patterns=self.patterns,
                 **kwargs)
@@ -336,6 +352,13 @@ class SimplePlugin(BasePlugin):
         ('merge_docs_dir', config_options.Type(bool, default=True)),
 
         # md
+        # ### build_docs_dir
+        # If set, the directory where docs will be coallated to be build.
+        # Otherwise, the build docs directory will be a temporary directory.
+        # /md
+        ('build_docs_dir', config_options.Type(str, default='')),
+
+        # md
         # ### include_extensions
         # Any file in the searched directories whose name contains a string in
         # this list will simply be copied to the generated documentation.
@@ -392,6 +415,16 @@ class SimplePlugin(BasePlugin):
         # at any time. When an extraction is active, lines from the scanned
         # file are copied to the destination file (possibly modified by
         # the "replace" parameter below).
+        #
+        # Additionally, start can specify an output path for the extracted
+        # content. Simply add `file=output_path.md` to the start token line.
+        #
+        # Example:
+        #
+        # `````
+        # ```<md file=ouput_path.md>
+        # `````
+        #
         #
         # ###### stop
         # When this extraction mode is active and a line containing this
@@ -526,9 +559,11 @@ class SimplePlugin(BasePlugin):
         # PY2 returns a byte string by default. The Unicode prefix ensures a
         # Unicode string is returned. And it makes MkDocs temp dirs easier to
         # identify.
-        self.build_docs_dir = tempfile.mkdtemp(
-            prefix="mkdocs_simple_{}".format(
-                os.path.basename(os.path.dirname(config.config_file_path))))
+        self.build_docs_dir = self.config['build_docs_dir']
+        if not self.build_docs_dir:
+            self.build_docs_dir = tempfile.mkdtemp(
+                prefix="mkdocs_simple_{}".format(
+                    os.path.basename(os.path.dirname(config.config_file_path))))
         utils.log.info("mkdocs-simple-plugin: build_docs_dir: {}".format(
             self.build_docs_dir))
         # Clean out build folder on config
@@ -651,8 +686,8 @@ class SimplePlugin(BasePlugin):
                 from_directory, name, destination_directory)
             if filename:
                 original_path = os.path.join(from_directory, name)
-                new_path = os.path.join(destination_directory, filename)
-                new_paths.append((original_path, new_path))
+                new_path = os.path.join(destination_directory, name)
+                new_paths = [(original_path, new_path)]
 
         return new_paths
 

@@ -30,7 +30,6 @@
       "command": "mkdocs build --verbose",
       "dependsOrder": "sequence",
       "dependsOn": [
-        "pip install",
         "mkdocs_simple_gen"
       ],
       "problemMatcher": []
@@ -40,7 +39,7 @@
       "type": "shell",
       "command": "mkdocs serve",
       "dependsOn": [
-        "pip install"
+        "mkdocs_simple_gen"
       ],
       "problemMatcher": []
     },

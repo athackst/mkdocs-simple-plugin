@@ -15,7 +15,6 @@ plugins:
             - import sys
             - sys.path.append('examples/ok-with-mkdocstrings')
   - awesome-pages
-
 theme:
   name: material
   palette:

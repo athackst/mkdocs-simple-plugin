@@ -6,11 +6,11 @@ A plugin for MkDocs that builds a documentation website from markdown content
 interspersed within your code, in markdown files or in block comments in your
 source files.
 
-To summarize its operation briefly, `simple` will search your project directory
-tree for documentation. By default, Markdown files and graphics files will be
-copied to your documentation site. In addition, source files will be searched
-for markdown embedded in minimally-structured comment blocks; such content will
-be extracted into additional markdown files included in the documentation site.
+`simple` will search your project directory tree for documentation. By default,
+Markdown files and graphics files will be copied to your documentation site.
+Source files will also be searched for markdown embedded in minimally-structured
+comment blocks; these will be extracted into additional markdown files included
+in the documentation site.
 
 ## Installation
 
@@ -248,6 +248,7 @@ class SimplePlugin(BasePlugin):
                     ".jpg", ".jif", ".jfif", ".jp2", ".jpx", ".j2k",
                     ".j2c", ".fpx", ".pcd", ".png", ".pdf", "CNAME"
                 ])),
+
         # md
         # ### semiliterate
         # The semiliterate settings allows the extraction of markdown from
@@ -346,13 +347,13 @@ class SimplePlugin(BasePlugin):
                         'extract': [
                             {
                                 # block comments starting with: `"""md`
-                                'start': r'"""\W?md\b',
+                                'start': r'^\s*"""\W?md\b',
                                 'stop': r'"""\s*$',
                             },
                             {
                                 # line comments starting with:
                                 # `# md` and ending with `# /md`
-                                'start': r'#\W?md\b',
+                                'start': r'^\s*#+\W?md\b',
                                 'stop': r'#\s\/md\s*$',
                                 # strip leading spaces and `#``
                                 'replace': [r'^\s*# ?(.*\n?)$'],
@@ -365,13 +366,13 @@ class SimplePlugin(BasePlugin):
                         'extract': [
                             {
                                 # block comments starting with: `/** md`
-                                'start': r'/\*\*\W?md\b',
+                                'start': r'^\s*/\*+\W?md\b',
                                 'stop': r'\*\*/\s*$',
                             },
                             {
                                 # in line comments starting with
                                 # `// md`, ending with `// end md`
-                                'start': r'\/\/\W?md\b',
+                                'start': r'^\s*\/\/+\W?md\b',
                                 'stop': r'\/\/\send\smd\s*$',
                                 # strip leading spaces and `//`
                                 'replace': [r'^\s*\/\/\s?(.*\n?)$'],
@@ -385,7 +386,7 @@ class SimplePlugin(BasePlugin):
                         'extract': [{
                             # line-comment blocks starting with
                             # `# md` and ending with `# /md`
-                            'start': r'#\W?md\b',
+                            'start': r'^\s*#+\W?md\b',
                             'stop': r'#\s\/md\s*$',
                             # strip leading spaces and `#`
                             'replace': [r'^\s*#?\s?(.*\n?)$'],
@@ -420,6 +421,7 @@ class SimplePlugin(BasePlugin):
             default_flow_style=False,
             allow_unicode=True,
             encoding=None)
+
         # Create a temporary build directory, and set some options to serve it
         # PY2 returns a byte string by default. The Unicode prefix ensures a
         # Unicode string is returned. And it makes MkDocs temp dirs easier to

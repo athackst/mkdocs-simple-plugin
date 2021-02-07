@@ -13,11 +13,6 @@
       "label": "mkdocs_simple_gen",
       "type": "shell",
       "command": "mkdocs_simple_gen",
-      "options": {
-        "env": {
-          "PATH": "${env:PATH}:/home/vscode/.local/bin"
-        }
-      },
       "dependsOn": [
         "pip install"
       ],
@@ -33,11 +28,6 @@
       "label": "mkdocs build",
       "type": "shell",
       "command": "mkdocs build --verbose",
-      "options": {
-        "env": {
-          "PATH": "${env:PATH}:/home/vscode/.local/bin"
-        }
-      },
       "dependsOrder": "sequence",
       "dependsOn": [
         "pip install",
@@ -49,11 +39,6 @@
       "label": "mkdocs serve",
       "type": "shell",
       "command": "mkdocs serve",
-      "options": {
-        "env": {
-          "PATH": "${env:PATH}:/home/vscode/.local/bin"
-        }
-      },
       "dependsOn": [
         "pip install"
       ],
@@ -69,11 +54,6 @@
       "label": "test",
       "type": "shell",
       "command": "./tests/test_lint.sh && ./tests/test.bats",
-      "options": {
-        "env": {
-          "PATH": "${env:PATH}:/home/vscode/.local/bin"
-        }
-      },
       "dependsOn": [
         "pip install"
       ],
@@ -88,7 +68,7 @@
     {
       "label": "upgrade",
       "type": "shell",
-      "command": "pip3 install --upgrade pip && upgrade-requirements",
+      "command": "pip3 install --upgrade pip && pip-upgrade --skip-virtualenv-check",
       "problemMatcher": []
     },
     {

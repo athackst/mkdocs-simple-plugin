@@ -6,6 +6,7 @@ plugins:
       include_extensions:
         - .yml
         - .png
+        - .pages
   - macros
   - mkdocstrings:
       handlers:
@@ -13,8 +14,8 @@ plugins:
           setup_commands:
             - import sys
             - sys.path.append('examples/ok-with-mkdocstrings')
-  - awesome-pages:
-      collapse_single_pages: true
+  - awesome-pages
+
 theme:
   name: material
   palette:
@@ -37,13 +38,3 @@ extra:
     - icon: fontawesome/regular/laugh
       link: https://allisonthackston.com
 edit_uri: ''
-nav:
-  - About: README.md
-  - Mkdocs Simple Generator: mkdocs_simple_plugin/generator.md
-  - Mkdocs Simple Plugin: mkdocs_simple_plugin/plugin.md
-  - Github Action: action.md
-  - Docker: docker/README.md
-  - '... | examples/**/README.md'
-  - Developers:
-      - Developing: mkdocs_simple_plugin/README.md
-      - Contributing Guide: CONTRIBUTING.md

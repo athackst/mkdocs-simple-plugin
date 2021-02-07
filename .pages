@@ -1,0 +1,7 @@
+nav:
+    - About: README.md
+    - Mkdocs Simple: mkdocs_simple_plugin
+    - Github Action: action.md
+    - Docker: docker
+    - Examples: examples
+    - Contributing Guide: CONTRIBUTING.md

@@ -3,4 +3,3 @@ site/
 *.pyc
 build/
 dist/
-.vscode/.ropeproject/

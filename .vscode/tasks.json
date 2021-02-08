@@ -67,7 +67,7 @@
     {
       "label": "upgrade",
       "type": "shell",
-      "command": "pip3 install --upgrade pip && pip-upgrade --skip-virtualenv-check -p all",
+      "command": "pip3 install --upgrade pip && pip-upgrade --skip-virtualenv-check",
       "problemMatcher": []
     },
     {

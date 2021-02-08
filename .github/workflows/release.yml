@@ -20,14 +20,15 @@ jobs:
         with:
           token: ${{ secrets.RELEASEBOT_TOKEN}}
       - name: Setup environment (test)
-        if: github.ref != 'refs/heads/main'
+        if: github.event_name != 'release' && github.ref != 'refs/heads/main'
         run: |
+          echo "${{ github.ref }}"
           echo "DRY_RUN=1" >> $GITHUB_ENV
           echo "VERSION=test-tag-${{ github.run_number }}" >> $GITHUB_ENV
       - name: Setup environment (release)
-        if: github.ref == 'refs/heads/main'
+        if: github.event_name == 'release' || github.ref == 'refs/heads/main'
         run: |
-          echo "VERSION=$(/usr/bin/git tag --list | sed 's|.*v\([0-9\.]*\).*|\1|')" >> $GITHUB_ENV
+          echo "VERSION=$(git describe --tags `git rev-list --tags --max-count=1` | sed 's|.*v\([0-9\.]*\).*|\1|')" >> $GITHUB_ENV
       - name: Bump version
         run: |
           git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.com"

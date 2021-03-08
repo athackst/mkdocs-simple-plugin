@@ -1,6 +1,0 @@
-site_name: Example snippet extraction
-markdown_extensions:
-  - pymdownx.snippets:
-      check_paths: True
-  - markdown_include.include:
-      base_path: ./

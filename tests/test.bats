@@ -206,14 +206,6 @@ teardown() {
     assertParGrep module
 }
 
-@test "build a site extracted from source with snippet" {
-    cd ${fixturesDir}/ok-source-with-snippet
-    assertGen
-    assertValidSite
-    assertParGrep module
-    assertParGrep snippet
-}
-
 @test "serve a mkdocs site" {
     cd ${fixturesDir}/ok-mkdocs-docs
     assertGen

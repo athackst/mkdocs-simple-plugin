@@ -12,7 +12,7 @@ Source files will also be searched for markdown embedded in minimally-structured
 comment blocks; these will be extracted into additional markdown files included
 in the documentation site.
 
-# Installation
+## Installation
 
 Install the plugin with pip.
 
@@ -22,9 +22,9 @@ pip install mkdocs-simple-plugin
 
 _Python 3.x, 3.5, 3.6, 3.7, 3.8, 3.9 supported._
 
-# Quick start
+## Quick start
 
-# Configuration file
+### Configuration file
 
 Create a `mkdocs.yml` file in the root of your directory and add the `simple`
 plugin to its plugin list.
@@ -36,7 +36,7 @@ plugins:
 - simple:
 ```
 
-# Build
+### Build
 
 Then, you can build the mkdocs from the command line.
 
@@ -44,7 +44,7 @@ Then, you can build the mkdocs from the command line.
 mkdocs build
 ```
 
-# Run a local server
+### Run a local server
 
 One of the best parts of mkdocs is the ability to serve (and update!) your
 documentation site locally.
@@ -86,6 +86,10 @@ class LazyFile:
         return self.file_directory == other.file_directory \
             and self.file_name == other.file_name
 
+    def __str__(self):
+        """Return the full file path as a string."""
+        return os.path.join(self.file_directory, self.file_name)
+
     def write(self, arg):
         """Create and write the file, only if not empty."""
         if arg == '':
@@ -93,7 +97,10 @@ class LazyFile:
         if self.file_object is None:
             os.makedirs(self.file_directory, exist_ok=True)
             self.file_object = open(
-                f"{self.file_directory}/{self.file_name}", 'a+')
+                os.path.join(
+                    self.file_directory,
+                    self.file_name),
+                'a+')
         self.file_object.write(arg)
 
     def close(self):
@@ -103,21 +110,20 @@ class LazyFile:
 
 
 class StreamExtract:
-    """Extract portions of files to an output stream.
+    """Extract documentation portions of files to an output stream."""
 
-    A StreamExtract object copies _input_stream_ to
-    _output_stream_, extracting portions of the input_stream as specified
-    by the keyword arguments to the constructor as documented for the
-    "semiliterate" parameter of the `simple` plugin.
-    """
-
-    def __init__(self, input_stream, output_folder, output_file, **kwargs):
+    def __init__(
+            self,
+            input_stream,
+            output_stream,
+            terminate=None,
+            patterns=None,
+            **kwargs):
         """Initialze StreamExtract with input and output streams."""
         self.input_stream = input_stream
-        self.output_folder = output_folder
-        self.output_file = output_file
-        self.output_stream = LazyFile(output_folder, output_file)
-        self.output_pattern = re.compile(r"file=(\w+.\w+)\s")
+        self.output_stream = output_stream
+        self.terminate = terminate
+        self.patterns = patterns
         self.wrote_something = False
 
     def transcribe(self, text):
@@ -145,42 +151,29 @@ class StreamExtract:
 
     def close(self):
         """Returns true if something was written"""
-        utils.log.debug(
-            "        ... extracted {}".format(self.output_stream.file_name))
+        if self.wrote_something:
+            utils.log.debug(
+                "        ... extracted {}".format(self.output_stream))
         self.output_stream.close()
         return self.wrote_something
 
-    def set_output_stream(self, line):
-        """Set output stream from pattern match."""
-        match_object = self.output_pattern.search(line)
-        output_stream = LazyFile(self.output_folder, self.output_file)
-        if match_object:
-            output_stream = LazyFile(
-                self.output_folder,
-                match_object[1])
-
-        if self.output_stream != output_stream:
-            self.close()
-            self.output_stream = output_stream
-
-    def extract(self, terminate=None, patterns=None, **kwargs):
+    def extract(self, **kwargs):
         """Extract from file with semiliterate configuration.
 
         Invoke this method to perform the extraction. Returns true if
         any text is actually extracted, false otherwise.
         """
-        active_pattern = None if patterns else ExtractionPattern()
+        active_pattern = None if self.patterns else ExtractionPattern()
         for line in self.input_stream:
             # Check terminate, regardless of state:
-            if self.check_pattern(terminate, line, active_pattern):
+            if self.check_pattern(self.terminate, line, active_pattern):
                 return self.close()
             # Change state if flagged to do so:
             if active_pattern is None:
-                for pattern in patterns:
+                for pattern in self.patterns:
                     if not pattern.start or self.check_pattern(
                             pattern.start, line):
                         active_pattern = pattern
-                        self.set_output_stream(line)
                         break
                 continue
             # We are extracting. See if we should stop:
@@ -234,6 +227,36 @@ class Semiliterate:
             if self.destination:
                 new_name = name_match.expand(self.destination)
             return new_name
+        return None
+
+    def try_extraction(
+            self,
+            from_directory,
+            from_file,
+            destination_directory,
+            **kwargs):
+        """Try to extract documentation from file with name.
+
+        Returns filename if extraction was successful.
+        """
+        filename = self.filenname_match(from_file)
+        if not filename:
+            return None
+
+        productive = False
+        new_file = LazyFile(destination_directory, filename)
+        with open(os.path.join(from_directory, from_file)) as original_file:
+            utils.log.debug(
+                "mkdocs-simple-plugin: Scanning {}...".format(from_file))
+            extraction = StreamExtract(
+                input_stream=original_file,
+                output_stream=new_file,
+                terminate=self.terminate,
+                patterns=self.patterns,
+                **kwargs)
+            productive = extraction.extract()
+        if productive:
+            return filename
         return None
 
 
@@ -369,16 +392,6 @@ class SimplePlugin(BasePlugin):
         # at any time. When an extraction is active, lines from the scanned
         # file are copied to the destination file (possibly modified by
         # the "replace" parameter below).
-        #
-        # Additionally, start can specify an output path for the extracted
-        # content. Simply add `file=output_path.md` to the start token line.
-        #
-        # Example:
-        #
-        # `````
-        # ```<md file=ouput_path.md>
-        # `````
-        #
         #
         # ###### stop
         # When this extraction mode is active and a line containing this
@@ -539,23 +552,6 @@ class SimplePlugin(BasePlugin):
         self.ignore_paths = [self.get_config_site_dir(config.config_file_path),
                              config['site_dir'],
                              self.build_docs_dir]
-        # BANDAID: Update pymdownx.snippets base path to temporary directory
-        # This is because relative paths are not yet supported.
-        if 'pymdownx.snippets' in config['markdown_extensions']:
-            utils.log.info("mkdocs-simple-plugin: found pymdownx.snippets")
-            config['mdx_configs'].update(
-                {'pymdownx.snippets':
-                    {'base_path': self.build_docs_dir}}
-            )
-        # BANDAID: Update markdown_include.include base path to temporary
-        # directory. This is because relative paths are not yet supported.
-        if 'markdown_include.include' in config['markdown_extensions']:
-            utils.log.info(
-                "mkdocs-simple-plugin: found markdown_include.include")
-            config['mdx_configs'].update(
-                {'markdown_include.include':
-                    {'base_path': self.build_docs_dir}}
-            )
         return config
 
     def on_pre_build(self, config, **kwargs):
@@ -632,9 +628,9 @@ class SimplePlugin(BasePlugin):
 
     def copy_file(self, from_directory, name, destination_directory):
         """Copy file with the same name to a new directory."""
-        original = "{}/{}".format(from_directory, name)
+        original = os.path.join(from_directory, name)
         if self.in_extensions(name):
-            new_file = "{}/{}".format(destination_directory, name)
+            new_file = os.path.join(destination_directory, name)
             try:
                 os.makedirs(destination_directory, exist_ok=True)
                 shutil.copy(original, new_file)
@@ -650,38 +646,15 @@ class SimplePlugin(BasePlugin):
     def extract_from(self, from_directory, name, destination_directory):
         """Extract content from file into destination."""
         new_paths = []
-        original = "{}/{}".format(from_directory, name)
         for item in self.semiliterate:
-            filename = item.filenname_match(name)
+            filename = item.try_extraction(
+                from_directory, name, destination_directory)
             if filename:
-                with open(original) as original_file:
-                    utils.log.debug(
-                        "mkdocs-simple-plugin: Scanning {}...".format(original))
-                    productive = self.try_extraction(
-                        original_file=original_file,
-                        original_folder=from_directory,
-                        output_folder=destination_directory,
-                        output_file=filename,
-                        terminate=item.terminate,
-                        patterns=item.patterns)
-                    if productive:
-                        new_path = "{}/{}".format(destination_directory,
-                                                  filename)
-                        new_paths.append((original, new_path))
-        return new_paths
+                original_path = os.path.join(from_directory, name)
+                new_path = os.path.join(destination_directory, filename)
+                new_paths.append((original_path, new_path))
 
-    def try_extraction(
-            self,
-            original_file,
-            output_folder,
-            output_file,
-            **kwargs):
-        """Try to extract from a single file with semiliterate parameters."""
-        extraction = StreamExtract(
-            input_stream=original_file,
-            output_folder=output_folder,
-            output_file=output_file, **kwargs)
-        return extraction.extract(**kwargs)
+        return new_paths
 
     def copy_docs_directory(self, root_source_directory,
                             root_destination_directory):

@@ -1,9 +1,6 @@
 #!/bin/bash
 
 set -e
-# Lint via flake8
-echo "Running test_lint  -------->"
-./tests/test_lint.sh
 
 # End-to-end testing via Bats (Bash automated tests)
 function docker_run_integration_tests() {
@@ -25,8 +22,8 @@ if [[ ! -z "$PYTHON_37_ONLY" ]]; then
   docker_run_integration_tests "3.7"
 else
   docker_run_integration_tests "3"
-  docker_run_integration_tests "3.5"
   docker_run_integration_tests "3.6"
   docker_run_integration_tests "3.7"
   docker_run_integration_tests "3.8"
+  docker_run_integration_tests "3.9"
 fi

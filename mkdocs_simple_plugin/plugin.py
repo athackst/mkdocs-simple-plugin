@@ -81,6 +81,15 @@ class LazyFile:
         self.file_name = name
         self.file_object = None
 
+    def __eq__(self, other):
+        """Check equality if directory and names are the same."""
+        return self.file_directory == other.file_directory \
+            and self.file_name == other.file_name
+
+    def __str__(self):
+        """Return the full file path as a string."""
+        return os.path.join(self.file_directory, self.file_name)
+
     def write(self, arg):
         """Create and write the file, only if not empty."""
         if arg == '':
@@ -88,7 +97,10 @@ class LazyFile:
         if self.file_object is None:
             os.makedirs(self.file_directory, exist_ok=True)
             self.file_object = open(
-                f"{self.file_directory}/{self.file_name}", 'a+')
+                os.path.join(
+                    self.file_directory,
+                    self.file_name),
+                'a+')
         self.file_object.write(arg)
 
     def close(self):
@@ -98,38 +110,20 @@ class LazyFile:
 
 
 class StreamExtract:
-    """Extract portions of files to an output stream.
+    """Extract documentation portions of files to an output stream."""
 
-    A StreamExtract object copies _input_stream_ to
-    _output_stream_, extracting portions of the input_stream as specified
-    by the keyword arguments to the constructor as documented for the
-    "semiliterate" parameter of the `simple` plugin.
-    """
-
-    def __init__(self, input_stream, output_stream,
-                 terminate=None, include_root=None, extract={},
-                 **ignore_other_kwargs):
+    def __init__(
+            self,
+            input_stream,
+            output_stream,
+            terminate=None,
+            patterns=None,
+            **kwargs):
         """Initialze StreamExtract with input and output streams."""
         self.input_stream = input_stream
         self.output_stream = output_stream
-        self.terminate = (terminate is not None) and re.compile(terminate)
-        self.include_root = include_root
-        self.active_mode = None
-        self.modes = []
-        for mode in extract if isinstance(extract, list) else [extract]:
-            add_mode = {}
-            add_mode['stop'] = ('stop' in mode) and re.compile(mode['stop'])
-            add_mode['replace'] = []
-            for item in mode.get('replace', []):
-                if isinstance(item, str):
-                    add_mode['replace'].append(re.compile(item))
-                else:
-                    add_mode['replace'].append((re.compile(item[0]), item[1]))
-            if 'start' in mode:
-                add_mode['start'] = re.compile(mode['start'])
-                self.modes.append(add_mode)
-            else:
-                self.active_mode = add_mode
+        self.terminate = terminate
+        self.patterns = patterns
         self.wrote_something = False
 
     def transcribe(self, text):
@@ -155,34 +149,145 @@ class StreamExtract:
             self.transcribe(match_object[match_object.lastindex])
         return True
 
-    def extract(self):
+    def close(self):
+        """Returns true if something was written"""
+        if self.wrote_something:
+            utils.log.debug(
+                "        ... extracted {}".format(self.output_stream))
+        self.output_stream.close()
+        return self.wrote_something
+
+    def extract(self, **kwargs):
         """Extract from file with semiliterate configuration.
 
         Invoke this method to perform the extraction. Returns true if
         any text is actually extracted, false otherwise.
         """
+        active_pattern = None if self.patterns else ExtractionPattern()
         for line in self.input_stream:
             # Check terminate, regardless of state:
-            if self.check_pattern(self.terminate, line, self.active_mode):
-                return self.wrote_something
+            if self.check_pattern(self.terminate, line, active_pattern):
+                return self.close()
             # Change state if flagged to do so:
-            if self.active_mode is None:
-                for mode in self.modes:
-                    if self.check_pattern(mode['start'], line):
-                        self.active_mode = mode
+            if active_pattern is None:
+                for pattern in self.patterns:
+                    if not pattern.start or self.check_pattern(
+                            pattern.start, line):
+                        active_pattern = pattern
                         break
                 continue
-            # We are extracting in some mode. See if we should stop:
-            if self.check_pattern(self.active_mode['stop'], line):
-                self.active_mode = None
+            # We are extracting. See if we should stop:
+            if self.check_pattern(active_pattern.stop, line):
+                active_pattern = None
                 continue
             # Extract all other lines in the normal way:
-            self.extract_line(line)
-        return self.wrote_something
+            self.extract_line(line, active_pattern)
+        return self.close()
+
+    def extract_line(self, line, extraction_pattern):
+        """Copy line to the output stream, applying specified replacements."""
+        line = extraction_pattern.replace_line(line)
+        self.transcribe(line)
+
+
+class Semiliterate:
+    """A semiliterate configuration."""
+
+    def __init__(
+            self,
+            pattern,
+            destination=None,
+            terminate=None,
+            extract=[]):
+        """Initialize semiliterate with pattern from configuration.
+
+        Args:
+            pattern (str): File matching pattern.
+            destination (str): Desitnation file pattern for extracted text.
+            terminate (str): Termination pattern.
+            extract (ExtractionPattern): Extraction parameters.
+
+        """
+        self.file_filter = re.compile(pattern)
+        self.destination = destination
+        self.terminate = (terminate is not None) and re.compile(terminate)
+        self.patterns = []
+        if isinstance(extract, dict):
+            # if there is only one extraction pattern, allow it to be a single
+            # dict entry
+            extract = [extract]
+        for pattern in extract:
+            self.patterns.append(ExtractionPattern(**pattern))
+
+    def filenname_match(self, name):
+        """Get the filename for the match, otherwise return None."""
+        name_match = self.file_filter.search(name)
+        if name_match:
+            new_name = os.path.splitext(name)[0] + '.md'
+            if self.destination:
+                new_name = name_match.expand(self.destination)
+            return new_name
+        return None
+
+    def try_extraction(
+            self,
+            from_directory,
+            from_file,
+            destination_directory,
+            **kwargs):
+        """Try to extract documentation from file with name.
+
+        Returns filename if extraction was successful.
+        """
+        filename = self.filenname_match(from_file)
+        if not filename:
+            return None
+
+        productive = False
+        new_file = LazyFile(destination_directory, filename)
+        with open(os.path.join(from_directory, from_file)) as original_file:
+            utils.log.debug(
+                "mkdocs-simple-plugin: Scanning {}...".format(from_file))
+            extraction = StreamExtract(
+                input_stream=original_file,
+                output_stream=new_file,
+                terminate=self.terminate,
+                patterns=self.patterns,
+                **kwargs)
+            productive = extraction.extract()
+        if productive:
+            return filename
+        return None
+
+
+class ExtractionPattern:
+    """An ExtractionPattern associated with a file pattern."""
+
+    def __init__(
+            self,
+            start=None,
+            stop=None,
+            replace=[]):
+        """Initialize an with an empty extraction pattern.
+
+        Args:
+            start (str): Start regex expression
+            stop (str): Stop regex expression
+            replace (list): List of (From, To) regex expressions
+
+        """
+        self.start = (start is not None) and re.compile(start)
+        self.stop = (stop is not None) and re.compile(stop)
+        self.replace = []
+        for item in replace:
+            if isinstance(item, str):
+                self.replace.append(re.compile(item))
+            else:
+                self.replace.append((re.compile(item[0]), item[1]))
 
     def replace_line(self, line):
         """Apply the specified replacements to the line and return it."""
-        for item in self.active_mode['replace']:
+        for item in self.replace:
             pattern = item[0] if isinstance(item, tuple) else item
             match_object = pattern.search(line)
             if match_object:
@@ -192,11 +297,6 @@ class StreamExtract:
                     return match_object[match_object.lastindex]
                 return ''
         return line
-
-    def extract_line(self, line):
-        """Copy line to the output stream, applying specified replacements."""
-        line = self.replace_line(line)
-        self.transcribe(line)
 
 
 class SimplePlugin(BasePlugin):
@@ -446,11 +546,7 @@ class SimplePlugin(BasePlugin):
         self.merge_docs_dir = self.config['merge_docs_dir']
         self.semiliterate = []
         for item in self.config['semiliterate']:
-            self.semiliterate.append(
-                # Note it is critical that the original item not be modified,
-                # so if this code is changed, the entry added to semiliterate
-                # needs to remain at least a shallow copy of `item`.
-                dict(item, pattern=re.compile(item['pattern'])))
+            self.semiliterate.append(Semiliterate(**item))
 
         # Always ignore the output paths
         self.ignore_paths = [self.get_config_site_dir(config.config_file_path),
@@ -532,9 +628,9 @@ class SimplePlugin(BasePlugin):
 
     def copy_file(self, from_directory, name, destination_directory):
         """Copy file with the same name to a new directory."""
-        original = "{}/{}".format(from_directory, name)
+        original = os.path.join(from_directory, name)
         if self.in_extensions(name):
-            new_file = "{}/{}".format(destination_directory, name)
+            new_file = os.path.join(destination_directory, name)
             try:
                 os.makedirs(destination_directory, exist_ok=True)
                 shutil.copy(original, new_file)
@@ -550,33 +646,15 @@ class SimplePlugin(BasePlugin):
     def extract_from(self, from_directory, name, destination_directory):
         """Extract content from file into destination."""
         new_paths = []
-        original = "{}/{}".format(from_directory, name)
         for item in self.semiliterate:
-            name_match = item['pattern'].search(name)
-            if name_match:
-                new_name = os.path.splitext(name)[0] + '.md'
-                if 'destination' in item:
-                    new_name = name_match.expand(item['destination'])
-                new_file = LazyFile(destination_directory, new_name)
-                with open(original) as original_file:
-                    utils.log.debug(
-                        "mkdocs-simple-plugin: Scanning {}...".format(original))
-                    productive = self.try_extraction(
-                        original_file, from_directory, new_file, **item)
-                    new_file.close()
-                    if productive:
-                        new_path = "{}/{}".format(destination_directory,
-                                                  new_name)
-                        utils.log.debug(
-                            "        ... extracted {}".format(new_path))
-                        new_paths.append((original, new_path))
-        return new_paths
+            filename = item.try_extraction(
+                from_directory, name, destination_directory)
+            if filename:
+                original_path = os.path.join(from_directory, name)
+                new_path = os.path.join(destination_directory, filename)
+                new_paths.append((original_path, new_path))
 
-    def try_extraction(self, original_file, root, new_file, **kwargs):
-        """Try to extract from a single file with semiliterate parameters."""
-        extraction = StreamExtract(
-            original_file, new_file, include_root=root, **kwargs)
-        return extraction.extract()
+        return new_paths
 
     def copy_docs_directory(self, root_source_directory,
                             root_destination_directory):

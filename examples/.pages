@@ -1,2 +1,13 @@
 nav:
-    - ...
+    - Simple readme: examples/ok-mkdocs-readme
+    - Docs folder: examples/ok-mkdocs-docs/docs
+    - Ignore a folder: examples/ok-mkdocs-docs-ignore
+    - Extra extensions: examples/ok-mkdocs-docs-extensions
+    - Only include a specific folder: examples/ok-mkdocs-docs-include
+    - Merge into docs folder: examples/ok-mkdocs-docs-merge
+    - Don't merge docs folder: examples/ok-mkdocs-docs-no-merge
+    - Rename a file: examples/ok-with-rename
+    - Extract docs from source: examples/ok-source-extract
+    - Extract docs with macros: examples/ok-with-macros
+    - Extract docs with mkdocstrings: examples/ok-with-mkdocstrings
+    - Extract a snippet: examples/ok-source-with-snippet

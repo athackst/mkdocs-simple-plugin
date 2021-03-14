@@ -2,7 +2,15 @@
 
 This is the simplest documentation site you could have.  It's just a simple readme.
 
-Folder structure:
+## mkdocs.yml
+
+```yaml
+site_name: project
+plugins:
+  - simple
+```
+
+## Input
 
 ```
 project

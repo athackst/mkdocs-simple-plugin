@@ -1,7 +1,7 @@
-site_name: ok-with-macros
+site_name: project
 docs_dir: /tmp/mkdocs-simple/ok-with-macros/docs
 plugins:
-- search: null
+- search
 - simple:
     include_extensions:
       - '.yml'

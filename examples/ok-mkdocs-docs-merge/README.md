@@ -2,15 +2,13 @@
 
 This example shows how to merge a docs folder with other documentation.
 
-## Configuration
-
-mkdocs.yml
+## mkdocs.yml
 
 ```yaml
 {% include "examples/ok-mkdocs-docs-merge/mkdocs-test.yml" %}
 ```
 
-Folder structure:
+## InputF
 
 ```
 project

@@ -1,7 +1,6 @@
+site_name: project
 plugins:
   - simple:
       semiliterate:
       - pattern: '^foo.bar$'
         destination: baz.md
-
-site_name: ok-with-rename

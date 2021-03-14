@@ -1,5 +1,3 @@
 <p>block comments are added with <code>/** md</code> and conclude with <code>**\/</code> tags.</p>
 <p>line comments are added with <code>// md</code> and conclude with <code>// end md</code> tags</p></div>
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
-                <p>
-                </p>

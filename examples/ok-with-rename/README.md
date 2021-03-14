@@ -2,15 +2,13 @@
 
 This example shows how to rename a single file in the doc site.
 
-## Configuration
-
-mkdocs.yml
+## mkdocs.yml
 
 ```yaml
 {% include "examples/ok-with-rename/mkdocs-test.yml" %}
 ```
 
-Folder structure:
+## Input
 
 ```
 project

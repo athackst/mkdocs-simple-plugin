@@ -2,18 +2,16 @@
 
 This example shows how extensions are copied to the result
 
-## Configuration
-
-mkdocs.yml
+## mkdocs.yml
 
 ```yaml
 {% include "examples/ok-mkdocs-docs-extensions/mkdocs-test.yml" %}
 ```
 
-Folder structure:
+## Input
 
 ```
-ok-mkdocs-docs-extensions
+project
 │   README.md
 │   test.txt 
 ```
@@ -21,7 +19,7 @@ ok-mkdocs-docs-extensions
 ## Output
 
 ```
-ok-mkdocs-docs-extensions
+project
 │   README.md
 │   test.txt 
 │

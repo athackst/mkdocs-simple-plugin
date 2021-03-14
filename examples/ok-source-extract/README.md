@@ -2,15 +2,15 @@
 
 You can even extract markdown from a source file!
 
-## Configuration
+See output files [main.md](main.md) and [module.md](module.md)
 
-mkdocs.yml
+## mkdocs.yml
 
 ```yaml
 {% include "examples/ok-source-extract/mkdocs-test.yml" %}
 ```
 
-Folder structure:
+## Input
 
 ```
 project

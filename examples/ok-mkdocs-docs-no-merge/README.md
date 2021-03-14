@@ -2,15 +2,13 @@
 
 This example shows how to keep the docs folder embedded within your other docs.
 
-## Configuration
-
-mkdocs.yml
+## mkdocs.yml
 
 ```yaml
 {% include "examples/ok-mkdocs-docs-no-merge/mkdocs-test.yml" %}
 ```
 
-Folder structure:
+## Input
 
 ```
 project

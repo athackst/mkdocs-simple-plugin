@@ -1,5 +1,4 @@
+site_name: project
 plugins:
   - simple:
       include_folders: ["./subfolder**"]
-
-site_name: ok-mkdocs-docs-include

@@ -2,15 +2,13 @@
 
 This example shows how a subfolder can be ignored.
 
-## Configuration
-
-mkdocs.yml
+## mkdocs.yml
 
 ```yaml
 {% include "examples/ok-mkdocs-docs-ignore/mkdocs-test.yml" %}
 ```
 
-Folder structure:
+## Input
 
 ```
 project

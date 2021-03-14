@@ -4,5 +4,3 @@ lines.</p>
 <p>It works in docstrings. The start and end quotes must be on their own lines.
 Drawback: <code>simple</code> does not remove leading whitespace.</p></div>
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
-                <p>
-                </p>

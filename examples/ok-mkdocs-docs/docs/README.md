@@ -2,12 +2,18 @@
 
 This example shows how this plugin can be used with just a docs directory
 
-## Configuration
+## mkdocs.yml
 
-Folder structure:
+```yaml
+site_name: project
+plugins:
+  - simple
+```
+
+## Input
 
 ```
-ok-mkdocs-docs   
+project
 │
 └───docs
 │   │   README.md
@@ -16,7 +22,7 @@ ok-mkdocs-docs
 ## Output
 
 ```
-ok-mkdocs-docs
+project
 │
 └───docs
 │   │   README.md 

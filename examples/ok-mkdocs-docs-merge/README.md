@@ -8,7 +8,7 @@ This example shows how to merge a docs folder with other documentation.
 {% include "examples/ok-mkdocs-docs-merge/mkdocs-test.yml" %}
 ```
 
-## InputF
+## Input
 
 ```
 project

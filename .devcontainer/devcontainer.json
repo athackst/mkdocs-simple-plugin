@@ -39,9 +39,6 @@
 		"yzhang.markdown-all-in-one",
 		"shakram02.bash-beautify"
 	],
-	"appPort": [
-		8000
-	],
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "pip3 install --upgrade pip && pip3 install --user -r requirements.txt",
 

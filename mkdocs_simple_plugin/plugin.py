@@ -254,26 +254,27 @@ class Semiliterate:
             **kwargs):
         """Try to extract documentation from file with name.
 
-        Returns filename if extraction was successful.
+        Returns True if extraction was successful.
         """
-        filename = self.filenname_match(from_file)
-        if not filename:
-            return None
-
-        productive = False
-        with open(os.path.join(from_directory, from_file)) as original_file:
-            utils.log.debug(
-                "mkdocs-simple-plugin: Scanning {}...".format(from_file))
-            extraction = StreamExtract(
-                input_stream=original_file,
-                output_stream=LazyFile(destination_directory, filename),
-                terminate=self.terminate,
-                patterns=self.patterns,
-                **kwargs)
-            productive = extraction.extract()
-        if productive:
-            return filename
-        return None
+        to_file = self.filenname_match(from_file)
+        if not to_file:
+            return False
+        from_file_path = os.path.join(from_directory, from_file)
+        try:
+            with open(from_file_path) as original_file:
+                utils.log.debug(
+                    "mkdocs-simple-plugin: Scanning {}...".format(from_file))
+                extraction = StreamExtract(
+                    input_stream=original_file,
+                    output_stream=LazyFile(destination_directory, to_file),
+                    terminate=self.terminate,
+                    patterns=self.patterns,
+                    **kwargs)
+                return extraction.extract()
+        except BaseException:
+            utils.log.error("mkdocs-simple-plugin: could not build {}".format(
+                from_file_path))
+        return False
 
 
 class ExtractionPattern:
@@ -548,8 +549,10 @@ class SimplePlugin(BasePlugin):
         # {{ config.mkdocs_simple_config }}
         # ```
         # /md
+        default_config = dict((name, config_option.default)
+                              for name, config_option in self.config_scheme)
         config['mkdocs_simple_config'] = yaml.dump(
-            self.config.data,
+            default_config,
             sort_keys=False,
             default_flow_style=False,
             allow_unicode=True,
@@ -607,8 +610,8 @@ class SimplePlugin(BasePlugin):
             server.watch(self.orig_docs_dir, builder)
 
         # watch all the doc files
-        for orig, _ in self.paths:
-            server.watch(orig, builder)
+        for path in self.paths:
+            server.watch(path, builder)
 
         return server
 
@@ -655,14 +658,19 @@ class SimplePlugin(BasePlugin):
             if self.in_include_directory(root):
                 document_root = self.build_docs_dir + root[1:]
                 for f in files:
-                    paths.extend(self.copy_file(root, f, document_root))
-                    paths.extend(self.extract_from(root, f, document_root))
+                    copied = self.copy_file(root, f, document_root)
+                    extracted = self.extract_from(root, f, document_root)
+                    if copied or extracted:
+                        paths.append(os.path.join(root, f))
             directories[:] = [d for d in directories
                               if self.in_search_directory(d, root)]
         return paths
 
     def copy_file(self, from_directory, name, destination_directory):
-        """Copy file with the same name to a new directory."""
+        """Copy file with the same name to a new directory.
+
+        Returns true if file copied.
+        """
         original = os.path.join(from_directory, name)
         if self.in_extensions(name):
             new_file = os.path.join(destination_directory, name)
@@ -671,25 +679,24 @@ class SimplePlugin(BasePlugin):
                 shutil.copy(original, new_file)
                 utils.log.debug("mkdocs-simple-plugin: {} --> {}".format(
                     original, new_file))
-                return [(original, new_file)]
+                return True
             except Exception as e:
                 utils.log.warn(
                     "mkdocs-simple-plugin: error! {}.. skipping {}".format(
                         e, original))
-        return []
+        return False
 
     def extract_from(self, from_directory, name, destination_directory):
-        """Extract content from file into destination."""
-        new_paths = []
-        for item in self.semiliterate:
-            filename = item.try_extraction(
-                from_directory, name, destination_directory)
-            if filename:
-                original_path = os.path.join(from_directory, name)
-                new_path = os.path.join(destination_directory, name)
-                new_paths = [(original_path, new_path)]
+        """Extract content from file into destination.
 
-        return new_paths
+        Returns the name of the file extracted if extractable.
+        """
+        extracted = False
+        for item in self.semiliterate:
+            if item.try_extraction(from_directory, name, destination_directory):
+                extracted = True
+
+        return extracted
 
     def copy_docs_directory(self, root_source_directory,
                             root_destination_directory):

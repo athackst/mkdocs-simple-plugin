@@ -3,6 +3,7 @@ name: Draft release
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   update_release_draft:
@@ -16,3 +17,20 @@ jobs:
           config-name: release-drafter.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.RELEASEBOT_TOKEN }}
+      - name: Update setup.py
+        env:
+          VERSION: ${{ steps.release-draft.outputs.tag_name }}
+        run: |
+          echo "Bumping version to ${VERSION}"
+          sed "s/^    version=.*/    version='${VERSION}',/" -i setup.py
+          if ! git diff-index --quiet HEAD --; then
+            git config user.name github-actions
+            git config user.email github-actions@github.com
+            git add setup.py
+            git commit -m "Updating setup.py to ${VERSION}"
+            git push -f
+            echo "Pushed update to main"
+          fi

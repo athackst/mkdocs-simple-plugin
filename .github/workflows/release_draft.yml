@@ -25,11 +25,11 @@ jobs:
           VERSION: ${{ steps.release-draft.outputs.tag_name }}
         run: |
           echo "Bumping version to ${VERSION}"
-          sed "s/^    version=.*/    version='${VERSION}',/" -i setup.py
+          echo "${VERSION}" > VERSION
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add setup.py
-          if git commit -m "Updating setup.py to ${VERSION}"; then
+          git add VERSION
+          if git commit -m "Updating VERSION to ${VERSION}"; then
             git push -f
             echo "Pushed update to main"
           fi

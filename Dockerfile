@@ -3,6 +3,7 @@ FROM python:3.9-alpine
 WORKDIR /tmp
 COPY mkdocs_simple_plugin mkdocs_simple_plugin
 COPY README.md README.md
+COPY VERSION VERSION
 COPY setup.py setup.py
 
 RUN \

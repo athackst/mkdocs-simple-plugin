@@ -3,45 +3,16 @@ name: Release
 on:
   release:
     types: [published]
-  pull_request:
-    types:
-      - "labeled"
-      - "opened"
-      - "reopened"
-      - "synchronize"
   workflow_dispatch:
-    inputs:
-      version:
-        description: "version to release"
-        required: true
 
 jobs:
   deploy:
-    if: contains(github.event.pull_request.labels.*.name, 'test-deploy') || github.event_name == 'release' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.RELEASEBOT_TOKEN }}
-      - name: Setup environment (test)
-        if: github.event_name == 'pull_request'
-        run: |
-          echo "${{ github.ref }}"
-          echo "DRY_RUN=1" >> $GITHUB_ENV
-          echo "VERSION=test-tag-${{ github.run_number }}" >> $GITHUB_ENV
-      - name: Setup environment (release)
-        if: github.event_name == 'release' || github.ref == 'refs/heads/main'
+      - name: Setup environment
         run: |
           echo "VERSION=$(/usr/bin/git describe --tags `git rev-list --tags --max-count=1` | sed 's|.*v\([0-9\.]*\).*|\1|')" >> $GITHUB_ENV
-      - name: Setup environment (manual)
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
-      - name: Bump version
-        run: |
-          git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-          git config --local user.name "${GITHUB_ACTOR}"
-          .github/bump_tag.sh
       - name: Set up Python
         uses: actions/setup-python@v2.2.1
         with:
@@ -66,6 +37,3 @@ jobs:
             athackst/mkdocs-simple-plugin:latest
             athackst/mkdocs-simple-plugin:v${{ env.VERSION }}
           push: ${{ github.ref == 'refs/heads/main' }}
-      - name: Cleanup
-        run: |
-          .github/cleanup_tag.sh

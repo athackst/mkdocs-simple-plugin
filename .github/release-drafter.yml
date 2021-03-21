@@ -1,9 +1,9 @@
 name-template: "Release v$RESOLVED_VERSION"
 tag-template: "v$RESOLVED_VERSION"
 template: |
-  ## Get it
+  # Get it
 
-  ### Python
+  ## Python
 
   Install it with pip
 
@@ -12,21 +12,26 @@ template: |
   ```
   See it on pypi: [https://pypi.org/project/mkdocs-simple-plugin](https://pypi.org/project/mkdocs-simple-plugin/$RESOLVED_VERSION/)
 
-  ### Docker 
+  ## Docker 
 
   Pull it with docker
 
   ```bash
-  docker pull athackst/mkdocs-simple-plugin:latest
+  docker pull athackst/mkdocs-simple-plugin:v$RESOLVED_VERSION
   ```
 
   See it on dockerhub: [https://hub.docker.com/repository/docker/athackst/mkdocs-simple-plugin](https://hub.docker.com/repository/docker/athackst/mkdocs-simple-plugin)
 
-  ### Github
+  ## Github
+
+  ```yaml
+  - name: Build docs
+    uses: athackst/mkdocs-simple-plugin:v$RESOLVED_VERSION
+  ```
 
   See it in the actions marketplace: [https://github.com/marketplace/actions/mkdocs-simple-action](https://github.com/marketplace/actions/mkdocs-simple-action)
 
-  ## What’s Changed
+  # What’s Changed
 
   $CHANGES
 categories:

@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          token: ${{ secrets.RELEASEBOT_TOKEN}}
+          token: ${{ secrets.RELEASEBOT_TOKEN }}
       - name: Setup environment (test)
         if: github.event_name == 'pull_request'
         run: |

@@ -4,9 +4,12 @@ import setuptools
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+with open("VERSION", "r") as version_file:
+    version_num = version_file.read().strip()
+
 setuptools.setup(
     name='mkdocs-simple-plugin',
-    version='v0.5.0',
+    version=version_num,
     description='Plugin for adding simple wiki site creation from markdown files interspersed within your code with MkDocs.',
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -22,9 +25,8 @@ setuptools.setup(
     license='Apache-2.0',
     python_requires='>=3',
     install_requires=[
-        'mkdocs>=1.0.6',
-        'click>=7.1'
-    ],
+            'mkdocs>=1.0.6',
+            'click>=7.1'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
@@ -34,15 +36,8 @@ setuptools.setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9'
-    ],
+        'Programming Language :: Python :: 3.9'],
     packages=setuptools.find_packages(),
     entry_points={
-        'mkdocs.plugins': [
-            "simple = mkdocs_simple_plugin.plugin:SimplePlugin"
-        ],
-        'console_scripts': [
-            "mkdocs_simple_gen = mkdocs_simple_plugin.generator:main"
-        ]
-    }
-)
+        'mkdocs.plugins': ["simple = mkdocs_simple_plugin.plugin:SimplePlugin"],
+        'console_scripts': ["mkdocs_simple_gen = mkdocs_simple_plugin.generator:main"]})

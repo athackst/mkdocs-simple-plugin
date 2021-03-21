@@ -6,13 +6,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  release-pypi:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Setup environment
         run: |
-          echo "VERSION=$(/usr/bin/git describe --tags `git rev-list --tags --max-count=1` | sed 's|.*v\([0-9\.]*\).*|\1|')" >> $GITHUB_ENV
+          echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV
       - name: Set up Python
         uses: actions/setup-python@v2.2.1
         with:
@@ -23,6 +23,13 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
           .github/publish_pypi.sh
+  release-docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup environment
+        run: |
+          echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
@@ -35,5 +42,4 @@ jobs:
           file: ./Dockerfile
           tags: |
             athackst/mkdocs-simple-plugin:latest
-            athackst/mkdocs-simple-plugin:v${{ env.VERSION }}
-          push: ${{ github.ref == 'refs/heads/main' }}
+            athackst/mkdocs-simple-plugin:${{ env.VERSION }}

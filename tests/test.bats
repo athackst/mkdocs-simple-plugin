@@ -164,6 +164,14 @@ teardown() {
     assertFileExists site/test.txt
 }
 
+@test "use custom extraction parameters" {
+    cd ${fixturesDir}/ok-mkdocs-custom-extract
+    assertGen
+    assertValidSite
+    assertFileExists site/fibo/index.html
+    assertParGrep fibo
+}
+
 @test "ignore site directory" {
     cd ${fixturesDir}/ok-mkdocs-ignore-site-dir
     assertGen

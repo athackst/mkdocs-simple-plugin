@@ -174,7 +174,7 @@ class SimplePlugin(BasePlugin):
         # Example:
         #
         # `````
-        # ```<md file=ouput_path.md>
+        # # md file=ouput_path.md
         # `````
         #
         #
@@ -242,7 +242,7 @@ class SimplePlugin(BasePlugin):
                                 'stop': r'^\s*#\s?\/md\s*$',
                                 # strip leading spaces and `#``
                                 'replace': [r'^\s*# ?(.*\n?)$'],
-                                #                              
+                                #
                                 # ```python
                                 # # md
                                 # # This is a documentation comment.
@@ -275,7 +275,7 @@ class SimplePlugin(BasePlugin):
                                 'stop': r'^\s*\/\/\send\smd\s*$',
                                 # strip leading spaces and `//`
                                 'replace': [r'^\s*\/\/\s?(.*\n?)$'],
-                                #                              
+                                #
                                 # ```c
                                 # // md
                                 # // This is a documentation comment.
@@ -296,7 +296,7 @@ class SimplePlugin(BasePlugin):
                             'stop': r'#\s\/md\s*$',
                             # strip leading spaces and `#`
                             'replace': [r'^\s*#?\s?(.*\n?)$'],
-                            # 
+                            #
                             # ```yaml
                             # # md
                             # # This is a documentation comment.
@@ -313,9 +313,9 @@ class SimplePlugin(BasePlugin):
                             # `<!-- md` and ending with `-->`
                             'start': r'<!--\W?md\b',
                             'stop': r'-->\s*$',
-                            # 
+                            #
                             # ```xml
-                            # <!-- md 
+                            # <!-- md
                             # This is a documentation comment.
                             # -->
                             # ```

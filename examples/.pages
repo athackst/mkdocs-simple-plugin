@@ -3,6 +3,7 @@ nav:
     - Docs folder: examples/ok-mkdocs-docs/docs
     - Ignore a folder: examples/ok-mkdocs-docs-ignore
     - Extra extensions: examples/ok-mkdocs-docs-extensions
+    - Custom extraction: examples/ok-mkdocs-custom-extract
     - Only include a specific folder: examples/ok-mkdocs-docs-include
     - Merge into docs folder: examples/ok-mkdocs-docs-merge
     - Don't merge docs folder: examples/ok-mkdocs-docs-no-merge

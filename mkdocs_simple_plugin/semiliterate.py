@@ -119,6 +119,10 @@ class StreamExtract:
         any text is actually extracted, false otherwise.
         """
         active_pattern = None if self.patterns else ExtractionPattern()
+        for pattern in self.patterns:
+            if not pattern.start:
+                active_pattern = pattern
+
         for line in self.input_stream:
             # Check terminate, regardless of state:
             if self.check_pattern(self.terminate, line, active_pattern):
@@ -126,8 +130,7 @@ class StreamExtract:
             # Change state if flagged to do so:
             if active_pattern is None:
                 for pattern in self.patterns:
-                    if not pattern.start or self.check_pattern(
-                            pattern.start, line):
+                    if self.check_pattern(pattern.start, line):
                         active_pattern = pattern
                         self.set_output_stream(line)
                         break

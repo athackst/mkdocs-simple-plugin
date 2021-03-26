@@ -7,6 +7,8 @@ plugins:
         - .yml
         - .png
         - .pages
+        - .sh
+        - .bats
   - macros
   - mkdocstrings:
       handlers:
@@ -15,6 +17,7 @@ plugins:
             - import sys
             - sys.path.append('examples/ok-with-mkdocstrings')
   - awesome-pages
+repo_url: https://github.com/athackst/mkdocs-simple-plugin
 theme:
   name: material
   palette:

@@ -26,19 +26,19 @@ pip install -e .
 
 ## Testing
 
-Testing involves both linting with flake8
+Testing involves both linting with flake8 with the [script](/tests/test_lint.sh)
 
 ```bash
-./tests/test_flake8.sh
+./tests/test_lint.sh
 ```
 
-and testing with `bats`
+and testing with the [script](/tests/test.bats)
 
 ```bash
-./tests/integration/test.bats
+./tests/test.bats
 ```
 
-If you want to test against all the different versions of python, run the local test script.
+If you want to test against all the different versions of python, run the [script](/tests/test_local.sh)
 
 ```bash
 ./tests/test_local.sh

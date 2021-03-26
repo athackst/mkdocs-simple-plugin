@@ -1,0 +1,8 @@
+site_name: Custom Extraction
+plugins:
+  - simple:
+      semiliterate:
+        - pattern: '\.litcoffee'
+          extract:
+            - {stop: '^\s{4,}\S'}  # No start, so active from beginning
+            - {start: '# DOCPAGE', stop: '^\s{4,}\S'}

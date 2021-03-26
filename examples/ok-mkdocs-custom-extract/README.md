@@ -1,4 +1,4 @@
-# Custom extraction
+# Front matter extraction
 
 This example shows how to set up custom extraction modes. Litcoffee files
 consist of interspersed Markdown and Coffeescript code. The pattern

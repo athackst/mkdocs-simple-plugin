@@ -8,7 +8,8 @@ nav:
     - Don't merge docs folder: examples/ok-mkdocs-docs-no-merge
     - Rename a file: examples/ok-with-rename
     - Extract docs from source: examples/ok-source-extract
-    - Custom extraction: examples/ok-mkdocs-custom-extract
+    - Front matter extraction: examples/ok-mkdocs-custom-extract
+    - Advanced replacement: examples/ok-source-replace
     - Extract docs with macros: examples/ok-with-macros
     - Extract docs with mkdocstrings: examples/ok-with-mkdocstrings
     - Extract a snippet: examples/ok-source-with-snippet

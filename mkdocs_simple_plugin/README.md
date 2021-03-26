@@ -2,7 +2,8 @@
 
 ## Prerequisites
 
-You will need to have [MKDocs](https://www.mkdocs.org/) installed on your system.  I recommend installing it via pip to get the latest version.
+You will need to have [MKDocs](https://www.mkdocs.org/) installed on your system.
+I recommend installing it via pip to get the latest version.
 
 ```bash
 sudo apt-get install python-pip

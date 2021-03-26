@@ -220,6 +220,14 @@ teardown() {
     assertValidSite
     assertParGrep module
     assertParGrep snippet
+    assertParGrep snippet2
+}
+
+@test "build a site with custom replace" {
+    cd ${fixturesDir}/ok-source-replace
+    assertGen
+    assertValidSite
+    assertParGrep module
 }
 
 @test "serve a mkdocs site" {

@@ -16,30 +16,6 @@ pip install mkdocs-simple-plugin
 
 _Python 3.x, 3.6, 3.7, 3.8, 3.9 supported._
 
-## Usage
-
-```bash
-mkdocs_simple_gen
-```
-
-### Command line options
-
-See `--help`
-
-```txt
-Usage: mkdocs_simple_gen [OPTIONS]
-
-Options:
-  --build / --no-build      build the site using mkdocs build
-  --serve / --no-serve      serve the site using mkdocs serve
-  --help                    Show this message and exit.
-```
-
-default flags:
-
-```bash
-mkdocs_simple_gen --build --no-serve
-```
 """
 import click
 import tempfile
@@ -133,6 +109,32 @@ def main(build, serve, mkdocs_args):
         os.system("mkdocs serve " + " ".join(mkdocs_args))
 
 
+""" md
+## Usage
+
+```bash
+mkdocs_simple_gen
+```
+
+### Command line options
+
+See `--help`
+
+```txt
+Usage: mkdocs_simple_gen [OPTIONS]
+
+Options:
+  --build / --no-build      build the site using mkdocs build
+  --serve / --no-serve      serve the site using mkdocs serve
+  --help                    Show this message and exit.
+```
+
+default flags:
+
+```bash
+mkdocs_simple_gen --no-build --no-serve
+```
+"""
 if __name__ == "__main__":
     # pylint doesn't know how to parse the click decorators,
     # so disable no-value-for-parameter on main

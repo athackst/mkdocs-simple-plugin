@@ -1,0 +1,17 @@
+site_name: project
+plugins:
+  - simple:
+      semiliterate:
+        - pattern: \.py$
+          extract:
+            - start: ^\s*"""\W?md\b
+              stop: ^\s*"""\s*$
+              replace: 
+                # replace "foo" withe "bar"
+                - ["(.*)foo(.*)$", "\\1bar\\2"] 
+                # only capture what's after args and replace with paramter prefix
+                - ["args:(.*)$","parameters:\\1"] 
+                # capture everything after `onlythis:`
+                - "onlythis:(.*)$"
+                # drop lines starting with drop 
+                - "^drop"

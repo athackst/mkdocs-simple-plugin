@@ -1,6 +1,6 @@
+<h2 id="python-version">Python Version</h2>
 <p>You can put <em>markdown</em> in triple-quoted strings in Python.</p>
 <p>You can even replace things!</p>
 <p>You should see bar replaced by bar in this sentence.</p>
 <p>parameters: This line should start with <code>parameters</code>.</p>
 <p>Only this is captured.</p></div>
-            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>

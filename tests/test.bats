@@ -69,14 +69,18 @@ assertServeSuccess() {
 }
 
 assertParGrep() {
-    grep -E '<.?p>' site/$1/index.html > site/$1.grepout
+    cat site/$1/index.html | \
+        awk '/<div class="col-md-9" role="main">/,/<footer class="col-md-12">/' | \
+        sed '1d; $d'  | head -n -3 > site/$1.grepout
+    # BANDAID: fix mkdocstrings id order for 3.6/3.7
+    sed -i 's/<h3 class="doc doc-heading" id="module.main">/<h3 id="module.main" class="doc doc-heading">/g' site/$1.grepout
     echo "--------------"
     echo "-_---File-----"
-    cat site/$1/index.html
-    echo "--------------"
+    echo `pwd`/site/$1/index.html
     echo "-----Grep results-----"
+    run diff --ignore-blank-lines --ignore-all-space $1.grepout site/$1.grepout
+    echo "-----Output-----"
     cat site/$1.grepout
-    run diff $1.grepout site/$1.grepout
     echo "--------------"
     [ "$status" -eq 0 ]
 }

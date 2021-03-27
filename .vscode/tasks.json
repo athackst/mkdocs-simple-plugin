@@ -46,7 +46,7 @@
     {
       "label": "clean",
       "type": "shell",
-      "command": "sudo rm -rf site/ build/ dist/ **/site/ *.egg-info/ **/__pycache__/  **/docs_/ ${fixturesDir}/*/mkdocs.yml",
+      "command": "sudo rm -rf site/ build/ dist/ *.egg-info/ **/__pycache__/  **/docs_/ examples/*/mkdocs.yml examples/*/site/ ",
       "problemMatcher": []
     },
     {

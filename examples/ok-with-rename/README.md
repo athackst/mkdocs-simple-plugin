@@ -1,31 +1,34 @@
-# One-off rename
-
-This example shows how to rename a single file in the doc site.
+<!-- DO NOT EDIT! This file is auto-generated from README.md.ninja -->
+# Rename a file
 
 ## mkdocs.yml
 
 ```yaml
-{% include "examples/ok-with-rename/mkdocs-test.yml" %}
+# This example shows how to rename a single file in the doc site.
+site_name: project
+plugins:
+  - simple:
+      semiliterate:
+      - pattern: '^foo.bar$'
+        destination: baz.md
 ```
-
 ## Input
 
 ```
-project
-│   README.md
-|   foo.bar
+ok-with-rename/
+├── foo.bar
+├── mkdocs.yml
+└── README.md
 ```
+
+
 
 ## Output
 
 ```
-project
-│   README.md
-|   foo.bar
-|
-└───site
-│   │   index.html
-|   |    
-|   └───baz
-|         │   index.html
+site/
+├── baz/
+│   └── index.html
+└── index.html
 ```
+

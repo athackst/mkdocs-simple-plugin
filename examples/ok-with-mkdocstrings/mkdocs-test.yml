@@ -1,3 +1,6 @@
+# You can even use this with other plugins, like 
+# [mkdocstrings](https://pypi.org/project/mkdocstrings/), to achieve advanced 
+# configurations.
 site_name: project
 plugins:
   - simple

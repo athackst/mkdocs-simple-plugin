@@ -1,3 +1,4 @@
+# This example shows how extensions are copied to the result
 site_name: project
 plugins:
   - simple:

@@ -2,9 +2,12 @@
 
 Here's a printout of the plugin's config file, which I've included using a jinja-style macro.
 
-```yaml
-{% include "mkdocs.yml" %}
-```
+`````yaml
+{% if test %}
+{% include "mkdocs-test.yml" %}
+{% else %}{% include "examples/ok-with-macros/mkdocs-test.yml" %}
+{% endif %}
+`````
 
 And the extracted module documentation also includes the config file.
 

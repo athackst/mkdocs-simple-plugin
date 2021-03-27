@@ -1,28 +1,29 @@
-# Only a single readme
-
-This is the simplest documentation site you could have.  It's just a simple readme.
+<!-- DO NOT EDIT! This file is auto-generated from README.md.ninja -->
+# Simple readme
 
 ## mkdocs.yml
 
 ```yaml
+# This is the simplest documentation site you could have.  
+# It's just a simple readme.
 site_name: project
 plugins:
   - simple
 ```
-
 ## Input
 
 ```
-project
-│   README.md
+ok-mkdocs-readme/
+├── mkdocs.yml
+└── README.md
 ```
+
+
 
 ## Output
 
 ```
-project
-│   README.md
-│
-└───site
-│   │   index.html
+site/
+└── index.html
 ```
+

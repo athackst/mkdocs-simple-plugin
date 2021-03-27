@@ -1,3 +1,4 @@
+# This example shows how to merge a docs folder with other documentation.
 site_name: project
 plugins:
   - simple

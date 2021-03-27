@@ -1,3 +1,4 @@
+# This example shows how to only include from a specific folder
 site_name: project
 plugins:
   - simple:

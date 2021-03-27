@@ -1,3 +1,4 @@
+# This example shows how to replace lines with regex expressions!
 site_name: project
 plugins:
   - simple:

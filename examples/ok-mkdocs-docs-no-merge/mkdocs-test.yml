@@ -1,3 +1,4 @@
+# This example shows how to keep the docs folder embedded within your other docs.
 site_name: project
 plugins:
   - simple:

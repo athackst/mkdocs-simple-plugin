@@ -1,0 +1,34 @@
+<!-- DO NOT EDIT! This file is auto-generated from README.md.ninja -->
+# {{ title }}
+
+## mkdocs.yml
+
+```yaml
+{% include mkdocs_config %}
+```
+## Input
+
+```
+{{ input_tree }}
+```
+
+{% for file in input_files %}
+**{{ file.name }}**
+```{{ file.type }}
+{{ "{% raw %}" }}
+{{ include_file(file.path) }}
+{{ "{% endraw %}" }}
+```
+{% endfor %}
+
+## Output
+
+```
+{{ output_tree }}
+```
+
+{% for file in output_files %}
+<div class="admonition quote">
+<p class="admonition-title">{{ file.stem }}</p>
+{% include file.path %}
+{% endfor %}

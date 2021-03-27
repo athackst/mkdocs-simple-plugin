@@ -1,0 +1,5 @@
+# This is the simplest documentation site you could have.  
+# It's just a simple readme.
+site_name: project
+plugins:
+  - simple

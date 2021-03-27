@@ -329,10 +329,11 @@ class SimplePlugin(BasePlugin):
         if self.ignore_hidden and (directory[0] == "."
                                    or directory == "__pycache__"):
             return False
-        if any(fnmatch.fnmatch(directory, filter)
-                for filter in self.ignore_folders):
+        path = os.path.join(root, directory)
+        if os.path.abspath(path) in self.ignore_paths:
             return False
-        if os.path.abspath(os.path.join(root, directory)) in self.ignore_paths:
+        if any(fnmatch.fnmatch(path[2:], filter)
+                for filter in self.ignore_folders):
             return False
         return True
 

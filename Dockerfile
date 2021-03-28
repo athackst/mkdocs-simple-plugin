@@ -35,4 +35,4 @@ COPY docker/deploy.sh /usr/local/bin/
 COPY docker/entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["entrypoint.sh"]
 
-CMD ["mkdocs", "serve", "-a", "0.0.0.0:8000"]
+CMD ["mkdocs_simple_gen", "--serve", "--", "-a", "0.0.0.0:8000"]

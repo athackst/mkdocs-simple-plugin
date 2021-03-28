@@ -65,7 +65,7 @@ inputs:
     required: false
     default: material
   config:
-    description: "Configuration settings"
+    description: "Configuration file"
     required: false
 runs:
   using: "docker"

@@ -168,7 +168,7 @@ class SimplePlugin(BasePlugin):
                                 'start': r'^\s*#+\W?md\b',
                                 'stop': r'^\s*#\s?\/md\s*$',
                                 # stripping leading spaces and `#``,
-				# and only capturing comment lines.
+                                # and only capturing comment lines.
                                 'replace': [r'^\s*# ?(.*\n?)$', r'^.*$'],
                                 #
                                 # ```python

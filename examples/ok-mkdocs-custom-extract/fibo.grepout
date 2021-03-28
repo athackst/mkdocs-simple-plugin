@@ -1,4 +1,5 @@
 <p>This paragraph is here to make sure the extraction starts immediately.</p>
+<h1 id="coffee-fibonacci">Coffee Fibonacci</h1>
 <p>Although trite, this is an example of the sum recurrence.</p>
+<h2 id="complexity">Complexity</h2>
 <p>This note about complexity will appear in the doc page.</p></div>
-            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>

@@ -28,7 +28,7 @@ You may be wondering why you would want to generate a static site for your proje
 
     Finally, you may be interested in this plugin if you have a desire for stylized documentation, but don't want to invest the time/energy in replicating information you already have in your README.md files or in block comments in your code, and you want to keep them where they are (thank you very much).
 
-See [mkdocs-simple-plugin](http://athackst.github.io/mkdocs-simple-plugin) for usage.
+See [mkdocs-simple-plugin](http://athackst.github.io/mkdocs-simple-plugin/mkdocs_simple_plugin/plugin/ for usage.
 
 ## Contributing
 

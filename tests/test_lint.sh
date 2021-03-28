@@ -6,5 +6,4 @@ flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude=set
 flake8 . --count --exit-zero --max-complexity=10 --max-line-length=80 --statistics --exclude=setup.py
 
 echo "Running pydocstyle"
-# pydocstyle --count --convention=google --add-ignore=D415 mkdoc_simple_plugin/ examples/
-pydocstyle --count --convention=google --add-ignore=D415 .
+pydocstyle --count --convention=google --add-ignore=D415,D107 .

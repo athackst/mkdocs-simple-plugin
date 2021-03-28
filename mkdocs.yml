@@ -9,6 +9,7 @@ plugins:
         - .pages
         - .sh
         - .bats
+        - .py
   - macros
   - mkdocstrings:
       handlers:

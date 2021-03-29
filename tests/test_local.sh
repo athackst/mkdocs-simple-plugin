@@ -40,12 +40,11 @@ docker build -t mkdocs-simple-test-runner:$1 -f- . <<EOF
   RUN apt-get -y update && apt-get -yyy install bats gcc
   RUN pip install -r /workspace/requirements.txt
   COPY . /workspace
-  ENTRYPOINT ["bats"]
+  WORKDIR /workspace
 EOF
 
 echo "Running E2E tests via Bats in Docker (python:$1) -------->"
-docker run --rm -it -w /workspace mkdocs-simple-test-runner:$1 tests/test_lint.sh
-docker run --rm -it -w /workspace mkdocs-simple-test-runner:$1 tests/test.bats
+docker run --rm -it mkdocs-simple-test-runner:$1 test.sh
 }
 
 if [[ ! -z "$PYTHON_37_ONLY" ]]; then

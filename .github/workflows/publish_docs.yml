@@ -12,4 +12,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build Docs
-        uses: ./
+        run: ./build.sh

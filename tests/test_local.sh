@@ -1,4 +1,34 @@
 #!/bin/bash
+# md file="testing.snippet"
+# 
+# ### Lint
+# 
+# Lint to test style conformity
+# 
+# ```bash
+# ./tests/test_lint.sh
+# ```
+# 
+# ### Integration tests
+# 
+# Integration testing uses bats
+# 
+# ```bash
+# sudo apt-get install bats
+# ```
+# #### Tests
+# 
+# ```bash
+# ./tests/test.bats
+# ```
+# 
+# #### Python versions
+# 
+# ```bash
+# ./tests/test_local.sh
+# ```
+# {% include "versions.snippet" %}
+# /md
 
 set -e
 
@@ -11,11 +41,11 @@ docker build -t mkdocs-simple-test-runner:$1 -f- . <<EOF
   RUN pip install -r /workspace/requirements.txt
   COPY . /workspace
   ENTRYPOINT ["bats"]
-  CMD ["/workspace/tests/test.bats"]
 EOF
 
 echo "Running E2E tests via Bats in Docker (python:$1) -------->"
-docker run --rm -it -w /workspace mkdocs-simple-test-runner:$1
+docker run --rm -it -w /workspace mkdocs-simple-test-runner:$1 tests/test_lint.sh
+docker run --rm -it -w /workspace mkdocs-simple-test-runner:$1 tests/test.bats
 }
 
 if [[ ! -z "$PYTHON_37_ONLY" ]]; then

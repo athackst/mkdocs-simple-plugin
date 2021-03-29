@@ -45,6 +45,7 @@
       "label": "mkdocs serve",
       "type": "shell",
       "command": "mkdocs serve --verbose",
+      "dependsOrder": "sequence",
       "dependsOn": [
         "mkdocs_simple_gen",
         "gen_readme"

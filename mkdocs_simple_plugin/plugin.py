@@ -20,7 +20,7 @@ Install the plugin with pip.
 pip install mkdocs-simple-plugin
 ```
 
-_Python 3.x, 3.5, 3.6, 3.7, 3.8, 3.9 supported._
+{% include "versions.snippet" %}
 
 ## Settings
 
@@ -216,8 +216,8 @@ class SimplePlugin(BasePlugin):
 
                     },
                     {
-                        # #### YAML and Dockerfiles
-                        'pattern': r'Dockerfile$|\.(dockerfile|ya?ml)$',
+                        # #### YAML, Dockerfiles, and scripts
+                        'pattern': r'Dockerfile$|\.(dockerfile|ya?ml|sh)$',
                         'extract': [{
                             # line-comment blocks starting with
                             # `# md` and ending with `# /md`,

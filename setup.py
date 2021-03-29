@@ -41,3 +41,7 @@ setuptools.setup(
     entry_points={
         'mkdocs.plugins': ["simple = mkdocs_simple_plugin.plugin:SimplePlugin"],
         'console_scripts': ["mkdocs_simple_gen = mkdocs_simple_plugin.generator:main"]})
+
+# md file="versions.snippet"
+# _Python 3.x, 3.6, 3.7, 3.8, 3.9 supported._
+# /md

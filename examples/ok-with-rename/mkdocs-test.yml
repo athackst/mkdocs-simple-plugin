@@ -1,3 +1,4 @@
+# This example shows how to rename a single file in the doc site.
 site_name: project
 plugins:
   - simple:

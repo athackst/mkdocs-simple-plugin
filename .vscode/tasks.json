@@ -10,6 +10,12 @@
       "problemMatcher": []
     },
     {
+      "label": "pip install",
+      "type": "shell",
+      "command": "pip install -e . ",
+      "problemMatcher": []
+    },
+    {
       "label": "mkdocs_simple_gen",
       "type": "shell",
       "command": "mkdocs_simple_gen",
@@ -19,9 +25,9 @@
       "problemMatcher": []
     },
     {
-      "label": "pip install",
+      "label": "gen_readme",
       "type": "shell",
-      "command": "pip install -e . ",
+      "command": "./examples/gen_readme.py",
       "problemMatcher": []
     },
     {
@@ -30,16 +36,18 @@
       "command": "mkdocs build --verbose",
       "dependsOrder": "sequence",
       "dependsOn": [
-        "mkdocs_simple_gen"
+        "mkdocs_simple_gen",
+        "gen_readme"
       ],
       "problemMatcher": []
     },
     {
       "label": "mkdocs serve",
       "type": "shell",
-      "command": "mkdocs serve",
+      "command": "mkdocs serve --verbose",
       "dependsOn": [
-        "mkdocs_simple_gen"
+        "mkdocs_simple_gen",
+        "gen_readme"
       ],
       "problemMatcher": []
     },

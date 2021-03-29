@@ -1,29 +1,31 @@
-# Include an extra extension
-
-This example shows how extensions are copied to the result
+<!-- DO NOT EDIT! This file is auto-generated from README.md.ninja -->
+# Extra extensions
 
 ## mkdocs.yml
 
 ```yaml
-{% include "examples/ok-mkdocs-docs-extensions/mkdocs-test.yml" %}
+# This example shows how extensions are copied to the result
+site_name: project
+plugins:
+  - simple:
+      include_extensions: [".txt"]
 ```
-
 ## Input
 
 ```
-project
-│   README.md
-│   test.txt 
+ok-mkdocs-docs-extensions/
+├── mkdocs.yml
+├── README.md
+└── test.txt
 ```
+
+
 
 ## Output
 
 ```
-project
-│   README.md
-│   test.txt 
-│
-└───site
-│   │   index.html
-│   │   test.txt
+site/
+├── index.html
+└── test.txt
 ```
+

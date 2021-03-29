@@ -1,3 +1,6 @@
+# This is example shows to to create a snippet from a file.  For example, you 
+# can use a snippet to rerrange contents using inclusion or create a new pages 
+# per module.
 site_name: project
 plugins:
   - simple

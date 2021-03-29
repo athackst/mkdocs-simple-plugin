@@ -1,39 +1,44 @@
+<!-- DO NOT EDIT! This file is auto-generated from README.md.ninja -->
 # Ignore a folder
-
-This example shows how a subfolder can be ignored.
 
 ## mkdocs.yml
 
 ```yaml
-{% include "examples/ok-mkdocs-docs-ignore/mkdocs-test.yml" %}
+# This example shows how a subfolder can be ignored.
+site_name: project
+plugins:
+  - simple:
+      ignore_folders: ["subfolder"]
 ```
-
 ## Input
 
 ```
-project
-│   README.md
-|   test.md
-|
-└───subfolder
-|   |    draft.md
-|   |    index.md
+ok-mkdocs-docs-ignore/
+├── mkdocs.yml
+├── other-folder/
+│   └── subfolder/
+│       ├── draft.md
+│       └── index.md
+├── README.md
+├── subfolder/
+│   ├── draft.md
+│   └── index.md
+└── test.md
 ```
+
+
 
 ## Output
 
 ```
-project
-│   README.md
-|   test.md
-|
-└───subfolder
-|   |    draft.md
-|   |    index.md README.md 
-│
-└───site
-│   │   index.html
-|   |   
-|   └───test
-│   │   |    index.html
+site/
+├── index.html
+├── other-folder/
+│   └── subfolder/
+│       ├── draft/
+│       │   └── index.html
+│       └── index.html
+└── test/
+    └── index.html
 ```
+

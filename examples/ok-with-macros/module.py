@@ -8,10 +8,9 @@ You can even use macros to inject other markdown here!
 
 For example, here's the config file:
 
-```yaml
+````yaml
 {% include 'mkdocs.yml' %}
-```
-
+````
 """
 
 

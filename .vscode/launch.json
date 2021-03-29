@@ -31,5 +31,13 @@
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal"
         },
+        {
+            "name": "gen_readme",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/examples/gen_readme.py",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        },
     ]
 }

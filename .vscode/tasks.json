@@ -59,13 +59,24 @@
       "problemMatcher": []
     },
     {
+      "label": "build",
+      "type": "shell",
+      "command": "./build.sh",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
       "label": "test",
       "type": "shell",
-      "command": "./tests/test_lint.sh && ./tests/test.bats",
-      "dependsOn": [
-        "pip install"
-      ],
-      "problemMatcher": []
+      "command": "./test.sh",
+      "problemMatcher": [],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
     },
     {
       "label": "package",

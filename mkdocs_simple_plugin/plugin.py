@@ -216,16 +216,15 @@ class SimplePlugin(BasePlugin):
 
                     },
                     {
-                        # #### YAML, Dockerfiles, and scripts
+                        # #### YAML, Dockerfiles, and shell scripts
                         'pattern': r'Dockerfile$|\.(dockerfile|ya?ml|sh)$',
                         'extract': [{
                             # line-comment blocks starting with
                             # `# md` and ending with `# /md`,
                             'start': r'^\s*#+\W?md\b',
                             'stop': r'#\s\/md\s*$',
-                            # stripping leading spaces and `#`,
-                            # and only capturing comment lines.
-                            'replace': [r'^\s*#?\s?(.*\n?)$', r'^.*$'],
+                            # stripping leading spaces and `#`
+                            'replace': [r'^\s*#?\s?(.*\n?)$'],
                             #
                             # ```yaml
                             # # md

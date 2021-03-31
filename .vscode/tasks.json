@@ -12,7 +12,7 @@
     {
       "label": "pip install",
       "type": "shell",
-      "command": "pip install -e . ",
+      "command": "pip install --user -r requirements.txt; pip install -e . ",
       "problemMatcher": []
     },
     {
@@ -55,7 +55,7 @@
     {
       "label": "clean",
       "type": "shell",
-      "command": "sudo rm -rf site/ build/ dist/ *.egg-info/ **/__pycache__/  **/docs_/ examples/*/mkdocs.yml examples/*/site/ ",
+      "command": "sudo rm -rf site/ build/ dist/ *.egg-info/ **/__pycache__/  **/docs_/ examples/*/mkdocs.yml examples/*/site/ examples/*/README.md",
       "problemMatcher": []
     },
     {
@@ -71,24 +71,28 @@
     {
       "label": "test",
       "type": "shell",
-      "command": "./test.sh",
-      "problemMatcher": [],
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "test bats",
+        "test lint",
+        "htmlproofer"
+      ],
       "group": {
         "kind": "test",
         "isDefault": true
       }
     },
     {
-      "label": "package",
+      "label": "test bats",
       "type": "shell",
-      "command": "python3 setup.py sdist bdist_wheel",
-      "problemMatcher": []
+      "command": "./tests/test.sh",
+      "problemMatcher": [],
     },
     {
-      "label": "upgrade",
+      "label": "test lint",
       "type": "shell",
-      "command": "pip3 install --upgrade pip && pip-upgrade --skip-virtualenv-check -p all",
-      "problemMatcher": []
+      "command": "./tests/test_lint.sh",
+      "problemMatcher": [],
     },
     {
       "label": "htmlproofer",
@@ -101,9 +105,22 @@
         "--internal-domains='athackst.github.io/mkdocs-simple-plugin'",
         "./site/"
       ],
+      "dependsOrder": "sequence",
       "dependsOn": [
-        "mkdocs build"
+        "build"
       ],
+      "problemMatcher": []
+    },
+    {
+      "label": "package",
+      "type": "shell",
+      "command": "python3 setup.py sdist bdist_wheel",
+      "problemMatcher": []
+    },
+    {
+      "label": "upgrade",
+      "type": "shell",
+      "command": "pip3 install --upgrade pip && pip-upgrade --skip-virtualenv-check -p all",
       "problemMatcher": []
     },
     {

@@ -1,5 +1,5 @@
 # This example shows how to replace lines with regex expressions!
-site_name: project
+site_name: ok-source-replace
 plugins:
   - simple:
       semiliterate:

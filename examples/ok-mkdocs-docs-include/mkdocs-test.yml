@@ -1,5 +1,5 @@
 # This example shows how to only include from a specific folder
-site_name: project
+site_name: ok-mkdocs-docs-include
 plugins:
   - simple:
       include_folders: ["./subfolder**"]

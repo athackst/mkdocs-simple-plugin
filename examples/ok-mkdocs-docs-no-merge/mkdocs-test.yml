@@ -1,5 +1,5 @@
 # This example shows how to keep the docs folder embedded within your other docs.
-site_name: project
+site_name: ok-mkdocs-docs-no-merge
 plugins:
   - simple:
         merge_docs_dir: false

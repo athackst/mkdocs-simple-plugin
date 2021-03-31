@@ -43,3 +43,4 @@ jobs:
           tags: |
             athackst/mkdocs-simple-plugin:latest
             athackst/mkdocs-simple-plugin:${{ env.VERSION }}
+          push: true

@@ -8,19 +8,17 @@ I recommend installing it via pip to get the latest version.
 ```bash
 sudo apt-get install python-pip
 pip install --upgrade pip --user
-pip install mkdocs --user
-```
-## Local install
-
-Install the package locally with
-
-```bash
+pip install -r requirements.txt
 pip install -e .
 ```
 
-## Testing
+## Building
 
-{% include "tests/testing.snippet" %}
+{% include "build.snippet" %}
+
+## Testing
+ 
+{% include "tests/test.snippet" %}
 
 ## VSCode
 

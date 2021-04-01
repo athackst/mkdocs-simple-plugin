@@ -1,5 +1,7 @@
 #!/bin/bash
 set -e
+pip install -r requirements.txt
+pip install -e .
 # md file="test.snippet"
 # ### Integration tests
 # 
@@ -17,8 +19,18 @@ set -e
 # ./tests/test.sh
 # ```
 # 
-# /md
-pip install -r requirements.txt
-pip install -e .
+# #### Manual Testing
+# 
+# To run manually, first you need to generate the readmes
+# 
+# ```bash
 ./examples/gen_readme.py
+# ```
+# 
+# Then run the bats script
+# 
+# ```bash
 ./tests/test.bats
+# ```
+# 
+# /md

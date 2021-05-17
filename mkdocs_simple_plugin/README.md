@@ -22,4 +22,4 @@ pip install -e .
 
 ## VSCode
 
-Included in this package is a VSCode workspace and development container.  See [how I develop with VSCode and Docker](https://www.allisonthackston.com/articles/docker_development.html) and [how I use VSCode tasks](https://www.allisonthackston.com/articles/vscode_tasks.html).
+Included in this package is a VSCode workspace and development container.  See [how I develop with VSCode and Docker](https://allisonthackston.com/articles/docker-development.html) and [how I use VSCode tasks](https://allisonthackston.com/articles/vscode-tasks.html).

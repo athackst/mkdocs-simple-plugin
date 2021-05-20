@@ -21,7 +21,7 @@ setuptools.setup(
         "Source Code": "https://github.com/athackst/mkdocs-simple-plugin",
     },
     author='Allison Thackston',
-    author_email='allison@lyonthackston.com',
+    author_email='allison@allisonthackston.com',
     license='Apache-2.0',
     python_requires='>=3',
     install_requires=[

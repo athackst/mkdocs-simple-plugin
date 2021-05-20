@@ -8,15 +8,15 @@
 
 # mkdocs-simple-plugin
 
-This plugin enables you to build a documentation site from markdown interspersed within your code using [mkdocs](https://www.mkdocs.org/).  It is designed for the way developers commonly write documentation in their code -- with simple markdown files and/or markdown comment blocks in the code.
+This plugin enables you to build a documentation site from markdown interspersed within your repository using [mkdocs](https://www.mkdocs.org/).
 
 ## About
 
-You may be wondering why you would want to generate a static site for your project, without doing the typical "wiki" thing of consolidating all documentation within a single `docs` folder or using a single `README` file.
+You may be wondering why you would want to generate a static site for your project without doing the typical "wiki" thing of consolidating all documentation within a single `docs` folder or using a single `README` file.
 
 * **My repository is too big for a single documentation source.**
 
-    Sometimes it isn't feasible to consolidate all documentation within an upper level `docs` directory.  This is often the case with medium/large repositories.  In general, if your codebase is too large to fit well within a single `include` directory, your codebase is probably also too large for documentation to fit within a single `docs` directory.  
+    Sometimes it isn't feasible to consolidate all documentation within an upper level `docs` directory.  In general, if your codebase is too large to fit well within a single `include` directory, your codebase is also too large for documentation in a single `docs` directory.  
 
     Since it's typically easier to keep documentation up to date when it lives as close to the code as possible, it is better to create multiple sources for documentation.
 
@@ -28,7 +28,7 @@ You may be wondering why you would want to generate a static site for your proje
 
 * **I want a pretty documentation site without the hassle.**
 
-    Finally, you may be interested in this plugin if you have a desire for stylized documentation, but don't want to invest the time/energy in replicating information you already have in your README.md files or in block comments in your code, and you want to keep them where they are (thank you very much).
+    Finally, you may be interested in this plugin if you have a desire for easy-to-generate stylized documentation.  This plugin lets you take documentation you may already have -- either in markdown files or in your code -- and formats them into a searchable documentation website.  You can keep your documentation where it is (thank you very much).
 
 See [mkdocs-simple-plugin](http://athackst.github.io/mkdocs-simple-plugin/mkdocs_simple_plugin/plugin/) for usage.
 

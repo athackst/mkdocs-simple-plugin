@@ -1,4 +1,4 @@
-click==8.0.0
+click==8.0.1
 flake8==3.9.2
 mkdocs-awesome-pages-plugin==2.5.0
 mkdocs-macros-plugin==0.5.5

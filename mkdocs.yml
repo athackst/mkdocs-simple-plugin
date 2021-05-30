@@ -11,6 +11,7 @@ plugins:
         - .sh
   - macros
   - awesome-pages
+edit_uri: ''
 repo_url: https://github.com/athackst/mkdocs-simple-plugin
 theme:
   name: material
@@ -33,4 +34,3 @@ extra:
       link: https://hub.docker.com/u/athackst
     - icon: fontawesome/regular/laugh
       link: https://allisonthackston.com
-edit_uri: ''

@@ -6,7 +6,7 @@
 configuration file (only if needed) and optionally install dependencies, build,
 and serve the site.
 
-## Installation
+# Installation
 
 Install the plugin with pip.
 
@@ -44,7 +44,7 @@ def default_config():
     # and may not exist.
     config['edit_uri'] = ''
 
-    if "CONFIG_FILE" in os.environ.keys():
+    if "CONFIG_FILE" in os.environ.keys() and os.environ["CONFIG_FILE"]:
         with open(os.environ["CONFIG_FILE"], 'r') as file:
             try:
                 config = yaml.load(file)
@@ -52,16 +52,17 @@ def default_config():
                 print(exc)
 
     # Set the config variables via environment if exist
-    if "SITE_NAME" in os.environ.keys():
+    if "SITE_NAME" in os.environ.keys() and os.environ["SITE_NAME"]:
         config['site_name'] = os.environ["SITE_NAME"]
-    if "SITE_URL" in os.environ.keys():
+    if "SITE_URL" in os.environ.keys() and os.environ["SITE_URL"]:
         config['site_url'] = os.environ["SITE_URL"]
-    if "REPO_URL" in os.environ.keys():
+    if "REPO_URL" in os.environ.keys() and os.environ["REPO_URL"]:
         config['repo_url'] = os.environ["REPO_URL"]
-    if "GOOGLE_ANALYTICS" in os.environ.keys():
-        config['google_analytics'] = os.environ["GOOGLE_ANALYTICS"]
-    if "THEME" in os.environ.keys():
-        config['theme'] = { 'name': os.environ["THEME"] }
+    if "GOOGLE_ANALYTICS" in os.environ.keys() and \
+            os.environ["GOOGLE_ANALYTICS"]:
+        config['google_analytics'] = list(os.environ["GOOGLE_ANALYTICS"])
+    if "THEME" in os.environ.keys() and os.environ["THEME"]:
+        config['theme'] = {'name': os.environ["THEME"]}
     return config
 
 
@@ -130,13 +131,13 @@ def main(build, serve, mkdocs_args):
 
 
 """ md
-## Usage
+# Usage
 
 ```bash
 mkdocs_simple_gen
 ```
 
-### Command line options
+# Command line options
 
 See `--help`
 

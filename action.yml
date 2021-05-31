@@ -21,6 +21,14 @@
 #           site_name: owner/repository 
 #           # (optional) The URL of the site
 #           site_url: https://owner.github.io/repository 
+#           # (optional) The edit URI
+#           edit_uri: edit/main/
+#           # (optional) Specify a google analytics key 
+#           google_analytics: UA-XXXXXXX
+#           # (optional) Specify a different theme [mkdocs|readthedocs|material]
+#           theme: material
+#           # (optional) Load a configuration file from a string
+#           configuration: "{additional_css: value}"
 # ```
 # /md
 name: "MkDocs Simple action"
@@ -45,6 +53,20 @@ inputs:
     description: "Set the site url."
     required: false
     default: "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
+  edit_uri:
+    description: "Set the edit uri"
+    required: false
+    default: "edit/main/"
+  google_analytics:
+    description: "Set the google analytics key"
+    required: false
+  theme:
+    description: "Set the theme"
+    required: false
+    default: material
+  config:
+    description: "Configuration settings"
+    required: false
 runs:
   using: "docker"
   image: "Dockerfile"
@@ -53,5 +75,9 @@ runs:
     REPO_URL: ${{ inputs.repo_url }}
     SITE_NAME: ${{ inputs.site_name }}
     SITE_URL: ${{ inputs.site_url }}
+    EDIT_URI: ${{ inputs.edit_uri }}
+    GOOGLE_ANALYTICS: ${{ inputs.google_analytics }}
+    THEME: ${{ inputs.theme }}
+    CONFIG_FILE: ${{ inputs.config }}
   args:
     - deploy.sh

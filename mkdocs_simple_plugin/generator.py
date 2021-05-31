@@ -27,21 +27,41 @@ def default_config():
     """Get default configuration for mkdocs.yml file."""
     config = {}
     config['site_name'] = os.path.basename(os.path.abspath("."))
+    # Set the docs dir to temporary directory, or docs if the folder exists
+    default_docs = os.path.join(os.getcwd(), "docs")
+    temp_docs = os.path.join(
+        tempfile.gettempdir(),
+        'mkdocs-simple',
+        os.path.basename(
+            os.getcwd()),
+        "docs")
+    config['docs_dir'] = default_docs if os.path.exists(
+        default_docs) else temp_docs
+
+    config['plugins'] = ("simple", "search")
+
+    # Set the default edit uri to empty since doc files are built from source
+    # and may not exist.
+    config['edit_uri'] = ''
+
+    if "CONFIG_FILE" in os.environ.keys():
+        with open(os.environ["CONFIG_FILE"], 'r') as file:
+            try:
+                config = yaml.load(file)
+            except yaml.YAMLError as exc:
+                print(exc)
+
+    # Set the config variables via environment if exist
     if "SITE_NAME" in os.environ.keys():
         config['site_name'] = os.environ["SITE_NAME"]
     if "SITE_URL" in os.environ.keys():
         config['site_url'] = os.environ["SITE_URL"]
     if "REPO_URL" in os.environ.keys():
         config['repo_url'] = os.environ["REPO_URL"]
-    # Set the docs dir to temporary directory, or docs if the folder exists
-    config['docs_dir'] = os.path.join(
-        tempfile.gettempdir(),
-        'mkdocs-simple',
-        os.path.basename(os.getcwd()),
-        "docs")
-    if os.path.exists(os.path.join(os.getcwd(), "docs")):
-        config['docs_dir'] = "docs"
-    config['plugins'] = ("simple", "search")
+    if "GOOGLE_ANALYTICS" in os.environ.keys():
+        config['google_analytics'] = os.environ["GOOGLE_ANALYTICS"]
+    if "THEME" in os.environ.keys():
+        config['theme'] = { 'name': os.environ["THEME"] }
     return config
 
 

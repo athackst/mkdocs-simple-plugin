@@ -60,7 +60,7 @@ def default_config():
         config['repo_url'] = os.environ["REPO_URL"]
     if "GOOGLE_ANALYTICS" in os.environ.keys() and \
             os.environ["GOOGLE_ANALYTICS"]:
-        config['google_analytics'] = list(os.environ["GOOGLE_ANALYTICS"])
+        config['google_analytics'] = [os.environ["GOOGLE_ANALYTICS"], 'auto']
     if "THEME" in os.environ.keys() and os.environ["THEME"]:
         config['theme'] = {'name': os.environ["THEME"]}
     return config
@@ -88,9 +88,8 @@ def write_config(config_file, config):
             print(exc)
 
 
-def setup_config():
+def setup_config(config_file="mkdocs.yml"):
     """Create the mkdocs.yml file with defaults for params that don't exist."""
-    config_file = "mkdocs.yml"
     config = default_config()
     if not os.path.exists(config_file):
         # If config file doesn't exit, create a simple one, guess the site name
@@ -113,6 +112,7 @@ def setup_config():
             print(exc)
             raise
     write_config(config_file, config)
+    return config
 
 
 @click.command()

@@ -56,6 +56,10 @@
   },
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
+  "editor.rulers": [
+    80,
+    127
+  ],
   "yaml.customTags": [
     "tag:yaml.org,2002:python/name:materialx.emoji.twemoji",
     "tag:yaml.org,2002:python/name:materialx.emoji.to_svg"
@@ -66,12 +70,18 @@
     "--aggressive",
     "--aggressive"
   ],
-  "editor.rulers": [
-    80,
-    127
-  ],
   "python.linting.pydocstyleArgs": [
     "--convention=google",
     "--add-ignore=D415"
-  ]
+  ],
+  "python.testing.unittestEnabled": true,
+  "python.testing.unittestArgs": [
+    "-v",
+    "-s",
+    "./tests",
+    "-p",
+    "*_test.py"
+  ],
+  "python.testing.pytestEnabled": false,
+  "python.testing.nosetestsEnabled": false
 }

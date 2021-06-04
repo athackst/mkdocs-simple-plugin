@@ -73,8 +73,7 @@
       "type": "shell",
       "dependsOrder": "sequence",
       "dependsOn": [
-        "test bats",
-        "test lint",
+        "test set",
         "htmlproofer"
       ],
       "group": {
@@ -83,16 +82,63 @@
       }
     },
     {
-      "label": "test bats",
+      "label": "test script",
       "type": "shell",
       "command": "./tests/test.sh",
+      "problemMatcher": []
+    },
+    {
+      "label": "test set",
+      "type": "shell",
+      "dependsOrder": "parallel",
+      "dependsOn": [
+        "test unittest",
+        "test integration",
+        "test lint"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "test unittest",
+      "type": "shell",
+      "command": "./tests/run_unit_tests.sh",
       "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": true,
+        "clear": false
+      }
+    },
+    {
+      "label": "test integration",
+      "type": "shell",
+      "command": "./tests/run_integration_tests.sh",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": true,
+        "clear": false
+      }
     },
     {
       "label": "test lint",
       "type": "shell",
-      "command": "./tests/test_lint.sh",
+      "command": "./tests/run_linters.sh",
       "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": true,
+        "clear": false
+      }
     },
     {
       "label": "htmlproofer",
@@ -109,7 +155,15 @@
       "dependsOn": [
         "build"
       ],
-      "problemMatcher": []
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": true,
+        "clear": false
+      }
     },
     {
       "label": "package",

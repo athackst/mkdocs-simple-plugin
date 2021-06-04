@@ -12,7 +12,10 @@
 # ```
 # {% include "versions.snippet" %}
 # 
-# /md
+# <details>
+# <summary>Code</summary>
+#
+# ```bash
 set -e
 
 # End-to-end testing via Bats (Bash automated tests)
@@ -39,3 +42,6 @@ else
   docker_run_integration_tests "3.8"
   docker_run_integration_tests "3.9"
 fi
+# ```
+# </details>
+# /md

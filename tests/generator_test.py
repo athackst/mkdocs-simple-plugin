@@ -20,6 +20,7 @@ class TestDefaultConfig(unittest.TestCase):
     env_variables = [
         'SITE_NAME',
         'SITE_URL',
+        'SITE_DIR',
         'REPO_URL',
         'GOOGLE_ANALYTICS',
         'THEME']
@@ -86,6 +87,14 @@ class TestDefaultConfig(unittest.TestCase):
             env_value="https://athackst.github.io/mkdocs-simple-plugin",
             config_name="site_url",
             config_value="https://athackst.github.io/mkdocs-simple-plugin")
+
+    def test_site_dir(self):
+        """Test setting the site url."""
+        self._test_env_setting(
+            env_variable="SITE_DIR",
+            env_value="/test_dir",
+            config_name="site_dir",
+            config_value="/test_dir")
 
     def test_repo_url(self):
         """Test setting the repo url."""

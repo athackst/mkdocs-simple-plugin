@@ -53,6 +53,9 @@ inputs:
     description: "Set the site url."
     required: false
     default: "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
+  site_dir:
+    description: "Directory to build the site."
+    required: false
   edit_uri:
     description: "Set the edit uri"
     required: false
@@ -75,6 +78,7 @@ runs:
     REPO_URL: ${{ inputs.repo_url }}
     SITE_NAME: ${{ inputs.site_name }}
     SITE_URL: ${{ inputs.site_url }}
+    SITE_DIR: ${{ inputs.site_dir }}
     EDIT_URI: ${{ inputs.edit_uri }}
     GOOGLE_ANALYTICS: ${{ inputs.google_analytics }}
     THEME: ${{ inputs.theme }}

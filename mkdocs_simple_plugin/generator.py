@@ -56,6 +56,8 @@ def default_config():
         config['site_name'] = os.environ["SITE_NAME"]
     if "SITE_URL" in os.environ.keys() and os.environ["SITE_URL"]:
         config['site_url'] = os.environ["SITE_URL"]
+    if "SITE_DIR" in os.environ.keys() and os.environ["SITE_DIR"]:
+        config['site_dir'] = os.environ["SITE_DIR"]
     if "REPO_URL" in os.environ.keys() and os.environ["REPO_URL"]:
         config['repo_url'] = os.environ["REPO_URL"]
     if "GOOGLE_ANALYTICS" in os.environ.keys() and \

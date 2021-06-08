@@ -1,9 +1,5 @@
 FROM python:3.9-alpine
 
-ENV VIRTUAL_ENV=/opt/venv
-RUN python3 -m venv $VIRTUAL_ENV
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-
 WORKDIR /tmp
 COPY mkdocs_simple_plugin mkdocs_simple_plugin
 COPY README.md README.md

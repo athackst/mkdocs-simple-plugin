@@ -19,9 +19,8 @@ RUN \
   && apk add --no-cache --virtual .build gcc musl-dev \
   && apk add --no-cache --upgrade bash \
   && pip install --upgrade pip \
-  && pip install mkdocs-material \
+  && pip install --no-cache-dir mkdocs-material \
   && pip install --no-cache-dir . \
-  && apk del .build gcc musl-dev \
   && rm -rf /tmp/*
 
 WORKDIR /docs

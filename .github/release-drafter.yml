@@ -17,10 +17,10 @@ template: |
   Pull it with docker
 
   ```bash
-  docker pull athackst/mkdocs-simple-plugin:v$RESOLVED_VERSION
+  docker pull althack/mkdocs-simple-plugin:v$RESOLVED_VERSION
   ```
 
-  See it on dockerhub: [https://hub.docker.com/repository/docker/athackst/mkdocs-simple-plugin](https://hub.docker.com/repository/docker/athackst/mkdocs-simple-plugin)
+  See it on dockerhub: [https://hub.docker.com/repository/docker/althack/mkdocs-simple-plugin](https://hub.docker.com/repository/docker/althack/mkdocs-simple-plugin)
 
   ## Github
 

@@ -42,6 +42,6 @@ jobs:
           context: .
           file: ./Dockerfile
           tags: |
-            athackst/mkdocs-simple-plugin:latest
-            athackst/mkdocs-simple-plugin:${{ env.VERSION }}
+            althack/mkdocs-simple-plugin:latest
+            althack/mkdocs-simple-plugin:${{ env.VERSION }}
           push: true

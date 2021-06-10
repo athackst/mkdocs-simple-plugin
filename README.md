@@ -2,7 +2,7 @@
 
 [![Test](https://github.com/athackst/mkdocs-simple-plugin/workflows/Test/badge.svg)](https://github.com/athackst/mkdocs-simple-plugin)
 [![Docs](https://github.com/athackst/mkdocs-simple-plugin/workflows/Docs/badge.svg)](https://athackst.github.io/mkdocs-simple-plugin) 
-[![Docker](https://img.shields.io/docker/pulls/athackst/mkdocs-simple-plugin)](https://hub.docker.com/r/athackst/mkdocs-simple-plugin) 
+[![Docker](https://img.shields.io/docker/pulls/althack/mkdocs-simple-plugin)](https://hub.docker.com/r/althack/mkdocs-simple-plugin) 
 [![pypi](https://img.shields.io/pypi/dm/mkdocs-simple-plugin?label=pypi%20downloads&color=blue)](https://pypi.org/project/mkdocs-simple-plugin/) 
 [![Github Action](https://img.shields.io/badge/github%20action-download-blue)](https://github.com/marketplace/actions/mkdocs-simple-action)
 

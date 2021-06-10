@@ -311,15 +311,13 @@ class SimplePlugin(BasePlugin):
 
     def on_serve(self, server, config, **kwargs):
         """Add files to watch server."""
-        builder = list(server.watcher._tasks.values())[0]['func']
-
         # still watch the original docs/ directory
         if os.path.exists(self.orig_docs_dir):
-            server.watch(self.orig_docs_dir, builder)
+            server.watch(self.orig_docs_dir)
 
         # watch all the doc files
         for path in self.paths:
-            server.watch(path, builder)
+            server.watch(path)
 
         return server
 

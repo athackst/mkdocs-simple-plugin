@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 # md file="test.snippet"
 # ### Lint
 # 

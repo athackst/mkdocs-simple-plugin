@@ -60,9 +60,6 @@ inputs:
     description: "Set the edit uri"
     required: false
     default: "edit/main/"
-  google_analytics:
-    description: "Set the google analytics key"
-    required: false
   theme:
     description: "Set the theme"
     required: false
@@ -80,7 +77,6 @@ runs:
     SITE_URL: ${{ inputs.site_url }}
     SITE_DIR: ${{ inputs.site_dir }}
     EDIT_URI: ${{ inputs.edit_uri }}
-    GOOGLE_ANALYTICS: ${{ inputs.google_analytics }}
     THEME: ${{ inputs.theme }}
     CONFIG_FILE: ${{ inputs.config }}
   args:

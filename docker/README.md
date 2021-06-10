@@ -9,7 +9,7 @@ Using the docker image, you don't need to have the plugin or its dependencies in
 Install, build and serve your docs:
 
 ```bash
-docker run --rm -it --network=host -v ${PWD}:/docs --user $(id -u):$(id -g) athackst/mkdocs-simple-plugin
+docker run --rm -it --network=host -v ${PWD}:/docs --user $(id -u):$(id -g) althack/mkdocs-simple-plugin
 ```
 
 Explanation of docker command-line options
@@ -33,6 +33,6 @@ Add an alias for the docker command to serve docs from any workspace.
 ```bash
 echo 'function mkdocs_simple() { 
     local port=${1:-"8000"}
-    docker run --rm -p ${port}:8000 -v ${PWD}:/docs --user $(id -u):$(id -g) athackst/mkdocs-simple-plugin
+    docker run --rm -p ${port}:8000 -v ${PWD}:/docs --user $(id -u):$(id -g) althack/mkdocs-simple-plugin
 }' >> ~/.bashrc
 ```

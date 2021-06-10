@@ -30,11 +30,11 @@ You may be wondering why you would want to generate a static site for your proje
 
     Finally, you may be interested in this plugin if you have a desire for easy-to-generate stylized documentation.  This plugin lets you take documentation you may already have -- either in markdown files or in your code -- and formats them into a searchable documentation website.  You can keep your documentation where it is (thank you very much).
 
-See [mkdocs-simple-plugin](https://athackst.github.io/mkdocs-simple-plugin/mkdocs_simple_plugin/plugin.html) for usage.
+See [mkdocs-simple-plugin](https://athackst.github.io/mkdocs-simple-plugin/mkdocs_simple_plugin/plugin) for usage.
 
 ## Contributing
 
-See the [contributing guide](https://athackst.github.io/mkdocs-simple-plugin/CONTRIBUTING.html)
+See the [contributing guide](https://athackst.github.io/mkdocs-simple-plugin/CONTRIBUTING)
 
 ## License
 

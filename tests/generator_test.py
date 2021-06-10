@@ -22,13 +22,13 @@ class TestDefaultConfig(unittest.TestCase):
         'SITE_URL',
         'SITE_DIR',
         'REPO_URL',
-        'GOOGLE_ANALYTICS',
         'THEME']
 
     def setUp(self):
         """Set up the tests by reseting the environment variables."""
         for var in self.env_variables:
-            os.unsetenv(var)
+            if var in os.environ.keys():
+                del os.environ[var]
 
     def tearDown(self):
         """Tear down the test by cleaning up temp mkdocs.yml."""
@@ -47,7 +47,7 @@ class TestDefaultConfig(unittest.TestCase):
         self.assertTrue(test_config[config_name])
         self.assertEqual(test_config[config_name], config_value)
 
-        cfg = config.Config(schema=defaults.DEFAULT_SCHEMA)
+        cfg = config.Config(schema=defaults.get_schema())
         cfg.load_dict(test_config)
         errors, warnings = cfg.validate()
         self.assertEqual(len(errors), 0, errors)
@@ -60,7 +60,7 @@ class TestDefaultConfig(unittest.TestCase):
     def test_default(self):
         """Test the default configuration without any additional options."""
         test_config = generator.setup_config(self.test_mkdocs_filename)
-        cfg = config.Config(schema=defaults.DEFAULT_SCHEMA)
+        cfg = config.Config(schema=defaults.get_schema())
         cfg.load_dict(test_config)
         errors, warnings = cfg.validate()
         self.assertEqual(len(errors), 0, errors)
@@ -84,9 +84,9 @@ class TestDefaultConfig(unittest.TestCase):
         """Test setting the site url."""
         self._test_env_setting(
             env_variable="SITE_URL",
-            env_value="https://athackst.github.io/mkdocs-simple-plugin",
+            env_value="https://athackst.github.io/mkdocs-simple-plugin/",
             config_name="site_url",
-            config_value="https://athackst.github.io/mkdocs-simple-plugin")
+            config_value="https://athackst.github.io/mkdocs-simple-plugin/")
 
     def test_site_dir(self):
         """Test setting the site url."""
@@ -103,17 +103,6 @@ class TestDefaultConfig(unittest.TestCase):
             env_value="https://github.com/athackst/mkdocs-simple-plugin",
             config_name="repo_url",
             config_value="https://github.com/athackst/mkdocs-simple-plugin")
-
-    def test_google_analytics(self):
-        """Test setting google analytics.
-
-        This setting requires at least two items in the list.
-        """
-        self._test_env_setting(
-            env_variable="GOOGLE_ANALYTICS",
-            env_value="UA-XXXXXX",
-            config_name="google_analytics",
-            config_value=["UA-XXXXXX", "auto"])
 
     def test_theme(self):
         """Test setting the theme.

@@ -51,6 +51,8 @@ def default_config():
             except yaml.YAMLError as exc:
                 print(exc)
 
+    config['site_url'] = 'http://localhost'
+
     # Set the config variables via environment if exist
     if "SITE_NAME" in os.environ.keys() and os.environ["SITE_NAME"]:
         config['site_name'] = os.environ["SITE_NAME"]
@@ -60,9 +62,6 @@ def default_config():
         config['site_dir'] = os.environ["SITE_DIR"]
     if "REPO_URL" in os.environ.keys() and os.environ["REPO_URL"]:
         config['repo_url'] = os.environ["REPO_URL"]
-    if "GOOGLE_ANALYTICS" in os.environ.keys() and \
-            os.environ["GOOGLE_ANALYTICS"]:
-        config['google_analytics'] = [os.environ["GOOGLE_ANALYTICS"], 'auto']
     if "THEME" in os.environ.keys() and os.environ["THEME"]:
         config['theme'] = {'name': os.environ["THEME"]}
     return config
@@ -78,6 +77,8 @@ class MkdocsConfigDumper(yaml.Dumper):
 
 def write_config(config_file, config):
     """Write configuration file."""
+    if os.path.dirname(config_file):
+        os.makedirs(os.path.dirname(config_file), exist_ok=True)
     with open(config_file, 'w+') as file:
         try:
             yaml.dump(
@@ -113,6 +114,7 @@ def setup_config(config_file="mkdocs.yml"):
         except yaml.YAMLError as exc:
             print(exc)
             raise
+    print(config_file)
     write_config(config_file, config)
     return config
 

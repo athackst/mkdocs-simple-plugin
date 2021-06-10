@@ -12,6 +12,7 @@ plugins:
   - macros
   - awesome-pages
 edit_uri: ''
+site_url: https://athackst.github.io/mkdocs-simple-plugin
 repo_url: https://github.com/athackst/mkdocs-simple-plugin
 theme:
   name: material

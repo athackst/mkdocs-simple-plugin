@@ -18,11 +18,11 @@ class TestDefaultConfig(unittest.TestCase):
         'mkdocs-simple/mkdocs.yml')
 
     env_variables = [
-        'SITE_NAME',
-        'SITE_URL',
-        'SITE_DIR',
-        'REPO_URL',
-        'THEME']
+        'INPUT_SITE_NAME',
+        'INPUT_SITE_URL',
+        'INPUT_SITE_DIR',
+        'INPUT_REPO_URL',
+        'INPUT_THEME']
 
     def setUp(self):
         """Set up the tests by reseting the environment variables."""
@@ -42,7 +42,7 @@ class TestDefaultConfig(unittest.TestCase):
             config_name,
             config_value,
             loaded_type=None):
-        os.environ[env_variable] = env_value
+        os.environ["INPUT_"+env_variable] = env_value
         test_config = generator.setup_config(self.test_mkdocs_filename)
         self.assertTrue(test_config[config_name])
         self.assertEqual(test_config[config_name], config_value)

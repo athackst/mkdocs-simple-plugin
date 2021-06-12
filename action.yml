@@ -70,14 +70,5 @@ inputs:
 runs:
   using: "docker"
   image: "Dockerfile"
-  env:
-    BRANCH_NAME: ${{ inputs.publish_branch }}
-    REPO_URL: ${{ inputs.repo_url }}
-    SITE_NAME: ${{ inputs.site_name }}
-    SITE_URL: ${{ inputs.site_url }}
-    SITE_DIR: ${{ inputs.site_dir }}
-    EDIT_URI: ${{ inputs.edit_uri }}
-    THEME: ${{ inputs.theme }}
-    CONFIG_FILE: ${{ inputs.config }}
   args:
     - deploy.sh

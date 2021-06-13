@@ -53,17 +53,23 @@ def default_config():
 
     config['site_url'] = 'http://localhost'
 
+    def maybe_set_string(name):
+        env_variable = "INPUT_"+name.upper()
+        config_variable = name.lower()
+        if env_variable in os.environ.keys() and os.environ[env_variable]:
+            config[config_variable] = os.environ[env_variable]
+
+    def maybe_set_dict(name, key):
+        env_variable = "INPUT_"+name.upper()
+        config_variable = name.lower()
+        if env_variable in os.environ.keys() and os.environ[env_variable]:
+            config[config_variable] = { key: os.environ[env_variable] }
     # Set the config variables via environment if exist
-    if "SITE_NAME" in os.environ.keys() and os.environ["SITE_NAME"]:
-        config['site_name'] = os.environ["SITE_NAME"]
-    if "SITE_URL" in os.environ.keys() and os.environ["SITE_URL"]:
-        config['site_url'] = os.environ["SITE_URL"]
-    if "SITE_DIR" in os.environ.keys() and os.environ["SITE_DIR"]:
-        config['site_dir'] = os.environ["SITE_DIR"]
-    if "REPO_URL" in os.environ.keys() and os.environ["REPO_URL"]:
-        config['repo_url'] = os.environ["REPO_URL"]
-    if "THEME" in os.environ.keys() and os.environ["THEME"]:
-        config['theme'] = {'name': os.environ["THEME"]}
+    maybe_set_string("site_name")
+    maybe_set_string("site_url")
+    maybe_set_string("site_dir")
+    maybe_set_string("repo_url")
+    maybe_set_dict("theme", "name")
     return config
 
 

@@ -73,7 +73,9 @@
       "type": "shell",
       "dependsOrder": "sequence",
       "dependsOn": [
-        "test set",
+        "test lint",
+        "test unittest",
+        "test integration",
         "htmlproofer"
       ],
       "group": {
@@ -88,17 +90,6 @@
       "problemMatcher": []
     },
     {
-      "label": "test set",
-      "type": "shell",
-      "dependsOrder": "parallel",
-      "dependsOn": [
-        "test unittest",
-        "test integration",
-        "test lint"
-      ],
-      "problemMatcher": []
-    },
-    {
       "label": "test unittest",
       "type": "shell",
       "command": "./tests/run_unit_tests.sh",
@@ -108,8 +99,8 @@
         "reveal": "always",
         "focus": false,
         "panel": "dedicated",
-        "showReuseMessage": true,
-        "clear": false
+        "showReuseMessage": false,
+        "clear": true
       }
     },
     {
@@ -122,8 +113,8 @@
         "reveal": "always",
         "focus": false,
         "panel": "dedicated",
-        "showReuseMessage": true,
-        "clear": false
+        "showReuseMessage": false,
+        "clear": true
       }
     },
     {
@@ -136,8 +127,8 @@
         "reveal": "always",
         "focus": false,
         "panel": "dedicated",
-        "showReuseMessage": true,
-        "clear": false
+        "showReuseMessage": false,
+        "clear": true
       }
     },
     {
@@ -147,8 +138,8 @@
       "args": [
         "--url-ignore=https://fonts.gstatic.com,https://twitter.com/althack",
         "--allow-hash-href",
-        "--file-ignore=./site/404.html",
         "--internal-domains='athackst.github.io/mkdocs-simple-plugin'",
+        "--url-swap=^/mkdocs-simple-plugin:",
         "./site/"
       ],
       "dependsOrder": "sequence",
@@ -161,8 +152,8 @@
         "reveal": "always",
         "focus": false,
         "panel": "dedicated",
-        "showReuseMessage": true,
-        "clear": false
+        "showReuseMessage": false,
+        "clear": true
       }
     },
     {

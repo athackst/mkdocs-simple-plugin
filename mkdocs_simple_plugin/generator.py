@@ -6,7 +6,7 @@
 configuration file (only if needed) and optionally install dependencies, build,
 and serve the site.
 
-# Installation
+## Installation
 
 Install the plugin with pip.
 
@@ -44,26 +44,19 @@ def default_config():
     # and may not exist.
     config['edit_uri'] = ''
 
-    if "CONFIG_FILE" in os.environ.keys() and os.environ["CONFIG_FILE"]:
-        with open(os.environ["CONFIG_FILE"], 'r') as file:
-            try:
-                config = yaml.load(file)
-            except yaml.YAMLError as exc:
-                print(exc)
-
     config['site_url'] = 'http://localhost'
 
     def maybe_set_string(name):
-        env_variable = "INPUT_"+name.upper()
+        env_variable = "INPUT_" + name.upper()
         config_variable = name.lower()
         if env_variable in os.environ.keys() and os.environ[env_variable]:
             config[config_variable] = os.environ[env_variable]
 
     def maybe_set_dict(name, key):
-        env_variable = "INPUT_"+name.upper()
+        env_variable = "INPUT_" + name.upper()
         config_variable = name.lower()
         if env_variable in os.environ.keys() and os.environ[env_variable]:
-            config[config_variable] = { key: os.environ[env_variable] }
+            config[config_variable] = {key: os.environ[env_variable]}
     # Set the config variables via environment if exist
     maybe_set_string("site_name")
     maybe_set_string("site_url")
@@ -120,34 +113,36 @@ def setup_config(config_file="mkdocs.yml"):
         except yaml.YAMLError as exc:
             print(exc)
             raise
-    print(config_file)
     write_config(config_file, config)
     return config
 
 
 @click.command()
+@click.option("--config-file", default="mkdocs.yml",
+              help="set the configuration file")
 @click.option('--build/--no-build', default=False,
               help="build the site using mkdocs build")
 @click.option('--serve/--no-serve', default=False,
               help="serve the site using mkdocs serve")
 @click.argument('mkdocs-args', nargs=-1)
-def main(build, serve, mkdocs_args):
+def main(config_file, build, serve, mkdocs_args):
     """Generate and build a mkdocs site."""
-    setup_config()
+    setup_config(config_file)
+    args = mkdocs_args + ("-f", config_file)
     if build:
-        os.system("mkdocs build " + " ".join(mkdocs_args))
+        os.system("mkdocs build " + " ".join(args))
     if serve:
-        os.system("mkdocs serve " + " ".join(mkdocs_args))
+        os.system("mkdocs serve " + " ".join(args))
 
 
 """ md
-# Usage
+## Usage
 
 ```bash
 mkdocs_simple_gen
 ```
 
-# Command line options
+### Command line options
 
 See `--help`
 
@@ -155,6 +150,7 @@ See `--help`
 Usage: mkdocs_simple_gen [OPTIONS]
 
 Options:
+  --config-file             set the configuration file
   --build / --no-build      build the site using mkdocs build
   --serve / --no-serve      serve the site using mkdocs serve
   --help                    Show this message and exit.

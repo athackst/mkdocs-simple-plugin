@@ -119,11 +119,11 @@ def setup_config(config_file="mkdocs.yml"):
 
 @click.command()
 @click.option("--config-file", default="mkdocs.yml",
-              help="set the configuration file")
+              help="Set the configuration file.")
 @click.option('--build/--no-build', default=False,
-              help="build the site using mkdocs build")
+              help="Build the site using mkdocs build.")
 @click.option('--serve/--no-serve', default=False,
-              help="serve the site using mkdocs serve")
+              help="Serve the site using mkdocs serve.")
 @click.argument('mkdocs-args', nargs=-1)
 def main(config_file, build, serve, mkdocs_args):
     """Generate and build a mkdocs site."""
@@ -150,9 +150,9 @@ See `--help`
 Usage: mkdocs_simple_gen [OPTIONS]
 
 Options:
-  --config-file             set the configuration file
-  --build / --no-build      build the site using mkdocs build
-  --serve / --no-serve      serve the site using mkdocs serve
+  --config-file             Set the configuration file.
+  --build / --no-build      Build the site using mkdocs build.
+  --serve / --no-serve      Serve the site using mkdocs serve.
   --help                    Show this message and exit.
 ```
 

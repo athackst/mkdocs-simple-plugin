@@ -2,7 +2,7 @@ click==8.0.1
 flake8==3.9.2
 mkdocs-awesome-pages-plugin==2.5.0
 mkdocs-macros-plugin==0.5.12
-mkdocs-material==7.2.1
+mkdocs-material==7.2.2
 mkdocs==1.2.2
 mkdocstrings==0.15.2
 pip-upgrader==1.4.15

@@ -7,4 +7,4 @@ mkdocs==1.2.2
 mkdocstrings==0.16.2
 pip-upgrader==1.4.15
 pydocstyle==6.1.1
-pymdown-extensions==8.2
+pymdown-extensions==9.0

@@ -22,9 +22,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y bats gcc
           python -m pip install --upgrade pip
-      - name: Test
-        run: |
-          ./tests/test.sh
+      - name: Lint
+        run: ./tests/run_linters.sh
+      - name: Unit tests
+        run: ./tests/run_unit_tests.sh
+      - name: Integration tests
+        run: ./tests/run_integration_tests.sh
 
   check-docs:
     runs-on: ubuntu-latest

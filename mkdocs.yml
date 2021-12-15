@@ -35,3 +35,6 @@ extra:
       link: https://hub.docker.com/u/althack
     - icon: fontawesome/regular/laugh
       link: https://allisonthackston.com
+  analytics:
+    provider: google
+    property: G-VPNW28KW9L

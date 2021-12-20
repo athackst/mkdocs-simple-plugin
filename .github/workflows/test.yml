@@ -17,11 +17,6 @@ jobs:
         uses: actions/setup-python@v2.3.1
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y bats gcc
-          python -m pip install --upgrade pip
       - name: Lint
         run: ./tests/run_linters.sh
       - name: Unit tests

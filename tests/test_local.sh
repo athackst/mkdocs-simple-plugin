@@ -30,7 +30,9 @@ docker build -t mkdocs-simple-test-runner:$1 -f- . <<EOF
 EOF
 
 echo "Running E2E tests via Bats in Docker (python:$1) -------->"
-docker run --rm -it mkdocs-simple-test-runner:$1 tests/test.sh
+docker run --rm -it mkdocs-simple-test-runner:$1 tests/run_unit_tests.sh
+docker run --rm -it mkdocs-simple-test-runner:$1 tests/run_linters.sh
+docker run --rm -it mkdocs-simple-test-runner:$1 tests/run_integration_tests.sh
 }
 
 if [[ ! -z "$PYTHON_37_ONLY" ]]; then

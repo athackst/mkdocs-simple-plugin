@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+pip install flake8 pydocstyle
 # md file="test.snippet"
 # ### Lint
 # 

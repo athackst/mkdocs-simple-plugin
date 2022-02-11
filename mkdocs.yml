@@ -33,7 +33,7 @@ extra:
       link: https://twitter.com/althack
     - icon: fontawesome/brands/docker
       link: https://hub.docker.com/u/althack
-    - icon: fontawesome/regular/laugh
+    - icon: fontawesome/regular/face-laugh
       link: https://allisonthackston.com
   analytics:
     provider: google

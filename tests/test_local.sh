@@ -22,7 +22,7 @@ set -e
 function docker_run_integration_tests() {
 docker build -t mkdocs-simple-test-runner:$1 -f- . <<EOF
   FROM python:$1
-  RUN apt-get -y update && apt-get -yyy install bats gcc
+  RUN apt-get -y update && apt-get -yyy install bats gcc sudo
   COPY ./requirements.txt /workspace/requirements.txt
   RUN pip install -r /workspace/requirements.txt
   COPY . /workspace
@@ -35,14 +35,15 @@ docker run --rm -it mkdocs-simple-test-runner:$1 tests/run_linters.sh
 docker run --rm -it mkdocs-simple-test-runner:$1 tests/run_integration_tests.sh
 }
 
-if [[ ! -z "$PYTHON_37_ONLY" ]]; then
-  docker_run_integration_tests "3.7"
+if [[ ! -z "$PYTHON_V_ONLY" ]]; then
+  echo "only v $PYTHON_V_ONLY"
+  docker_run_integration_tests "$PYTHON_V_ONLY"
 else
   docker_run_integration_tests "3"
-  docker_run_integration_tests "3.6"
   docker_run_integration_tests "3.7"
   docker_run_integration_tests "3.8"
   docker_run_integration_tests "3.9"
+  docker_run_integration_tests "3.10"
 fi
 # ```
 # </details>

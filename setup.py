@@ -33,15 +33,15 @@ setuptools.setup(
         'Intended Audience :: Information Technology',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9'],
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10'],
     packages=setuptools.find_packages(),
     entry_points={
         'mkdocs.plugins': ["simple = mkdocs_simple_plugin.plugin:SimplePlugin"],
         'console_scripts': ["mkdocs_simple_gen = mkdocs_simple_plugin.generator:main"]})
 
 # md file="versions.snippet"
-# _Python 3.x, 3.6, 3.7, 3.8, 3.9 supported._
+# _Python 3.x, 3.7, 3.8, 3.9, 3.10 supported._
 # /md

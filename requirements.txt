@@ -4,7 +4,7 @@ mkdocs-awesome-pages-plugin==2.7.0
 mkdocs-macros-plugin==0.6.4
 mkdocs-material==8.2.1
 mkdocs==1.2.3
-mkdocstrings==0.18.0
+mkdocstrings==0.18.1
 pip-upgrader==1.4.15
 pydocstyle==6.1.1
 pymdown-extensions==9.2

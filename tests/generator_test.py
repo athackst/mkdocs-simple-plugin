@@ -111,9 +111,9 @@ class TestDefaultConfig(unittest.TestCase):
         """
         self._test_env_setting(
             env_variable="THEME",
-            env_value="material",
+            env_value="readthedocs",
             config_name="theme",
-            config_value={"name": "material"},
+            config_value={"name": "readthedocs"},
             loaded_type=theme.Theme)
 
 

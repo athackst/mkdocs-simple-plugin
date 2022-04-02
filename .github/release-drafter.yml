@@ -47,6 +47,7 @@ categories:
     label: 'docs'
   - title: 'Dependency Updates'
     label: 'dependencies'
+    collapse-after: 3
 
 version-resolver:
   major:

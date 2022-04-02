@@ -23,8 +23,6 @@ function docker_run_integration_tests() {
 docker build -t mkdocs-simple-test-runner:$1 -f- . <<EOF
   FROM python:$1
   RUN apt-get -y update && apt-get -yyy install bats gcc sudo
-  COPY ./requirements.txt /workspace/requirements.txt
-  RUN pip install -r /workspace/requirements.txt
   COPY . /workspace
   WORKDIR /workspace
 EOF

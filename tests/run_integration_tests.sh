@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 sudo apt-get install bats
-pip install -r requirements.txt
 pip install -e .
+pip install mkdocs-macros-plugin mkdocstrings
 # md file="test.snippet"
 # ### Integration tests
 # 

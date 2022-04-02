@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Generate the dockerfiles from a jinja template."""
 from pathlib import Path
-from jinja2 import Environment, FileSystemLoader, Markup
+from jinja2 import Environment, FileSystemLoader
+from markupsafe import Markup
 
 import os
 import yaml

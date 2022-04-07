@@ -22,7 +22,7 @@ set -e
 function docker_run_integration_tests() {
 docker build -t mkdocs-simple-test-runner:$1 -f- . <<EOF
   FROM python:$1
-  RUN apt-get -y update && apt-get -yyy install bats gcc sudo
+  RUN apt-get -y update && apt-get -y install bats gcc sudo
   COPY . /workspace
   WORKDIR /workspace
 EOF

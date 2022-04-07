@@ -9,7 +9,7 @@ documentation!</p>
 
 
 <h3 id="module.main" class="doc doc-heading">
-<code class="highlight language-python">module.main()</code>
+<code class="highlight language-python"><span class="n">module</span><span class="o">.</span><span class="n">main</span><span class="p">()</span></code>
 
 
 </h3>

@@ -1,10 +1,10 @@
 """mkdocs-simple-plugin package."""
 import setuptools
 
-with open("README.md", "r") as fh:
+with open("README.md", "r", encoding='UTF-8') as fh:
     long_description = fh.read()
 
-with open("VERSION", "r") as version_file:
+with open("VERSION", "r", encoding='UTF-8') as version_file:
     version_num = version_file.read().strip()
 
 setuptools.setup(
@@ -25,8 +25,10 @@ setuptools.setup(
     license='Apache-2.0',
     python_requires='>=3',
     install_requires=[
+            'click>=7.1',
+            'MarkupSafe>=2.1.1',
             'mkdocs>=1.0.6',
-            'click>=7.1'],
+            'PyYAML>=6.0'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',

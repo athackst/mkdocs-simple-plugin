@@ -17,9 +17,10 @@ pip install mkdocs-simple-plugin
 {% include "versions.snippet" %}
 
 """
-import click
-import tempfile
 import os
+import tempfile
+
+import click
 import yaml
 
 

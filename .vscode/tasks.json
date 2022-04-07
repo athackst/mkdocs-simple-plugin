@@ -37,7 +37,6 @@
       "dependsOrder": "sequence",
       "dependsOn": [
         "mkdocs_simple_gen",
-        "gen_readme"
       ],
       "problemMatcher": []
     },
@@ -48,7 +47,6 @@
       "dependsOrder": "sequence",
       "dependsOn": [
         "mkdocs_simple_gen",
-        "gen_readme"
       ],
       "problemMatcher": []
     },
@@ -82,12 +80,6 @@
         "kind": "test",
         "isDefault": true
       }
-    },
-    {
-      "label": "test script",
-      "type": "shell",
-      "command": "./tests/test.sh",
-      "problemMatcher": []
     },
     {
       "label": "test unittest",

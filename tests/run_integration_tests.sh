@@ -2,7 +2,7 @@
 set -e
 sudo apt-get install bats
 pip install -e .
-pip install mkdocs-macros-plugin mkdocstrings
+pip install mkdocs-macros-plugin mkdocstrings mkdocs-material
 # md file="test.snippet"
 # ### Integration tests
 # 

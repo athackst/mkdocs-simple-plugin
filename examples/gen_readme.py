@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """Generate the dockerfiles from a jinja template."""
+import os
+import logging
 from pathlib import Path
+
 from jinja2 import Environment, FileSystemLoader
 from markupsafe import Markup
-
-import os
 import yaml
-import logging
+
 
 log = logging.getLogger(__name__)
 

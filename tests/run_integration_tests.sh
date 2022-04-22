@@ -24,7 +24,7 @@ pip install mkdocs-macros-plugin mkdocstrings mkdocs-material
 #
 # ```bash
 ./examples/gen_readme.py
-./tests/test.bats
+./tests/integration_test.bats
 # ```
 # </details>
 # /md

@@ -14,7 +14,7 @@ pip install -e .
 # <details>
 # <summary>Code</summary>
 # ```bash
-python3 -m unittest tests/*_test.py
+python3 -m unittest tests/test_*.py
 # ```
 # </details>
 # /md

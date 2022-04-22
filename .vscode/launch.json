@@ -5,20 +5,35 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
             "name": "Build Mkdocs",
             "type": "python",
             "request": "launch",
-            "program": "/usr/local/bin/mkdocs",
-            "args": ["build", "--verbose"],
+            "program": "/home/vscode/.local/bin/mkdocs",
+            "args": [
+                "build",
+                "--verbose"
+            ],
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal"
         },
         {
-            "name": "Build Mkdocs (mkdocs-test.yml)",
+            // Attach a debugger to an example by running this in the example folder
+            "name": "Build example",
             "type": "python",
             "request": "launch",
-            "program": "/usr/local/bin/mkdocs",
-            "args": ["build", "--verbose"],
+            "program": "/home/vscode/.local/bin/mkdocs",
+            "args": [
+                "build",
+                "--verbose"
+            ],
             "preLaunchTask": "debugger prelaunch",
             "cwd": "${fileDirname}",
             "console": "integratedTerminal"

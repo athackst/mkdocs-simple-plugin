@@ -1,5 +1,7 @@
 #!/bin/bash
 
+git config --global --add safe.directory /github/workspace
+
 mkdocs_simple_gen --config-file ${INPUT_CONFIG:-'mkdocs.yml'}
 mkdocs build
 

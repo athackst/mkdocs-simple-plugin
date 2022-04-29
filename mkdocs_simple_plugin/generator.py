@@ -16,6 +16,14 @@ pip install mkdocs-simple-plugin
 
 {% include "versions.snippet" %}
 
+## CLI Reference
+
+::: mkdocs-click
+    :module: mkdocs_simple_plugin.generator
+    :command: main
+    :prog_name: mkdocs_simple_gen
+    :depth: 2
+
 """
 import os
 import tempfile
@@ -50,13 +58,13 @@ def default_config():
     def maybe_set_string(name):
         env_variable = "INPUT_" + name.upper()
         config_variable = name.lower()
-        if env_variable in os.environ.keys() and os.environ[env_variable]:
+        if os.environ.get(env_variable):
             config[config_variable] = os.environ[env_variable]
 
     def maybe_set_dict(name, key):
         env_variable = "INPUT_" + name.upper()
         config_variable = name.lower()
-        if env_variable in os.environ.keys() and os.environ[env_variable]:
+        if os.environ.get(env_variable):
             config[config_variable] = {key: os.environ[env_variable]}
     # Set the config variables via environment if exist
     maybe_set_string("site_name")
@@ -108,7 +116,7 @@ def setup_config(config_file="mkdocs.yml"):
                 print(config)
             if not os.path.exists(config["docs_dir"]):
                 #  Ensure docs directory exists.
-                print("making docs_dir {}".format(config["docs_dir"]))
+                print("making docs_dir %s", config["docs_dir"])
                 os.makedirs(config["docs_dir"], exist_ok=True)
 
         except yaml.YAMLError as exc:
@@ -136,33 +144,6 @@ def main(config_file, build, serve, mkdocs_args):
         os.system("mkdocs serve " + " ".join(args))
 
 
-""" md
-## Usage
-
-```bash
-mkdocs_simple_gen
-```
-
-### Command line options
-
-See `--help`
-
-```txt
-Usage: mkdocs_simple_gen [OPTIONS]
-
-Options:
-  --config-file             Set the configuration file.
-  --build / --no-build      Build the site using mkdocs build.
-  --serve / --no-serve      Serve the site using mkdocs serve.
-  --help                    Show this message and exit.
-```
-
-default flags:
-
-```bash
-mkdocs_simple_gen --no-build --no-serve
-```
-"""
 if __name__ == "__main__":
     # pylint doesn't know how to parse the click decorators,
     # so disable no-value-for-parameter on main

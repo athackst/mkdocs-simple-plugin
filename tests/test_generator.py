@@ -27,7 +27,7 @@ class TestDefaultConfig(unittest.TestCase):
     def setUp(self):
         """Set up the tests by reseting the environment variables."""
         for var in self.env_variables:
-            if var in os.environ.keys():
+            if os.environ.get(var) is not None:
                 del os.environ[var]
 
     def tearDown(self):

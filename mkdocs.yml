@@ -1,9 +1,6 @@
 site_name: athackst/mkdocs-simple-plugin
 docs_dir: /tmp/mkdocs-simple/mkdocs-simple-plugin
 plugins:
-  - mkdocs-simple-hooks:
-      hooks:
-        on_pre_build: examples.gen_readme:generate
   - simple:
       include_extensions:
         - .yml

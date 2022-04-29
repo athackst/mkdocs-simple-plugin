@@ -17,6 +17,7 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
+          cache: 'pip'
       - name: Unit tests
         run: ./tests/run_unit_tests.sh
       - name: Integration tests
@@ -29,6 +30,7 @@ jobs:
       - uses: actions/setup-python@v3
         with:
           python-version: "3.x"
+          cache: 'pip'
       - name: Lint
         run: ./tests/run_linters.sh
 
@@ -41,6 +43,7 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: "3.x"
+          cache: 'pip'
       - name: Build Docs
         run: ./build.sh
       - name: Test html

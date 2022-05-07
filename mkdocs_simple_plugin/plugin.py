@@ -255,6 +255,19 @@ class SimplePlugin(BasePlugin):
     )
     # /md
 
+    def __init__(self):
+        """Set up internal variables."""
+        self.build_docs_dir = None
+        self.orig_docs_dir = None
+        self.include_folders = None
+        self.ignore_folders = None
+        self.ignore_hidden = None
+        self.include_extensions = None
+        self.merge_docs_dir = None
+        self.semiliterate = None
+        self.ignore_paths = None
+        self.paths = None
+
     def on_config(self, config, **kwargs):
         """Update configuration to use a temporary build directory."""
         default_config = dict((name, config_option.default)
@@ -273,10 +286,13 @@ class SimplePlugin(BasePlugin):
         self.build_docs_dir = self.config['build_docs_dir']
         if not self.build_docs_dir:
             self.build_docs_dir = tempfile.mkdtemp(
-                prefix="mkdocs_simple_{}".format(
-                    os.path.basename(os.path.dirname(config.config_file_path))))
-        utils.log.info("mkdocs-simple-plugin: build_docs_dir: {}".format(
-            self.build_docs_dir))
+                prefix="mkdocs_simple_" +
+                os.path.basename(
+                    os.path.dirname(
+                        config.config_file_path)))
+        utils.log.info(
+            "mkdocs-simple-plugin: build_docs_dir: %s",
+            self.build_docs_dir)
         # Clean out build folder on config
         shutil.rmtree(self.build_docs_dir, ignore_errors=True)
         os.makedirs(self.build_docs_dir, exist_ok=True)
@@ -295,7 +311,7 @@ class SimplePlugin(BasePlugin):
             self.semiliterate.append(Semiliterate(**item))
 
         # Always ignore the output paths
-        self.ignore_paths = [self.get_config_site_dir(config.config_file_path),
+        self.ignore_paths = [self._get_config_site_dir(config.config_file_path),
                              config['site_dir'],
                              self.build_docs_dir]
         return config
@@ -304,14 +320,14 @@ class SimplePlugin(BasePlugin):
         """Build documentation directory with files according to settings."""
         # Copy contents of docs directory if merging
         if self.merge_docs_dir and os.path.exists(self.orig_docs_dir):
-            self.copy_docs_directory(self.orig_docs_dir, self.build_docs_dir)
+            self._copy_docs_directory(self.orig_docs_dir, self.build_docs_dir)
             self.ignore_paths += [self.orig_docs_dir]
         # Copy all of the valid doc files into build_docs_dir
-        self.paths = self.build_docs()
+        self.paths = self._build_docs()
 
     def on_serve(self, server, config, **kwargs):
         """Add files to watch server."""
-        # still watch the original docs/ directory
+        # watch the original docs/ directory
         if os.path.exists(self.orig_docs_dir):
             server.watch(self.orig_docs_dir)
 
@@ -321,7 +337,7 @@ class SimplePlugin(BasePlugin):
 
         return server
 
-    def in_search_directory(self, directory, root):
+    def _in_search_directory(self, directory: str, root: str) -> bool:
         """Check if directory should be searched."""
         if self.ignore_hidden and (directory[0] == "."
                                    or directory == "__pycache__"):
@@ -334,16 +350,16 @@ class SimplePlugin(BasePlugin):
             return False
         return True
 
-    def in_include_directory(self, directory):
+    def _in_include_directory(self, directory: str) -> bool:
         """Check if directory in include list."""
         return any(fnmatch.fnmatch(directory, filter)
                    for filter in self.include_folders)
 
-    def in_extensions(self, file):
+    def _in_extensions(self, file: str) -> bool:
         """Check if file is in include extensions."""
         return any(extension in file for extension in self.include_extensions)
 
-    def get_config_site_dir(self, config_file_path):
+    def _get_config_site_dir(self, config_file_path: str) -> str:
         """Get configuration directory from mkdocs.yml file.
 
         This is needed in the case you are running mkdocs serve, which
@@ -351,49 +367,54 @@ class SimplePlugin(BasePlugin):
         """
         orig_config = mkdocs_config.load_config(config_file_path)
         utils.log.debug(
-            "mkdocs-simple-plugin: loading file: {}".format(config_file_path))
+            "mkdocs-simple-plugin: loading file: %s", config_file_path)
 
         utils.log.debug(
-            "mkdocs-simple-plugin: User config site_dir: {}".format(
-                orig_config.data['site_dir']))
+            "mkdocs-simple-plugin: User config site_dir: %s",
+            orig_config.data['site_dir'])
         return orig_config.data['site_dir']
 
-    def build_docs(self):
+    def _build_docs(self) -> list:
         """Build the docs directory from workspace files."""
         paths = []
         for root, directories, files in os.walk("."):
-            if self.in_include_directory(root):
+            if self._in_include_directory(root):
                 document_root = self.build_docs_dir + root[1:]
-                for f in files:
-                    copied = self.copy_file(root, f, document_root)
-                    extracted = self.extract_from(root, f, document_root)
+                for file in files:
+                    copied = self._copy_file(root, file, document_root)
+                    extracted = self._extract_from(root, file, document_root)
                     if copied or extracted:
-                        paths.append(os.path.join(root, f))
+                        paths.append(os.path.join(root, file))
             directories[:] = [d for d in directories
-                              if self.in_search_directory(d, root)]
+                              if self._in_search_directory(d, root)]
         return paths
 
-    def copy_file(self, from_directory, name, destination_directory):
+    def _copy_file(
+            self,
+            from_directory: str,
+            name: str,
+            destination_directory: str) -> bool:
         """Copy file with the same name to a new directory.
 
         Returns true if file copied.
         """
         original = os.path.join(from_directory, name)
-        if self.in_extensions(name):
+        if self._in_extensions(name):
             new_file = os.path.join(destination_directory, name)
             try:
                 os.makedirs(destination_directory, exist_ok=True)
                 shutil.copy(original, new_file)
-                utils.log.debug("mkdocs-simple-plugin: {} --> {}".format(
-                    original, new_file))
+                utils.log.debug("mkdocs-simple-plugin: %s --> %s",
+                                original, new_file)
                 return True
-            except Exception as e:
-                utils.log.warn(
-                    "mkdocs-simple-plugin: error! {}.. skipping {}".format(
-                        e, original))
+            except (OSError, IOError, UnicodeDecodeError) as error:
+                utils.log.warning(
+                    "mkdocs-simple-plugin: error! %s.. skipping %s",
+                    error, original)
         return False
 
-    def extract_from(self, from_directory, name, destination_directory):
+    def _extract_from(self, from_directory: str, name: str,
+                      destination_directory: str) -> bool:
         """Extract content from file into destination.
 
         Returns the name of the file extracted if extractable.
@@ -405,16 +426,18 @@ class SimplePlugin(BasePlugin):
 
         return extracted
 
-    def copy_docs_directory(self, root_source_directory,
-                            root_destination_directory):
+    def _copy_docs_directory(
+            self,
+            root_source_directory: str,
+            root_destination_directory: str):
         """Copy all files from source to destination directory."""
         if sys.version_info >= (3, 8):
             # pylint: disable=unexpected-keyword-arg
             shutil.copytree(root_source_directory,
                             root_destination_directory,
                             dirs_exist_ok=True)
-            utils.log.debug("mkdocs-simple-plugin: {}/* --> {}/*".format(
-                root_source_directory, root_destination_directory))
+            utils.log.debug("mkdocs-simple-plugin: %s/* --> %s/*",
+                            root_source_directory, root_destination_directory)
         else:
             for source_directory, _, files in os.walk(root_source_directory):
                 destination_directory = source_directory.replace(
@@ -428,5 +451,5 @@ class SimplePlugin(BasePlugin):
                         os.remove(destination_file)
                     shutil.copy(source_file, destination_directory)
                     utils.log.debug(
-                        "mkdocs-simple-plugin: {}/* --> {}/*".format(
-                            source_file, destination_file))
+                        "mkdocs-simple-plugin: %s/* --> %s/*",
+                        source_file, destination_file)

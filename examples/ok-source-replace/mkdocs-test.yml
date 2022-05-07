@@ -8,7 +8,7 @@ plugins:
             - start: ^\s*"""\W?md\b
               stop: ^\s*"""\s*$
               replace: 
-                # replace "foo" withe "bar"
+                # replace "foo" with "bar"
                 - ["(.*)foo(.*)$", "\\1bar\\2"] 
                 # only capture what's after args and replace with paramter prefix
                 - ["args:(.*)$","parameters:\\1"] 

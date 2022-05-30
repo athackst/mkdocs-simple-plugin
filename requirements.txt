@@ -7,7 +7,7 @@ mkdocs-awesome-pages-plugin==2.7.0
 mkdocs-click==0.7.0
 mkdocs-macros-plugin==0.7.0
 mkdocs-material==8.2.15
-mkdocstrings==0.18.1
+mkdocstrings==0.19.0
 mkdocstrings-python-legacy==0.2.2
 pip-upgrader==1.4.15
 pydocstyle==6.1.1

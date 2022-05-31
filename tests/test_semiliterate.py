@@ -24,6 +24,14 @@ class TestExtractionPattern(unittest.TestCase):
         # Stop should return Falsy
         self.assertFalse(pattern.stop)
 
+    def test_setup(self):
+        """Test in-line setup"""
+        pattern = semiliterate.ExtractionPattern()
+
+        # Set filename
+        pattern.setup("//md file=new_name.snippet")
+        self.assertEqual(pattern.get_filename(), "new_name.snippet")
+
     def test_block_comment(self):
         """Test a nominal block start/replace/end pattern."""
         pattern = semiliterate.ExtractionPattern(
@@ -53,10 +61,10 @@ class TestExtractionPattern(unittest.TestCase):
             replace=[r'^\s*\/\/\s?(.*\n?)$', r'^.*$'])
 
         # replace_line should replace // with ''
-        self.assertEqual(pattern.replace_line("    // md"), "md\n")
+        self.assertEqual(pattern.replace_line("    // md"), "md")
         self.assertEqual(
-            pattern.replace_line("  // ## Hello world"), "## Hello world\n")
-        self.assertEqual(pattern.replace_line("    // \\md"), "\\md\n")
+            pattern.replace_line("  // ## Hello world"), "## Hello world")
+        self.assertEqual(pattern.replace_line("    // \\md"), "\\md")
         # Should return Falsy for strings without the line comment
         self.assertFalse(pattern.replace_line(' ## Hello World'))
 
@@ -124,12 +132,30 @@ class TestStreamExtract(unittest.TestCase):
         self.test_stream.transcribe("")
         self.assertFalse(self.test_stream.wrote_something)
 
+    def test_extract_match(self):
+        """Test extracting from a regex match."""
+        self.assertFalse(self.test_stream.wrote_something)
+
+        self.test_stream.try_extract_match(None)
+        self.assertFalse(self.test_stream.wrote_something)
+
+        mock_value = ("test first", "test second")
+
+        def index_func(self, value):
+            return mock_value[value]
+        mock_match = MagicMock(return_value=mock_value)
+        mock_match.__getitem__ = index_func
+        mock_match.lastindex.return_value = 1
+        self.test_stream.try_extract_match(mock_match)
+        self.output_mock.write.assert_called_once_with("test second\n")
+        self.assertTrue(self.test_stream.wrote_something)
+
     def test_set_output_stream_new(self):
         """Setting the filename to a new file should create a new stream."""
         self.output_mock.file_name = "test_name"
         self.output_mock.file_directory = "/test/dir/"
 
-        self.test_stream.set_output_stream("//md file=new_name.snippet")
+        self.test_stream.set_output_stream("new_name.snippet")
         self.output_mock.close.assert_called_once()
         self.assertEqual(
             self.test_stream.output_stream.file_name, "new_name.snippet")

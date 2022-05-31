@@ -138,6 +138,8 @@ class SimplePlugin(BasePlugin):
         # All regular expression parameters use ordinary Python `re` syntax.
         #
         #  {% include "mkdocs_simple_plugin/semiliterate.snippet" %}
+        #
+        #  {% include "mkdocs_simple_plugin/extractionpattern.snippet" %}
         # /md
 
         # md file="example.snippet"

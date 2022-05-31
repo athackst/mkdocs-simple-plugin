@@ -7,7 +7,16 @@ from mkdocs import utils
 
 def get_line(line: str) -> str:
     """Returns line with EOL."""
+    if not line:
+        return None
     return line if line.endswith("\n") else line + '\n'
+
+
+def get_match(pattern: re.Pattern, line: str) -> re.Match:
+    """Returns the match for the given pattern."""
+    if not pattern:
+        return None
+    return pattern.search(line)
 
 
 class ExtractionPattern:
@@ -20,8 +29,13 @@ class ExtractionPattern:
     # Only the first mode whose `start` expression matches is activated, so at
     # most one mode of extraction can be active at any time.
     # When an extraction is active, lines from the scanned
-    # file are copied to the destination file (possibly modified by
-    # the "replace" parameter below).
+    # file are processed into the destination file.
+    #
+    # !!!Note
+    #       The (last) extraction mode (if any) with no `start`
+    #       parameter is active starting at the first line of the scanned
+    #       file; there is no way this mode can be reactivated if it stops.
+    #       This convention allows for convenient "front-matter" extraction.
     #
     # Additionally, start can specify an output path for the extracted
     # content. Simply add `file=output_path.md` to the start token line.
@@ -32,17 +46,13 @@ class ExtractionPattern:
     # # md file=ouput_path.md
     # `````
     #
-    # !!!Note
-    #       The (last) extraction mode (if any) with no `start`
-    #       parameter is active beginning with the first line of the scanned
-    #       file; there is no way such a mode can be reactivated if it stops.
-    #       This convention allows for convenient "front-matter" extraction.
-    #
     # ##### stop
     # (optional) The regex pattern to indicate the stop of extraction.
     #
-    # The `simple` plugin will begin searching for further occurrences
-    # of `start` expressions on the _next_ line of the scanned file.
+    # After the extraction has stopped, the file will continue to be searched
+    # for matching patterns starting with the _next_ line of the scanned file.
+    # In this way the entire file will be processed looking for start-stop
+    # pairs.
     #
     # ##### replace
     #
@@ -77,6 +87,8 @@ class ExtractionPattern:
         """
         self.start = re.compile(start) if start else None
         self.stop = re.compile(stop) if stop else None
+        self.filename_pattern = re.compile(r"file=[\"']?(\w+.\w+)[\"']?\b")
+        self._filename = None
         if not replace:
             replace = []
         self.replace = []
@@ -85,6 +97,17 @@ class ExtractionPattern:
                 self.replace.append(re.compile(item))
             else:
                 self.replace.append((re.compile(item[0]), item[1]))
+
+    def setup(self, line: str):
+        """Process input parameters."""
+        self._filename = None
+        match = get_match(self.filename_pattern, line)
+        if match and match.lastindex:
+            self._filename = match[match.lastindex]
+
+    def get_filename(self) -> str:
+        """Returns the filename if defined in start arguments."""
+        return self._filename
 
     def replace_line(self, line: str) -> str:
         """Apply the specified replacements to the line and return it."""
@@ -95,10 +118,10 @@ class ExtractionPattern:
             match_object = pattern.search(line)
             if match_object:
                 if isinstance(item, tuple):
-                    return get_line(match_object.expand(item[1]))
+                    return match_object.expand(item[1])
                 if match_object.lastindex:
-                    return get_line(match_object[match_object.lastindex])
-                return ''
+                    return match_object[match_object.lastindex]
+                return None
         # Otherwise, just return the line.
         return line
 
@@ -127,7 +150,7 @@ class LazyFile:
 
     def write(self, arg: str):
         """Create and write the file, only if not empty."""
-        if arg == '':
+        if not arg:
             return
         if self.file_object is None:
             os.makedirs(self.file_directory, exist_ok=True)
@@ -159,7 +182,6 @@ class StreamExtract:
         self.input_stream = input_stream
         self.default_stream = output_stream
         self.output_stream = output_stream
-        self.output_pattern = re.compile(r"file=[\"']?(\w+.\w+)[\"']?\b")
         self.terminate = terminate
         self.patterns = patterns
         self.wrote_something = False
@@ -170,21 +192,15 @@ class StreamExtract:
         if text:
             self.wrote_something = True
 
-    def check_pattern(
+    def try_extract_match(
             self,
-            pattern: re.Pattern,
-            line: str,
+            match_object: re.Match,
             emit_last: bool = True) -> bool:
-        """Check if pattern is contained in line.
+        """Extract match into output.
 
-        If _pattern_ is not false-y and is contained in _line_,
-        returns true (and if the _emit_last_ flag is true,
-        emits the last group of the match if any). Otherwise,
-        check_pattern does nothing but return false.
+        If _match_object_ is not false-y, returns true.
+        If extract flag is true, emits the last group of the match if any.
         """
-        if not pattern:
-            return False
-        match_object = pattern.search(line)
         if not match_object:
             return False
         if match_object.lastindex and emit_last:
@@ -202,16 +218,12 @@ class StreamExtract:
         self.output_stream.close()
         return self.wrote_something
 
-    def set_output_stream(self, line: str):
-        """Set output stream from pattern match."""
-        match_object = self.output_pattern.search(line)
-        if not match_object:
-            return
+    def set_output_stream(self, filename: str):
+        """Set output stream from filename."""
         output_stream = self.output_stream
-        if match_object:
+        if filename:
             output_stream = LazyFile(
-                self.output_stream.file_directory,
-                match_object[1])
+                self.output_stream.file_directory, filename)
 
         if self.output_stream != output_stream:
             self.close()
@@ -230,18 +242,22 @@ class StreamExtract:
 
         for line in self.input_stream:
             # Check terminate, regardless of state:
-            if self.check_pattern(self.terminate, line, active_pattern):
+            if self.try_extract_match(
+                    get_match(self.terminate, line), active_pattern):
                 return self.close()
             # Change state if flagged to do so:
             if active_pattern is None:
                 for pattern in self.patterns:
-                    if self.check_pattern(pattern.start, line):
+                    start = get_match(pattern.start, line)
+                    if start:
                         active_pattern = pattern
-                        self.set_output_stream(line)
+                        active_pattern.setup(line)
+                        self.set_output_stream(active_pattern.get_filename())
+                        self.try_extract_match(start)
                         break
                 continue
             # We are extracting. See if we should stop:
-            if self.check_pattern(active_pattern.stop, line):
+            if self.try_extract_match(get_match(active_pattern.stop, line)):
                 active_pattern = None
                 self.output_stream = self.default_stream
                 continue
@@ -251,7 +267,7 @@ class StreamExtract:
 
     def extract_line(self, line: str, extraction_pattern: re.Pattern):
         """Copy line to the output stream, applying specified replacements."""
-        line = extraction_pattern.replace_line(line)
+        line = get_line(extraction_pattern.replace_line(line))
         self.transcribe(line)
 
 

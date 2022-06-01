@@ -24,8 +24,8 @@ class TestExtractionPattern(unittest.TestCase):
         # Stop should return Falsy
         self.assertFalse(pattern.stop)
 
-    def test_setup(self):
-        """Test in-line setup"""
+    def test_setup_filename(self):
+        """Test in-line setup for filename."""
         pattern = semiliterate.ExtractionPattern()
 
         # Set filename

@@ -77,8 +77,6 @@ class ExtractionPattern:
         """
         self.start = re.compile(start) if start else None
         self.stop = re.compile(stop) if stop else None
-        self.filename_pattern = re.compile(r"file=[\"']?(\w+.\w+)[\"']?\b")
-        self._filename = None
         if not replace:
             replace = []
         self.replace = []

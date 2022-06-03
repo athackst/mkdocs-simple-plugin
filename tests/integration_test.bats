@@ -236,6 +236,13 @@ teardown() {
     assertParGrep module
 }
 
+@test "build a site with iniline settings" {
+    cd ${fixturesDir}/ok-mkdocs-inline-settings
+    assertGen
+    assertValidSite
+    assertParGrep main
+}
+
 @test "serve a mkdocs site" {
     cd ${fixturesDir}/ok-mkdocs-docs
     assertGen

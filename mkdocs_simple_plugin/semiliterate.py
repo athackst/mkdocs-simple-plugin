@@ -22,7 +22,6 @@ def get_match(pattern: re.Pattern, line: str) -> re.Match:
 class ExtractionPattern:
     """An ExtractionPattern for a file."""
     # md file="extractionpattern.snippet"
-    #
     # ##### start
     # (optional) The regex pattern to indicate the start of extraction.
     #
@@ -36,15 +35,6 @@ class ExtractionPattern:
     #       parameter is active starting at the first line of the scanned
     #       file; there is no way this mode can be reactivated if it stops.
     #       This convention allows for convenient "front-matter" extraction.
-    #
-    # Additionally, start can specify an output path for the extracted
-    # content. Simply add `file=output_path.md` to the start token line.
-    #
-    # Example:
-    #
-    # `````
-    # # md file=ouput_path.md
-    # `````
     #
     # ##### stop
     # (optional) The regex pattern to indicate the stop of extraction.
@@ -98,12 +88,62 @@ class ExtractionPattern:
             else:
                 self.replace.append((re.compile(item[0]), item[1]))
 
+        # md file=inline_params.snippet
+        #
+        # These parameters should be on the same line as the start block.
+        # For example:
+        #
+        # ```
+        #  /**md file="new_name.md" trim=2 content="^\s*\/\/\s?(.*)$"
+        # ```
+        #
+        # #### Set output file name
+        #
+        #  Filename is relative to the folder of the file being processed.
+        #
+        # ```
+        # file=<name>
+        # ```
+        self._filename_pattern = re.compile(r"file=[\"']?(\w+.\w+)[\"']?\b")
+        self._filename = None
+        #
+        # #### Trim the front of a line
+        #
+        # Useful for removing leading spaces.
+        #
+        # ```
+        # trim=#
+        # ```
+        self._trim_pattern = re.compile(r"trim=[\"']?(\d+)[\"']?\b")
+        self._trim = 0
+        # #### Capture content
+        #
+        # Regex expression to capture content, otherwise all lines are captured.
+        #
+        # ```
+        # content=<regex>
+        # ```
+        self._content_pattern = re.compile(r"content=[\"']?([^\"']*)[\"']?")
+        self._content = None
+        # /md
+
     def setup(self, line: str):
         """Process input parameters."""
         self._filename = None
-        match = get_match(self.filename_pattern, line)
-        if match and match.lastindex:
-            self._filename = match[match.lastindex]
+        file_match = get_match(self._filename_pattern, line)
+        if file_match and file_match.lastindex:
+            self._filename = file_match[file_match.lastindex]
+
+        self._trim = 0
+        trim_match = get_match(self._trim_pattern, line)
+        if trim_match and trim_match.lastindex:
+            self._trim = int(trim_match[trim_match.lastindex])
+
+        self._content = None
+        content_match = get_match(self._content_pattern, line)
+        if content_match and content_match.lastindex:
+            regex_pattern = content_match[content_match.lastindex]
+            self._content = re.compile(regex_pattern)
 
     def get_filename(self) -> str:
         """Returns the filename if defined in start arguments."""
@@ -111,6 +151,15 @@ class ExtractionPattern:
 
     def replace_line(self, line: str) -> str:
         """Apply the specified replacements to the line and return it."""
+        # Process trimming
+        if self._trim:
+            line = line[self._trim:]
+        # Process inline content regex
+        if self._content:
+            match_object = get_match(self._content, line)
+            if match_object.lastindex:
+                return match_object[match_object.lastindex]
+        # Preform replace operations
         if not self.replace:
             return line
         for item in self.replace:

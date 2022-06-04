@@ -32,6 +32,28 @@ class TestExtractionPattern(unittest.TestCase):
         pattern.setup("//md file=new_name.snippet")
         self.assertEqual(pattern.get_filename(), "new_name.snippet")
 
+    def test_setup_trim(self):
+        """Test in-line setup for trimming front."""
+
+        pattern = semiliterate.ExtractionPattern()
+
+        # Set trim
+        pattern.setup("//md trim=2")
+        line = "1234"
+        self.assertEqual(pattern.replace_line(line), "34")
+        line = "1"
+        self.assertEqual(pattern.replace_line(line), "")
+
+    def test_setup_content(self):
+        """Test in-line setup for capturing content."""
+
+        pattern = semiliterate.ExtractionPattern()
+
+        # Set content
+        pattern.setup("//md content='(hello)'")
+        line = "hello world"
+        self.assertEqual(pattern.replace_line(line), "hello")
+
     def test_block_comment(self):
         """Test a nominal block start/replace/end pattern."""
         pattern = semiliterate.ExtractionPattern(

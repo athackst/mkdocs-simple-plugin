@@ -22,7 +22,7 @@ pip install mkdocs-simple-plugin
 
 {% include "versions.snippet" %}
 
-## Settings
+## Usage
 
 Create a `mkdocs.yml` file in the root of your directory and add the `simple`
 plugin to its plugin list.
@@ -34,7 +34,19 @@ plugins:
 - simple:
 ```
 
-### Defaults
+### Example usage (defaults)
+
+{% include "mkdocs_simple_plugin/example.snippet" %}
+
+### Inline parameters
+
+Inline parameters configure a block's extraction.
+
+{% include "mkdocs_simple_plugin/inline_params.snippet" %}
+
+## Settings
+
+Below are the default settings of the plugin.
 
 ```yaml
 {{ config.mkdocs_simple_config }}
@@ -43,13 +55,6 @@ plugins:
 !!!Note
     If you add your own settings but want to also use any of these, you
     must reiterate the settings you want in your `mkdocs.yml` file.
-
-
-### Example usage (defaults)
-
-{% include "mkdocs_simple_plugin/example.snippet" %}
-
-## Configuration scheme
 
 {% include "mkdocs_simple_plugin/config_scheme.snippet" %}
 

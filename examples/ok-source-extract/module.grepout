@@ -1,8 +1,8 @@
-   <h2 id="python-version">Python Version</h2>
-   <p>You can put <em>markdown</em> in triple-quoted strings in Python.</p>
-   <h3 id="inline-comments">inline comments</h3>
-   <p>It works in inline comments. The start and end markers must be on their own
-   lines.</p>
-   <h3 id="docstrings">docstrings</h3>
-   <p>It works in docstrings. The start and end quotes must be on their own lines.
-   Drawback: <code>simple</code> does not remove leading whitespace.</p></div>
+<h2 id="python-version">Python Version</h2>
+<p>You can put <em>markdown</em> in triple-quoted strings in Python.</p>
+<h3 id="inline-comments">inline comments</h3>
+<p>It works in inline comments. The start and end markers must be on their own
+lines.</p>
+<h3 id="docstrings">docstrings</h3>
+<p>It works in docstrings. The start and end quotes must be on their own lines.
+You can even tell it to remove leading whitespace with the 'trim' option.</p></div>

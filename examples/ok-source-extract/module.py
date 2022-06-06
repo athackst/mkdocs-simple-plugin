@@ -15,12 +15,12 @@ You can put _markdown_ in triple-quoted strings in Python.
 
 def main():
     # noqa: D207
-    """<md>Main test.
+    """<md trim=4 >Main test.
 
-### docstrings
+    ### docstrings
 
-It works in docstrings. The start and end quotes must be on their own lines.
-Drawback: `simple` does not remove leading whitespace.
+    It works in docstrings. The start and end quotes must be on their own lines.
+    You can even tell it to remove leading whitespace with the 'trim' option.
     """
     print("Hello, world!")
     return 0

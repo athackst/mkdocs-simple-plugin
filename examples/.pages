@@ -10,6 +10,7 @@ nav:
     - Front matter extraction: examples/ok-mkdocs-custom-extract
     - Advanced replacement: examples/ok-source-replace
     - Extract with inline settings: examples/ok-mkdocs-inline-settings
+    - Ignore a file: examples/ok-mkdocs-ignore-file
     - Extract docs with macros: examples/ok-with-macros
     - Extract docs with mkdocstrings: examples/ok-with-mkdocstrings
     - Extract a snippet: examples/ok-source-with-snippet

@@ -44,7 +44,7 @@ Inline parameters configure a block's extraction.
 
 {% include "mkdocs_simple_plugin/inline_params.snippet" %}
 
-## Settings
+## Default settings
 
 Below are the default settings of the plugin.
 
@@ -55,6 +55,8 @@ Below are the default settings of the plugin.
 !!!Note
     If you add your own settings but want to also use any of these, you
     must reiterate the settings you want in your `mkdocs.yml` file.
+
+## Configuration scheme
 
 {% include "mkdocs_simple_plugin/config_scheme.snippet" %}
 
@@ -97,32 +99,38 @@ class SimplePlugin(BasePlugin):
     # md file=config_scheme.snippet
     config_scheme = (
         # ### include_folders
+        #
         # Directories whose name matches a glob pattern in this list will be
         # searched for documentation
         ('include_folders', config_options.Type(list, default=['*'])),
-
+        #
         # ### ignore_folders
+        #
         # Directories whose name matches a glob pattern in this list will NOT be
         # searched for documentation.
         ('ignore_folders', config_options.Type(list, default=[])),
-
+        #
         # ### ignore_hidden
+        #
         # Hidden directories will not be searched if this is true.
         ('ignore_hidden', config_options.Type(bool, default=True)),
-
+        #
         # ### merge_docs_dir
+        #
         # If true, the contents of the docs directory (if any) will be merged
         # at the same level as all other documentation.
         # Otherwise, the docs directory will be retained as a subdirectory in
         # the result.
         ('merge_docs_dir', config_options.Type(bool, default=True)),
-
+        #
         # ### build_docs_dir
+        #
         # If set, the directory where docs will be coallated to be build.
         # Otherwise, the build docs directory will be a temporary directory.
         ('build_docs_dir', config_options.Type(str, default='')),
-
+        #
         # ### include_extensions
+        #
         # Any file in the searched directories whose name contains a string in
         # this list will simply be copied to the generated documentation.
         ('include_extensions',
@@ -134,30 +142,31 @@ class SimplePlugin(BasePlugin):
                     ".j2c", ".fpx", ".pcd", ".png", ".pdf", "CNAME",
                     ".snippet", ".pages"
                 ])),
-
+        #
         # ### semiliterate
+        #
         # The semiliterate settings allows the extraction of markdown from
         # inside source files.
         # It is defined as a list of blocks of settings for different
         # filename patterns (typically matching filename extensions).
         # All regular expression parameters use ordinary Python `re` syntax.
         #
-        #  {% include "mkdocs_simple_plugin/semiliterate.snippet" %}
+        # {% include "mkdocs_simple_plugin/semiliterate.snippet" %}
         #
-        #  {% include "mkdocs_simple_plugin/extractionpattern.snippet" %}
+        # {% include "mkdocs_simple_plugin/extractionpattern.snippet" %}
         # /md
 
-        # md file="example.snippet"
+
         ('semiliterate',
             config_options.Type(
                 list,
                 default=[
                     {
-                        # #### Python
-                        'pattern': r'\.py$',
+                        'pattern': r'.*',
+                        'terminate': r'^\W*md-ignore',
                         'extract': [
                             {
-                                #
+                                # md file="example.snippet"
                                 # block comments starting with: `"""md`
                                 'start': r'^\s*"""\W?md\b',
                                 'stop': r'^\s*"""\s*$',
@@ -184,13 +193,7 @@ class SimplePlugin(BasePlugin):
                                 # # /md
                                 # ```
                                 #
-                            }
-                        ]
-                    },
-                    {
-                        # #### C, C++, and Javascript
-                        'pattern': r'\.(cpp|cc?|hh?|hpp|js|css)$',
-                        'extract': [
+                            },
                             {
                                 # block comments starting with: `/** md`
                                 'start': r'^\s*/\*+\W?md\b',
@@ -218,46 +221,22 @@ class SimplePlugin(BasePlugin):
                                 # // end md
                                 # ```
                                 #
+                            },
+                            {
+                                # block comments starting with
+                                # `<!-- md` and ending with `-->`
+                                'start': r'<!--\W?md\b',
+                                'stop': r'-->\s*$',
+                                #
+                                # ```xml
+                                # <!-- md
+                                # This is a documentation comment.
+                                # -->
+                                # ```
+                                #
                             }
                         ]
-
-                    },
-                    {
-                        # #### YAML, Dockerfiles, and shell scripts
-                        'pattern': r'Dockerfile$|\.(dockerfile|ya?ml|sh)$',
-                        'extract': [{
-                            # line-comment blocks starting with
-                            # `# md` and ending with `# /md`,
-                            'start': r'^\s*#+\W?md\b',
-                            'stop': r'#\s\/md\s*$',
-                            # stripping leading spaces and `#`
-                            'replace': [r'^\s*#?\s?(.*\n?)$'],
-                            #
-                            # ```yaml
-                            # # md
-                            # # This is a documentation comment.
-                            # # /md
-                            # ```
-                            #
-                        }]
-                    },
-                    {
-                        # #### HTML and xml
-                        'pattern': r'\.(html?|xml)$',
-                        'extract': [{
-                            # line-comment blocks starting with
-                            # `<!-- md` and ending with `-->`
-                            'start': r'<!--\W?md\b',
-                            'stop': r'-->\s*$',
-                            #
-                            # ```xml
-                            # <!-- md
-                            # This is a documentation comment.
-                            # -->
-                            # ```
-                            #
-                        }]
-                    },
+                    }
                 ]))
     )
     # /md

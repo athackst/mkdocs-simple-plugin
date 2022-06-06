@@ -2,7 +2,7 @@
 set -e
 pip install -r requirements.txt
 pip install -e .
-# md file="build.snippet"
+# md file="build.snippet" content="^#?\s?(.*)"
 # Building this package requires generating the readme files for the examples.
 # 
 # ```bash

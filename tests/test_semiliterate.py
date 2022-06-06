@@ -177,7 +177,7 @@ class TestStreamExtract(unittest.TestCase):
         self.output_mock.file_name = "test_name"
         self.output_mock.file_directory = "/test/dir/"
 
-        self.test_stream.set_output_stream("new_name.snippet")
+        self.test_stream.set_output_file("new_name.snippet")
         self.output_mock.close.assert_called_once()
         self.assertEqual(
             self.test_stream.output_stream.file_name, "new_name.snippet")
@@ -186,7 +186,7 @@ class TestStreamExtract(unittest.TestCase):
         """Setting the output stream to the same file should do nothing."""
         self.output_mock.file_name = "test_name"
         self.output_mock.file_directory = "/test/dir/"
-        self.test_stream.set_output_stream("test_name")
+        self.test_stream.set_output_file("test_name")
         self.output_mock.close.assert_not_called()
 
 

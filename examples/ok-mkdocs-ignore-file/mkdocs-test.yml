@@ -1,0 +1,4 @@
+# This tests if the site directory is ignored in both build and serve.
+site_name: ok-mkdocs-ignore-file
+plugins:
+- simple:

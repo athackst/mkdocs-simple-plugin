@@ -217,6 +217,7 @@ teardown() {
     cd ${fixturesDir}/ok-with-macros
     assertGen
     assertValidSite
+    assertParGrep example
     assertParGrep module
 }
 
@@ -241,6 +242,13 @@ teardown() {
     assertGen
     assertValidSite
     assertParGrep main
+}
+
+@test "ignore a file" {
+    cd ${fixturesDir}/ok-mkdocs-ignore-file
+    assertGen
+    assertValidSite
+    assertFileNotExists test_site/site/hello_world/index.html
 }
 
 @test "serve a mkdocs site" {

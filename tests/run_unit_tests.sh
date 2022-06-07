@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 pip install -e .
-# md file="test.snippet"
+# md file="test.snippet" content="^#?\s?(.*)"
 # ### Unit tests
 #
 # Unit tests help ensure individual functions perform as expected.  Unit tests

@@ -3,7 +3,7 @@ set -e
 sudo apt-get install bats
 pip install -e .
 pip install mkdocs-macros-plugin mkdocstrings mkdocstrings-python-legacy mkdocs-material
-# md file="test.snippet"
+# md file="test.snippet" content="^#?\s?(.*)"
 # ### Integration tests
 # 
 # Integration testing allows the plugin to be tested with mkdocs using example

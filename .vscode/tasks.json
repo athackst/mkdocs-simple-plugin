@@ -128,11 +128,10 @@
       "type": "shell",
       "command": "htmlproofer",
       "args": [
-        "--url-ignore=https://fonts.gstatic.com,https://twitter.com/althack",
-        "--allow-hash-href",
-        "--internal-domains='athackst.github.io/mkdocs-simple-plugin'",
-        "--url-swap=^/mkdocs-simple-plugin:",
-        "./site/"
+        "--ignore-urls=https://fonts.gstatic.com,https://twitter.com/althack",
+        "--ignore-files=./site/404.html",
+        "--swap-urls=^.*/athackst.github.io/mkdocs-simple-plugin/:/",
+        "./site"
       ],
       "dependsOrder": "sequence",
       "dependsOn": [

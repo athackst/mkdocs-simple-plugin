@@ -1,6 +1,6 @@
 # Docker
 
-Use this image to create a [mkdocs](https://www.mkdocs.org/) site with the [mkdocs-simple-plugin](http://athackst.github.io/mkdocs-simple-plugin)
+Use this image to create a [mkdocs](https://www.mkdocs.org/) site with the [mkdocs-simple-plugin](https://athackst.github.io/mkdocs-simple-plugin)
 
 Using the docker image, you don't need to have the plugin or its dependencies installed on your system to build, test, and deploy a mkdocs generated site.
 

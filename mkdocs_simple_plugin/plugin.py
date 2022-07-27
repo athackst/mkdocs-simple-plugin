@@ -407,8 +407,10 @@ class SimplePlugin(BasePlugin):
         """
         extracted = False
         for item in self.semiliterate:
-            if item.try_extraction(from_directory, name, destination_directory):
-                extracted = True
+            if not self._in_extensions(name):
+                if item.try_extraction(
+                        from_directory, name, destination_directory):
+                    extracted = True
 
         return extracted
 

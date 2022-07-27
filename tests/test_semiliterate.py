@@ -3,6 +3,7 @@
 import unittest
 from unittest.mock import patch, mock_open, MagicMock
 import os
+import re
 
 from mkdocs_simple_plugin import semiliterate
 
@@ -34,7 +35,6 @@ class TestExtractionPattern(unittest.TestCase):
 
     def test_setup_trim(self):
         """Test in-line setup for trimming front."""
-
         pattern = semiliterate.ExtractionPattern()
 
         # Set trim
@@ -46,13 +46,21 @@ class TestExtractionPattern(unittest.TestCase):
 
     def test_setup_content(self):
         """Test in-line setup for capturing content."""
-
         pattern = semiliterate.ExtractionPattern()
 
         # Set content
         pattern.setup("//md content='(hello)'")
         line = "hello world"
         self.assertEqual(pattern.replace_line(line), "hello")
+
+    def test_setup_stop(self):
+        """Test in-line setup for stopping capture."""
+        pattern = semiliterate.ExtractionPattern()
+        stop_pattern = re.compile(".*(world)")
+        self.assertNotEqual(stop_pattern, pattern.stop)
+        # Set stop
+        pattern.setup("//md stop='.*(world)'")
+        self.assertEqual(stop_pattern, pattern.stop)
 
     def test_block_comment(self):
         """Test a nominal block start/replace/end pattern."""
@@ -134,6 +142,7 @@ class TestStreamExtract(unittest.TestCase):
     """Test extracting data to a stream."""
 
     def setUp(self):
+        """Set up the mock for input, output, and stream."""
         self.input_mock = MagicMock()
         self.output_mock = MagicMock()
         self.test_stream = semiliterate.StreamExtract(

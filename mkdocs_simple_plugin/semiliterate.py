@@ -78,7 +78,8 @@ class ExtractionPattern:
 
         """
         self.start = re.compile(start) if start else None
-        self.stop = re.compile(stop) if stop else None
+        self._stop_default = re.compile(stop) if stop else None
+        self.stop = self._stop_default
         if not replace:
             replace = []
         self.replace = []
@@ -125,6 +126,15 @@ class ExtractionPattern:
         # ```
         self._content_pattern = re.compile(r"content=[\"']?([^\"']*)[\"']?")
         self._content = None
+        #
+        # #### Stop capture
+        #
+        # Regex expession to indicate capture should stop.
+        #
+        # ```
+        # stop=<regex>
+        # ```
+        self._stop_pattern = re.compile(r"stop=[\"']?([^\"']*)[\"']?")
         # /md
 
     def setup(self, line: str):
@@ -144,6 +154,12 @@ class ExtractionPattern:
         if content_match and content_match.lastindex:
             regex_pattern = content_match[content_match.lastindex]
             self._content = re.compile(regex_pattern)
+
+        self.stop = self._stop_default
+        stop_match = get_match(self._stop_pattern, line)
+        if stop_match and stop_match.lastindex:
+            regex_pattern = stop_match[stop_match.lastindex]
+            self.stop = re.compile(regex_pattern)
 
     def get_filename(self) -> str:
         """Returns the filename if defined in start arguments."""

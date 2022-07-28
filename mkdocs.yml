@@ -5,6 +5,7 @@ plugins:
   - awesome-pages
   - macros
   - search
+  - mike
 edit_uri: ''
 site_url: https://athackst.github.io/mkdocs-simple-plugin
 repo_url: https://github.com/athackst/mkdocs-simple-plugin
@@ -33,3 +34,5 @@ extra:
   analytics:
     provider: google
     property: G-VPNW28KW9L
+  version:
+    provider: mike

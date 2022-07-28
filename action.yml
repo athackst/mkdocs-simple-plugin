@@ -67,6 +67,14 @@ inputs:
   config:
     description: "Configuration file"
     required: false
+  version:
+    description: "Version to publish"
+    required: false
+    default: "latest"
+  default_version:
+    description: "Default version"
+    required: false
+    default: "latest"
 runs:
   using: "docker"
   image: "Dockerfile"

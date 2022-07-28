@@ -113,7 +113,40 @@
       "label": "test lint",
       "type": "shell",
       "command": "./tests/run_linters.sh",
-      "problemMatcher": [],
+      "problemMatcher": [
+        {
+          "owner": "run_linters",
+          "applyTo": "allDocuments",
+          "fileLocation":"relative",
+          "pattern": [
+            {
+              "regexp": "^(.*):(\\d+)(:(\\d+):\\s(\\w\\d+)(.*))$",
+              "file": 1,
+              "line": 2,
+              "column": 4,
+              "code": 5,
+              "message": 6
+            }
+          ]
+        },
+        {
+          "owner": "run_linters",
+          "applyTo": "allDocuments",
+          "fileLocation": "relative",
+          "pattern": [
+            {
+              "regexp": "^(.*):(\\d+)(.*):$",
+              "file": 1,
+              "line": 2,
+            },
+            {
+              "regexp": "^\\s*(.*):.(.*)$",
+              "code": 1,
+              "message": 2
+            }
+          ]
+        }
+      ],
       "presentation": {
         "echo": true,
         "reveal": "always",

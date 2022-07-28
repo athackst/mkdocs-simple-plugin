@@ -64,19 +64,6 @@
     "tag:yaml.org,2002:python/name:materialx.emoji.twemoji",
     "tag:yaml.org,2002:python/name:materialx.emoji.to_svg"
   ],
-  "python.formatting.autopep8Args": [
-    "--max-line-length=80",
-    "--aggressive",
-    "--aggressive",
-    "--aggressive"
-  ],
-  "python.linting.pydocstyleArgs": [
-    "--convention=google",
-    "--add-ignore=D415"
-  ],
-  "python.linting.pylintArgs": [
-    "--disable=W1514,W0613"
-  ],
   "python.testing.unittestEnabled": true,
   "python.testing.unittestArgs": [
     "-v",
@@ -86,5 +73,12 @@
     "*_test.py"
   ],
   "python.testing.pytestEnabled": false,
-  "python.testing.nosetestsEnabled": false
+  "python.testing.nosetestsEnabled": false,
+  "python.linting.pydocstyleEnabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.linting.ignorePatterns": [
+    "**/site-packages/**/*.py",
+    ".vscode/*.py",
+    "setup.py"
+  ]
 }

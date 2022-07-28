@@ -1,19 +1,18 @@
 <h1 id="example">Example</h1>
 <p>Here's a printout of the plugin's config file, which I've included using a jinja-style macro.</p>
 <pre><code class="language-yaml">
-# You can even use this with other plugins, like 
-# [macros](https://pypi.org/project/mkdocs-macros-plugin/) to achieve advanced 
-# configurations.
 site_name: ok-with-macros
 docs_dir: /tmp/mkdocs-simple/ok-with-macros/docs
 plugins:
-    - search
-    - simple:
-          include_extensions:
-              - &quot;.yml&quot;
-    - macros:
-          verbose: True
+  - search
+  - simple:
+      include_extensions:
+        - .yml
+  - macros:
+      verbose: true
+edit_uri: ''
+site_url: http://localhost
 extra:
-    test: True
+  test: true
 
 </code></pre></div>

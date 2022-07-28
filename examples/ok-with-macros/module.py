@@ -9,7 +9,9 @@ You can even use macros to inject other markdown here!
 For example, here's the config file:
 
 ````yaml
-{% include 'mkdocs.yml' %}
+{% if test %}
+{% include "mkdocs.yml" %}
+{% endif %}
 ````
 """
 

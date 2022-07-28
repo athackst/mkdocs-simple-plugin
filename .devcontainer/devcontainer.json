@@ -35,10 +35,10 @@
 	"extensions": [
 		"ms-python.python",
 		"redhat.vscode-yaml",
-		"znck.grammarly",
 		"yzhang.markdown-all-in-one",
 		"shakram02.bash-beautify",
-		"eamodio.gitlens"
+		"eamodio.gitlens",
+		"streetsidesoftware.code-spell-checker"
 	],
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "pip install --upgrade pip && pip install --user -r requirements.txt",

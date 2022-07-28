@@ -10,7 +10,7 @@ You should see foo replaced by bar in this sentence.
 
 args: This line should start with `parameters`.
 
-blah blah blah onlythis: Only this is captured.
+blah blah blah only_this: Only this is captured.
 
 drop this line!
 """

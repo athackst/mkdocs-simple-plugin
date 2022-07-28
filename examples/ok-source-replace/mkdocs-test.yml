@@ -10,9 +10,9 @@ plugins:
               replace: 
                 # replace "foo" with "bar"
                 - ["(.*)foo(.*)$", "\\1bar\\2"] 
-                # only capture what's after args and replace with paramter prefix
+                # only capture what's after args and replace with parameter prefix
                 - ["args:(.*)$","parameters:\\1"] 
-                # capture everything after `onlythis:`
-                - "onlythis:(.*)$"
+                # capture everything after `only_this:`
+                - "only_this:(.*)$"
                 # drop lines starting with drop 
                 - "^drop"

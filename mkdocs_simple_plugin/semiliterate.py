@@ -21,7 +21,7 @@ def get_match(pattern: re.Pattern, line: str) -> re.Match:
 
 class ExtractionPattern:
     """An ExtractionPattern for a file."""
-    # md file="extractionpattern.snippet"
+    # md file="ExtractionPattern.snippet"
     # ##### start
     #
     # (optional) The regex pattern to indicate the start of extraction.
@@ -129,7 +129,7 @@ class ExtractionPattern:
         #
         # #### Stop capture
         #
-        # Regex expession to indicate capture should stop.
+        # Regex expression to indicate capture should stop.
         #
         # ```
         # stop=<regex>
@@ -248,7 +248,7 @@ class StreamExtract:
             terminate: re.Pattern = None,
             patterns: ExtractionPattern = None,
             **kwargs):
-        """Initialze StreamExtract with input and output streams."""
+        """Initialize StreamExtract with input and output streams."""
         self.input_stream = input_stream
         self.default_stream = output_stream
         self.output_stream = output_stream
@@ -341,7 +341,7 @@ class StreamExtract:
 class Semiliterate:
     """Extract documentation from source files using regex settings."""
 
-    # md file="semiliterate.snippet"
+    # md file="Semiliterate.snippet"
     # #### pattern
     #
     # Any file in the searched directories whose name contains this
@@ -382,7 +382,7 @@ class Semiliterate:
 
         Args:
             pattern (str): File matching pattern.
-            destination (str): Desitnation file pattern for extracted text.
+            destination (str): Destination file pattern for extracted text.
             terminate (str): Termination pattern.
             extract (ExtractionPattern): Extraction parameters.
 
@@ -400,7 +400,7 @@ class Semiliterate:
         for pattern in extract:
             self.patterns.append(ExtractionPattern(**pattern))
 
-    def filenname_match(self, name: str) -> str:
+    def filename_match(self, name: str) -> str:
         """Get the filename for the match, otherwise return None."""
         name_match = self.file_filter.search(name)
         if name_match:
@@ -420,7 +420,7 @@ class Semiliterate:
 
         Returns True if extraction was successful.
         """
-        to_file = self.filenname_match(from_file)
+        to_file = self.filename_match(from_file)
         if not to_file:
             return False
         from_file_path = os.path.join(from_directory, from_file)

@@ -119,14 +119,14 @@ class GenerateExampleReadme():
 
     def create(self, title, folder):
         """Create the readme file."""
-        log.info("Generating readme for {}".format(folder))
+        log.info("Generating readme for %s", folder)
         # mkdocs_config
         mkdocs_config = os.path.join(folder, "mkdocs-test.yml")
         # input tree
         display_tree = []
         input_files = []
         output_files = []
-        os.system("cp {0}/mkdocs-test.yml {0}/mkdocs.yml".format(folder))
+        os.system(f"cp {folder}/mkdocs-test.yml {folder}/mkdocs.yml")
 
         # Get input tree
         def input_criteria(path):
@@ -183,7 +183,7 @@ class GenerateExampleReadme():
         readme_out.close()
 
         # cleanup
-        os.system("rm -rf {0}/site {0}/mkdocs.yml".format(folder))
+        os.system(f"rm -rf {folder}/site {folder}/mkdocs.yml")
 
 
 def generate(*args, **kwargs):

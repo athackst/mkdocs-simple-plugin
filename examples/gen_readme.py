@@ -59,7 +59,7 @@ class DisplayablePath(object):
         return True
 
     @ property
-    def displayname(self):
+    def display_name(self):
         """Pretty format the file name."""
         if self.path.is_dir():
             return self.path.name + '/'
@@ -68,14 +68,13 @@ class DisplayablePath(object):
     def displayable(self):
         """Get the name with tree prefixes."""
         if self.parent is None:
-            return self.displayname
+            return self.display_name
 
         _filename_prefix = (self.display_filename_prefix_last
                             if self.is_last
                             else self.display_filename_prefix_middle)
 
-        parts = ['{!s} {!s}'.format(_filename_prefix,
-                                    self.displayname)]
+        parts = [f"{_filename_prefix} {self.display_name}"]
 
         parent = self.parent
         while parent and parent.parent is not None:
@@ -88,7 +87,7 @@ class DisplayablePath(object):
 
 
 class GenerateExampleReadme():
-    """Generate example radme for a folder."""
+    """Generate example readme for a folder."""
 
     def __init__(self, readme_template):
         self.readme_template = readme_template
@@ -97,18 +96,18 @@ class GenerateExampleReadme():
     def include_input(self, path):
         """The files to expand as input examples."""
         include_list = ['.py', '.c', '.litcoffee', '.cpp']
-        return any(extension in path.displayname for extension in include_list)
+        return any(extension in path.display_name for extension in include_list)
 
     def include_output(self, path):
         """The files to expand as output examples."""
         include_list = ['.grepout']
-        return any(extension in path.displayname for extension in include_list)
+        return any(extension in path.display_name for extension in include_list)
 
     def get_file_info(self, path):
         """Returns a dictionary of file properties."""
         return {
             # get the name
-            "name": path.displayname,
+            "name": path.display_name,
             # get the type
             "type": path.path.suffix,
             # get the path
@@ -136,7 +135,7 @@ class GenerateExampleReadme():
         paths = DisplayablePath.make_tree(
             Path(folder), criteria=input_criteria)
         for path in paths:
-            # get all of the grepouts
+            # get all grepout
             if self.include_output(path):
                 output_files.append(self.get_file_info(path))
                 continue

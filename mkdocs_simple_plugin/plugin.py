@@ -125,7 +125,7 @@ class SimplePlugin(BasePlugin):
         #
         # ### build_docs_dir
         #
-        # If set, the directory where docs will be coallated to be build.
+        # If set, the directory where docs will be collated to be build.
         # Otherwise, the build docs directory will be a temporary directory.
         ('build_docs_dir', config_options.Type(str, default='')),
         #
@@ -138,7 +138,7 @@ class SimplePlugin(BasePlugin):
                 list,
                 default=[
                     ".bmp", ".tif", ".tiff", ".gif", ".svg", ".jpeg",
-                    ".jpg", ".jif", ".jfif", ".jp2", ".jpx", ".j2k",
+                    ".jpg", ".jif", ".jiff", ".jp2", ".jpx", ".j2k",
                     ".j2c", ".fpx", ".pcd", ".png", ".pdf", "CNAME",
                     ".snippet", ".pages"
                 ])),
@@ -151,9 +151,9 @@ class SimplePlugin(BasePlugin):
         # filename patterns (typically matching filename extensions).
         # All regular expression parameters use ordinary Python `re` syntax.
         #
-        # {% include "mkdocs_simple_plugin/semiliterate.snippet" %}
+        # {% include "mkdocs_simple_plugin/Semiliterate.snippet" %}
         #
-        # {% include "mkdocs_simple_plugin/extractionpattern.snippet" %}
+        # {% include "mkdocs_simple_plugin/ExtractionPattern.snippet" %}
         # /md
 
 

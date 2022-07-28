@@ -25,7 +25,7 @@ class TestDefaultConfig(unittest.TestCase):
         'INPUT_THEME']
 
     def setUp(self):
-        """Set up the tests by reseting the environment variables."""
+        """Set up the tests by resetting the environment variables."""
         for var in self.env_variables:
             if os.environ.get(var) is not None:
                 del os.environ[var]

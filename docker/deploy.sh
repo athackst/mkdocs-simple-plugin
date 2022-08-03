@@ -8,8 +8,9 @@ mkdocs build
 git config --global user.name "${GITHUB_ACTOR}"
 git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
-git fetch origin ${INPUT_PUBLISH_BRANCH}:${INPUT_PUBLISH_BRANCH}
+git fetch origin ${INPUT_PUBLISH_BRANCH} --depth=1
 
 if [ -z $DRY_RUN ]; then
-    mkdocs gh-deploy -b ${INPUT_PUBLISH_BRANCH}
+    mike set-default ${INPUT_DEFAULT_VERSION}
+    mike deploy -p -u -b ${INPUT_PUBLISH_BRANCH} ${INPUT_VERSION}
 fi

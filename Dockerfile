@@ -19,7 +19,7 @@ RUN \
   && apk add --no-cache --virtual .build gcc musl-dev \
   && apk add --no-cache --upgrade bash \
   && pip install --upgrade pip \
-  && pip install --no-cache-dir mkdocs-material \
+  && pip install --no-cache-dir mkdocs-material mike \
   && pip install --no-cache-dir . \
   && rm -rf /tmp/*
 

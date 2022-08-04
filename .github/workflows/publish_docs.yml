@@ -26,3 +26,4 @@ jobs:
         uses: ./
         with:
           version: ${{ env.VERSION }} latest
+          default_version: ${{ github.event.release.tag_name }}

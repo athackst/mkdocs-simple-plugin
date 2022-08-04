@@ -28,7 +28,14 @@
 #           # (optional) Specify a different theme [mkdocs|readthedocs|material]
 #           theme: material
 #           # (optional) Load a configuration file from a string
-#           configuration: "{additional_css: value}"
+#           config: "{additional_css: value}"
+#           # (optional) Version or alias.  Specify multiple aliases with space
+#           # example: version: v0.1.0 latest
+#           version: latest
+#           # (optional) The version that will be served by the root of your site
+#           default_version: latest
+#           # (optional) Whether to push the docs to the remote branch
+#           push: 1
 # ```
 # /md
 name: "MkDocs Simple action"
@@ -75,6 +82,10 @@ inputs:
     description: "Default version"
     required: false
     default: "latest"
+  push:
+    description: "Push to remote"
+    required: false
+    default: "1"
 runs:
   using: "docker"
   image: "Dockerfile"

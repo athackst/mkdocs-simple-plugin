@@ -77,11 +77,9 @@ inputs:
   version:
     description: "Version to publish"
     required: false
-    default: "latest"
   default_version:
     description: "Default version"
     required: false
-    default: "latest"
   push:
     description: "Push to remote"
     required: false

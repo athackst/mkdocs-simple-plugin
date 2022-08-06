@@ -14,7 +14,7 @@
 ```
 
 {% for file in input_files %}
-**{{ file.name }}**
+**{{ file.relative_path }}**
 ```{{ file.type }}
 {{ "{% raw %}" }}
 {{ include_file(file.path) }}

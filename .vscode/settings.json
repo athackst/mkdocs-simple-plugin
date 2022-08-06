@@ -72,5 +72,8 @@
     "**/site-packages/**/*.py",
     ".vscode/*.py",
     "setup.py"
+  ],
+  "python.autoComplete.extraPaths": [
+    "/home/vscode/.local/lib/python3.10/site-packages/"
   ]
 }

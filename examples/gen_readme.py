@@ -103,7 +103,7 @@ class GenerateExampleReadme():
         include_list = ['.grepout']
         return any(extension in path.display_name for extension in include_list)
 
-    def get_file_info(self, path):
+    def get_file_info(self, folder, path):
         """Returns a dictionary of file properties."""
         return {
             # get the name
@@ -113,7 +113,9 @@ class GenerateExampleReadme():
             # get the path
             "path": str(path.path),
             # get stem of file name
-            "stem": path.path.stem
+            "stem": path.path.stem,
+            # relative path
+            "relative_path": path.path.relative_to(folder)
         }
 
     def create(self, title, folder):
@@ -137,11 +139,11 @@ class GenerateExampleReadme():
         for path in paths:
             # get all grepout
             if self.include_output(path):
-                output_files.append(self.get_file_info(path))
+                output_files.append(self.get_file_info(folder, path))
                 continue
             # get the source files
             if self.include_input(path):
-                input_files.append(self.get_file_info(path))
+                input_files.append(self.get_file_info(folder, path))
             # create the tree
             display_tree.append(path.displayable())
         input_tree = "\n".join(display_tree)

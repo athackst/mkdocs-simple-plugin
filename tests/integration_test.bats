@@ -248,7 +248,8 @@ teardown() {
     cd ${fixturesDir}/ok-mkdocs-ignore-file
     assertGen
     assertValidSite
-    assertFileNotExists test_site/site/hello_world/index.html
+    assertFileExists site/test/index.html
+    assertFileNotExists site/hello_world/index.html
 }
 
 @test "serve a mkdocs site" {

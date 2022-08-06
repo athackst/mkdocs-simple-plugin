@@ -1,0 +1,4 @@
+# Ignore files with a .mkdocsignore file.
+site_name: ok-mkdocsignore
+plugins:
+  - simple

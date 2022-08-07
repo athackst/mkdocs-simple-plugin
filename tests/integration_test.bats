@@ -252,6 +252,18 @@ teardown() {
     assertFileNotExists site/hello_world/index.html
 }
 
+@test "mkdocsignore" {
+    cd ${fixturesDir}/ok-mkdocsignore
+    assertGen
+    assertValidSite
+    assertFileNotExists site/test/foo/index.html
+    assertFileNotExists site/test/bar/index.html
+    assertFileExists site/hello/hello/index.html
+    assertFileNotExists site/hello/world/world/index.html
+    assertFileExists site/hello/foo/bar/index.html
+    assertFileNotExists site/hello/foo/foo/index.html
+}
+
 @test "serve a mkdocs site" {
     cd ${fixturesDir}/ok-mkdocs-docs
     assertGen

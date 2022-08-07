@@ -95,7 +95,7 @@ class GenerateExampleReadme():
 
     def include_input(self, path):
         """The files to expand as input examples."""
-        include_list = ['.py', '.c', '.litcoffee', '.cpp']
+        include_list = ['.py', '.c', '.litcoffee', '.cpp', '.mkdocsignore']
         return any(extension in path.display_name for extension in include_list)
 
     def include_output(self, path):

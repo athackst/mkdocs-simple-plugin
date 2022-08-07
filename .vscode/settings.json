@@ -23,6 +23,7 @@
     "markupsafe",
     "materialx",
     "mkdocs",
+    "mkdocsignore",
     "mkdocstrings",
     "mypy",
     "pycodestyle",

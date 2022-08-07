@@ -44,6 +44,11 @@ Inline parameters configure a block's extraction.
 
 {% include "mkdocs_simple_plugin/inline_params.snippet" %}
 
+### Ignoring files
+
+You can add a `.mkdocsignore` file to ignore a directory or files by glob
+pattern.
+
 ## Default settings
 
 Below are the default settings of the plugin.
@@ -81,9 +86,12 @@ mkdocs serve
 import fnmatch
 import os
 import shutil
+import stat
 import sys
 import tempfile
 import yaml
+from genericpath import exists
+
 
 from mkdocs.plugins import BasePlugin
 from mkdocs.config import config_options
@@ -253,6 +261,7 @@ class SimplePlugin(BasePlugin):
         self.semiliterate = None
         self.ignore_paths = None
         self.paths = None
+        self.ignore_patterns = set()
 
     def on_config(self, config, **kwargs):
         """Update configuration to use a temporary build directory."""
@@ -323,16 +332,50 @@ class SimplePlugin(BasePlugin):
 
         return server
 
+    def _is_hidden(self, filepath):
+        """Return true if filepath is hidden."""
+        name = os.path.basename(os.path.abspath(filepath))
+
+        def has_hidden_attribute(filepath):
+            """Returns true if hidden attribute is set."""
+            try:
+                return bool(os.stat(filepath).st_file_attributes &
+                            stat.FILE_ATTRIBUTE_HIDDEN)
+            except (AttributeError, AssertionError):
+                return False
+
+        return name.startswith('.') or \
+            has_hidden_attribute(filepath) or \
+            name == "__pycache__"
+
     def _in_search_directory(self, directory: str, root: str) -> bool:
         """Check if directory should be searched."""
-        if self.ignore_hidden and (directory[0] == "."
-                                   or directory == "__pycache__"):
-            return False
         path = os.path.join(root, directory)
+        # Check if it's hidden
+        if self.ignore_hidden and self._is_hidden(path):
+            return False
+        # Check if its an internally required ignore path
         if os.path.abspath(path) in self.ignore_paths:
             return False
+        # Check for user defined paths in config
         if any(fnmatch.fnmatch(path[2:], filter)
-                for filter in self.ignore_folders):
+               for filter in self.ignore_folders):
+            return False
+        # Update ignore patterns from .mkdocsignore file
+        mkdocsignore = os.path.join(root, ".mkdocsignore")
+        if exists(mkdocsignore):
+            ignore_list = []
+            with open(mkdocsignore, "r") as txt_file:
+                ignore_list = txt_file.read().splitlines()
+                # Remove all comment lines
+                ignore_list = [x for x in ignore_list if not x.startswith('#')]
+            if not ignore_list:
+                ignore_list = ["*"]
+            self.ignore_patterns.update(set(os.path.join(root, filter)
+                                            for filter in ignore_list))
+        # Check for ignore paths in patterns
+        if any(fnmatch.fnmatch(path, filter)
+                for filter in self.ignore_patterns):
             return False
         return True
 
@@ -367,6 +410,8 @@ class SimplePlugin(BasePlugin):
             if self._in_include_directory(root):
                 document_root = self.build_docs_dir + root[1:]
                 for file in files:
+                    if not self._in_search_directory(file, root):
+                        continue
                     copied = self._copy_file(root, file, document_root)
                     extracted = self._extract_from(root, file, document_root)
                     if copied or extracted:

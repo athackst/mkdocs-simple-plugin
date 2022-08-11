@@ -14,7 +14,7 @@ echo -e "${CYAN}Building docs${UNSET}"
 mkdocs_simple_gen --config-file ${INPUT_CONFIG:-'mkdocs.yml'}
 mkdocs build
 
-if [ "${INPUT_PUSH}" ]; then
+if [[ "${INPUT_PUSH}" == "1" || "${INPUT_PUSH}" == "true" ]]; then
     git config --global user.name "${GITHUB_ACTOR}"
     git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
    
@@ -24,7 +24,7 @@ if [ "${INPUT_PUSH}" ]; then
         echo -e "${CYAN}Deploying ${INPUT_VERSION} to ${INPUT_PUBLISH_BRANCH}${UNSET}"
         mike deploy -p -u -b ${INPUT_PUBLISH_BRANCH} ${INPUT_VERSION}
     else
-        echo "${CYAN}Deploying docs to ${INPUT_PUBLISH_BRANCH}${UNSET}"
+        echo -e "${CYAN}Deploying docs to ${INPUT_PUBLISH_BRANCH}${UNSET}"
         mkdocs gh-deploy -b ${INPUT_PUBLISH_BRANCH}
     fi
 

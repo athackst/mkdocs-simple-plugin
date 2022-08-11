@@ -1,80 +1,84 @@
 {
-  "cSpell.words": [
-    "althack",
-    "athackst",
-    "autobuild",
-    "autopep",
-    "bdist",
-    "codeql",
-    "dockerfiles",
-    "dockerhub",
-    "DOCPAGE",
-    "docstrings",
-    "eamodio",
-    "endfor",
-    "endraw",
-    "fontawesome",
-    "grepout",
-    "htmlproofer",
-    "indentless",
-    "lastindex",
-    "litcoffee",
-    "maint",
-    "markupsafe",
-    "materialx",
-    "mkdocs",
-    "mkdocsignore",
-    "mkdocstrings",
-    "mypy",
-    "pycodestyle",
-    "pydocstyle",
-    "pygments",
-    "pylint",
-    "pymdownx",
-    "pypi",
-    "pytest",
-    "releasebot",
-    "sdist",
-    "setuptools",
-    "shakram",
-    "superfences",
-    "thackston",
-    "twemoji",
-    "VPNW",
-    "yapf",
-    "yzhang"
-  ],
-  "files.associations": {
-    "*.bats": "shellscript"
-  },
-  "files.insertFinalNewline": true,
-  "files.trimFinalNewlines": true,
-  "editor.rulers": [
-    80,
-    127
-  ],
-  "yaml.customTags": [
-    "tag:yaml.org,2002:python/name:materialx.emoji.twemoji",
-    "tag:yaml.org,2002:python/name:materialx.emoji.to_svg"
-  ],
-  "python.testing.unittestEnabled": true,
-  "python.testing.unittestArgs": [
-    "-v",
-    "-s",
-    "./tests",
-    "-p",
-    "*_test.py"
-  ],
-  "python.testing.pytestEnabled": false,
-  "python.testing.nosetestsEnabled": false,
-  "python.linting.pydocstyleEnabled": true,
-  "python.linting.flake8Enabled": true,
-  "python.linting.ignorePatterns": [
-    "**/site-packages/**/*.py",
-    ".vscode/*.py",
-    "setup.py"
-  ],
-  "python.autoComplete.extraPaths": [
-    "/home/vscode/.local/lib/python3.10/site-packages/"
-  ]
+    "cSpell.words": [
+        "althack",
+        "athackst",
+        "autobuild",
+        "autopep",
+        "bdist",
+        "codeql",
+        "dockerfiles",
+        "dockerhub",
+        "DOCPAGE",
+        "docstrings",
+        "eamodio",
+        "endfor",
+        "endraw",
+        "fontawesome",
+        "grepout",
+        "htmlproofer",
+        "indentless",
+        "lastindex",
+        "litcoffee",
+        "maint",
+        "markupsafe",
+        "materialx",
+        "mkdocs",
+        "mkdocsignore",
+        "mkdocstrings",
+        "mypy",
+        "pycodestyle",
+        "pydocstyle",
+        "pygments",
+        "pylint",
+        "pymdownx",
+        "pypi",
+        "pytest",
+        "releasebot",
+        "sdist",
+        "setuptools",
+        "shakram",
+        "superfences",
+        "thackston",
+        "twemoji",
+        "VPNW",
+        "yapf",
+        "yzhang"
+    ],
+    "files.associations": {
+        "*.bats": "shellscript"
+    },
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "editor.rulers": [
+        80,
+        127
+    ],
+    "yaml.customTags": [
+        "tag:yaml.org,2002:python/name:materialx.emoji.twemoji",
+        "tag:yaml.org,2002:python/name:materialx.emoji.to_svg"
+    ],
+    "python.testing.unittestEnabled": true,
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "./tests",
+        "-p",
+        "*_test.py"
+    ],
+    "python.testing.pytestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
+    "python.linting.pydocstyleEnabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.ignorePatterns": [
+        "**/site-packages/**/*.py",
+        ".vscode/*.py",
+        "setup.py"
+    ],
+    "python.autoComplete.extraPaths": [
+        "/home/vscode/.local/lib/python3.10/site-packages/"
+    ],
+    "[python]": {
+        "editor.tabSize": 4,
+        "editor.wordBasedSuggestions": false
+    }
 }

@@ -28,6 +28,7 @@
         "mypy",
         "pycodestyle",
         "pydocstyle",
+        "pyfakefs",
         "pygments",
         "pylint",
         "pymdownx",

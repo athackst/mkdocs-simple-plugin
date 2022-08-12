@@ -435,7 +435,10 @@ class Semiliterate:
                     patterns=self.patterns,
                     **kwargs)
                 return extraction.extract()
-        except (OSError, IOError, UnicodeDecodeError) as error:
+        except (UnicodeDecodeError) as error:
+            utils.log.info("mkdocs-simple-plugin: skipping  %s\n %s",
+                           from_file_path, str(error))
+        except (OSError, IOError) as error:
             utils.log.error("mkdocs-simple-plugin: could not build %s\n %s",
                             from_file_path, str(error))
         return False

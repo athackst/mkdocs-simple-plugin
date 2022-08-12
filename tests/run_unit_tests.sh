@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 pip install -e .
+pip install pyfakefs
 # md file="test.snippet" content="^#?\s?(.*)"
 # ### Unit tests
 #

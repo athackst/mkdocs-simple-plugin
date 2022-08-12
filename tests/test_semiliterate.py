@@ -146,7 +146,7 @@ class TestStreamExtract(unittest.TestCase):
         self.input_mock = MagicMock()
         self.output_mock = MagicMock()
         self.test_stream = semiliterate.StreamExtract(
-            self.input_mock, self.output_mock)
+            input_stream=self.input_mock, output_stream=self.output_mock)
 
     def test_transcribe(self):
         """Transcribing data should write data."""

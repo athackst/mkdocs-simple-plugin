@@ -6,7 +6,7 @@ import stat
 import os
 from pyfakefs.fake_filesystem_unittest import TestCase
 
-from mkdocs_simple_plugin import plugin as simple
+from mkdocs_simple_plugin import simple
 
 
 class TestSimpleHelpers(TestCase):

@@ -83,7 +83,7 @@ inputs:
   push:
     description: "Push to remote"
     required: false
-    default: "1"
+    default: "true"
 runs:
   using: "docker"
   image: "Dockerfile"

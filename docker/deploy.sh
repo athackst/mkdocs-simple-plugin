@@ -14,7 +14,7 @@ echo -e "${CYAN}Building docs${UNSET}"
 mkdocs_simple_gen --config-file ${INPUT_CONFIG:-'mkdocs.yml'}
 mkdocs build
 
-if [[ "${INPUT_PUSH}" == "1" || "${INPUT_PUSH}" == "true" ]]; then
+if [[ "${INPUT_PUSH}" == "1" || "${INPUT_PUSH,,}" == "true" ]]; then
     git config --global user.name "${GITHUB_ACTOR}"
     git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
    

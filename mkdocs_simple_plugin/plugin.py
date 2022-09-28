@@ -284,7 +284,7 @@ class SimplePlugin(BasePlugin):
         # Update the docs_dir with our temporary one
         config['docs_dir'] = build_docs_dir
         # Add all markdown extensions to include list
-        self.config['include_extensions'] = utils.markdown_extensions + \
+        self.config['include_extensions'] = list(utils.markdown_extensions) + \
             self.config['include_extensions']
 
         # Always ignore the output paths
@@ -294,7 +294,7 @@ class SimplePlugin(BasePlugin):
             self.config['build_docs_dir']]
         return config
 
-    def on_pre_build(self, config, **kwargs):
+    def on_pre_build(self, *, config):
         """Build documentation directory with files according to settings."""
         # Configure simple
         simple = Simple(**self.config)
@@ -305,7 +305,7 @@ class SimplePlugin(BasePlugin):
         # Copy all of the valid doc files into build_docs_dir
         self.paths = simple.build_docs()
 
-    def on_serve(self, server, config, **kwargs):
+    def on_serve(self, server, *, config, builder):
         """Add files to watch server."""
         # watch the original docs/ directory
         if os.path.exists(self.orig_docs_dir):

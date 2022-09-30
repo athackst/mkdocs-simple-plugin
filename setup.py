@@ -27,7 +27,7 @@ setuptools.setup(
     install_requires=[
             'click>=7.1',
             'MarkupSafe>=2.1.1',
-            'mkdocs>=1.0.6',
+            'mkdocs>=1.4.0',
             'PyYAML>=6.0'],
     classifiers=[
         'Development Status :: 4 - Beta',

@@ -7,7 +7,7 @@ plugins:
   - search
   - mike
 edit_uri: ''
-site_url: https://athackst.github.io/mkdocs-simple-plugin
+site_url: https://althack.dev/mkdocs-simple-plugin
 repo_url: https://github.com/athackst/mkdocs-simple-plugin
 theme:
   name: material

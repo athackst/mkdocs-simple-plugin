@@ -4,7 +4,7 @@ import fnmatch
 import shutil
 import stat
 import sys
-import glob
+import pathlib
 
 from mkdocs import utils
 from mkdocs_simple_plugin.semiliterate import Semiliterate
@@ -49,11 +49,24 @@ class Simple():
             ignore_paths: list,
             semiliterate: dict,
             **kwargs):
-        """Initialize module instance with settings."""
+        """Initialize module instance with settings.
+
+        Args:
+            build_docs_dir (str): Output directory for processed files
+            include_folders (list): Glob of folders to search for files
+            include_extensions (list): Glob of filenames to copy directly to
+                output
+            ignore_folders (list): Glob of paths to exclude
+            ignore_hidden (bool): Whether to ignore hidden files for processing
+            ignore_paths (list): Absolute filepaths to exclude
+            semiliterate (dict): Settings for processing file content in
+                Semiliterate
+
+        """
         self.build_dir = build_docs_dir
         self.include_folders = set(include_folders)
-        self.include_extensions = set(include_extensions)
-        self.ignore_folders = set(ignore_folders)
+        self.copy_glob = set(include_extensions)
+        self.ignore_glob = set(ignore_folders)
         self.ignore_hidden = ignore_hidden
         self.hidden_prefix = set([".", "__"])
         self.ignore_paths = set(ignore_paths)
@@ -61,17 +74,24 @@ class Simple():
         for item in semiliterate:
             self.semiliterate.append(Semiliterate(**item))
 
-    def get_included(self) -> list:
-        """Get a list of folders and files to include."""
-        included = []
-        for pattern in self.include_folders:
-            included.extend(glob.glob(pattern))
-        # Return filtered list of included files
-        return [f for f in included if not self.is_path_ignored(f)]
-
-    def in_extensions(self, name: str) -> bool:
-        """Check if file is in include extensions."""
-        return any(extension in name for extension in self.include_extensions)
+    def get_files(self) -> list:
+        """Get a list of files to process, excluding ignored files."""
+        files = []
+        # Get all of the folders that match the include pattern.
+        entries = []
+        for entry in self.include_folders:
+            entries.extend(pathlib.Path().glob(entry))
+        # Get all of the files in the folder that aren't ignored.
+        for entry in entries:
+            # Add files to list
+            if entry.is_file() and not self.is_path_ignored(entry):
+                files.extend([os.path.normpath(entry)])
+            # Add all files in folders to list
+            for root, _, filenames in os.walk(entry):
+                files.extend([os.path.join(root, f)
+                             for f in filenames if not self.is_ignored(root, f)]
+                             )
+        return files
 
     def is_ignored(self, base_path: str, name: str) -> bool:
         """Check if directory and filename should be ignored."""
@@ -81,12 +101,11 @@ class Simple():
         """Check if path should be ignored."""
         path = os.path.normpath(path)
         base_path = os.path.dirname(path)
-        # Check if it's hidden
-        if self.ignore_hidden and self.is_hidden(path):
-            return True
+
         # Check if its an internally required ignore path
-        if os.path.abspath(path) in self.ignore_paths:
-            return True
+        for ignored in self.ignore_paths:
+            if ignored in os.path.abspath(path):
+                return True
 
         # Update ignore patterns from .mkdocsignore file
         mkdocsignore = os.path.join(base_path, ".mkdocsignore")
@@ -98,13 +117,24 @@ class Simple():
                 ignore_list = [x for x in ignore_list if not x.startswith('#')]
             if not ignore_list:
                 ignore_list = ["*"]
-            self.ignore_folders.update(
+            self.ignore_glob.update(
                 set(os.path.join(base_path, filter) for filter in ignore_list))
         # Check for ignore paths in patterns
-        if any(fnmatch.fnmatch(os.path.normpath(path), filter)
-                for filter in self.ignore_folders):
+        if any(fnmatch.fnmatch(path, filter)
+                for filter in self.ignore_glob):
+            return True
+        # Check for ignore folder in patterns
+        if any(fnmatch.fnmatch(base_path, filter)
+                for filter in self.ignore_glob):
             return True
         return False
+
+    def should_copy_file(self, name: str) -> bool:
+        """Check if file should be copied."""
+        def match_pattern(name, pattern):
+            return fnmatch.fnmatch(name, pattern) or pattern in name
+
+        return any(match_pattern(name, pattern) for pattern in self.copy_glob)
 
     def is_hidden(self, filepath):
         """Return true if filepath is hidden."""
@@ -133,38 +163,28 @@ class Simple():
     def build_docs(self) -> list:
         """Build the docs directory from workspace files."""
         paths = []
-        included = self.get_included()
-        for item in included:
-            paths += filter(None, [self._process(item)])
-            for root, directories, files in os.walk(item):
-                for file in files:
-                    path = os.path.join(root, file)
-                    paths += filter(None, [self._process(path)])
-                directories[:] = [
-                    d for d in directories if not self.is_ignored(root, d)]
+        files = self.get_files()
+        for file in files:
+            if not os.path.isfile(file):
+                continue
+            from_dir = os.path.dirname(file)
+            name = os.path.basename(file)
+            build_prefix = os.path.normpath(
+                os.path.join(self.build_dir, from_dir))
+
+            if (self.try_copy_file(from_dir, name, build_prefix) or
+                    self.try_extract(from_dir, name, build_prefix)):
+                paths.append(file)
         return paths
-
-    def _process(self, file) -> str:
-        if not os.path.isfile(file):
-            return None
-        from_dir = os.path.dirname(file)
-        name = os.path.basename(file)
-        build_prefix = os.path.normpath(os.path.join(self.build_dir, from_dir))
-
-        if (self.try_copy_file(from_dir, name, build_prefix) or
-                self.try_extract(from_dir, name, build_prefix)):
-            return file
-        return None
 
     def try_extract(self, from_dir: str, name: str, to_dir: str) -> bool:
         """Extract content from file into destination.
 
         Returns the name of the file extracted if extractable.
         """
+        # Check if it's hidden
         path = os.path.join(from_dir, name)
-        if self.is_path_ignored(path):
-            utils.log.debug(
-                "mkdocs-simple-plugin: ignoring %s", path)
+        if self.ignore_hidden and self.is_hidden(path):
             return False
         extracted = False
         for item in self.semiliterate:
@@ -181,19 +201,15 @@ class Simple():
         original = os.path.join(from_dir, name)
         new_file = os.path.join(to_dir, name)
 
-        if not self.in_extensions(name):
-            utils.log.info(
-                "mkdocs-simple-plugin: skipping file extension %s", original)
-            return False
-        if self.is_path_ignored(original):
+        if not self.should_copy_file(name):
             utils.log.debug(
-                "mkdocs-simple-plugin: ignoring %s", original)
+                "mkdocs-simple-plugin: skip copying file %s", original)
             return False
         try:
             os.makedirs(to_dir, exist_ok=True)
             shutil.copy(original, new_file)
-            utils.log.debug("mkdocs-simple-plugin: %s --> %s",
-                            original, new_file)
+            utils.log.info("mkdocs-simple-plugin: %s --> %s",
+                           original, new_file)
             return True
         except (OSError, IOError, UnicodeDecodeError) as error:
             utils.log.warning(

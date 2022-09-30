@@ -229,7 +229,7 @@ class LazyFile:
     def close(self):
         """Finish the file."""
         if self.file_object is not None:
-            utils.log.debug(
+            utils.log.info(
                 "        ... extracted %s",
                 os.path.join(
                     self.file_directory,

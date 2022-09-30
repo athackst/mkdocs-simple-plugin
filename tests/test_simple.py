@@ -49,6 +49,7 @@ class TestSimple(TestCase):
         self.assertFalse(simple_test.is_hidden('./folder/test.md'))
         self.assertTrue(simple_test.is_hidden('__pycache__'))
         self.assertTrue(simple_test.is_hidden('.mkdocsignore'))
+        self.assertTrue(simple_test.is_hidden(".git/objects/34/49807110bdc8"))
         # Check hidden file attribute
         os_stat.return_value.st_file_attributes = stat.FILE_ATTRIBUTE_HIDDEN
         self.assertTrue(simple_test.is_hidden('/test/file'))

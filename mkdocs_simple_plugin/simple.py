@@ -147,9 +147,14 @@ class Simple():
                 return False
 
         def has_hidden_prefix(filepath):
-            name = os.path.basename(os.path.abspath(filepath))
-            return any(name.startswith(pattern)
-                       for pattern in self.hidden_prefix)
+            parts = filepath.split(os.path.sep)
+
+            def hidden_prefix(name):
+                if name == ".":
+                    return False
+                return any(name.startswith(pattern)
+                           for pattern in self.hidden_prefix)
+            return any(hidden_prefix(part) for part in parts)
 
         return has_hidden_prefix(filepath) or has_hidden_attribute(filepath)
 
@@ -202,8 +207,6 @@ class Simple():
         new_file = os.path.join(to_dir, name)
 
         if not self.should_copy_file(name):
-            utils.log.debug(
-                "mkdocs-simple-plugin: skip copying file %s", original)
             return False
         try:
             os.makedirs(to_dir, exist_ok=True)

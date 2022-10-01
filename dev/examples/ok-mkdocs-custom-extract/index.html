@@ -687,6 +687,12 @@
 <span class="c1"># everything from the beginning of the file to the first line of code</span><span class="w"></span>
 <span class="c1"># (a line indented by at least four spaces), together with any later Markdown</span><span class="w"></span>
 <span class="c1"># block preceded by a comment containing `# DOCPAGE`.</span><span class="w"></span>
+<span class="c1">#</span><span class="w"></span>
+<span class="c1"># Similarly, you may want to have to have a custom extraction even for a</span><span class="w"></span>
+<span class="c1"># standard file pattern, or for one particular file; the `drone.yml` pattern</span><span class="w"></span>
+<span class="c1"># could for example extract development documentation from a Drone yml file.</span><span class="w"></span>
+<span class="c1"># Note this latter pattern takes advantage of the fact that you can have just</span><span class="w"></span>
+<span class="c1"># a single top-level block of parameters in an `extract:` section.</span><span class="w"></span>
 <span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ok-mkdocs-custom-extract</span><span class="w"></span>
 <span class="nt">plugins</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">simple</span><span class="p">:</span><span class="w"></span>
@@ -695,9 +701,16 @@
 <span class="w">          </span><span class="nt">extract</span><span class="p">:</span><span class="w"></span>
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;^\s{4,}\S&#39;</span><span class="p p-Indicator">}</span><span class="w">  </span><span class="c1"># No start, so active from beginning</span><span class="w"></span>
 <span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#</span><span class="nv"> </span><span class="s">DOCPAGE&#39;</span><span class="p p-Indicator">,</span><span class="nt"> stop</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;^\s{4,}\S&#39;</span><span class="p p-Indicator">}</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;drone.yml&#39;</span><span class="w"></span>
+<span class="w">          </span><span class="nt">destination</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;drone_develop.md&#39;</span><span class="w"></span>
+<span class="w">          </span><span class="nt">extract</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;###</span><span class="nv"> </span><span class="s">develop&#39;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;^\s*###&#39;</span><span class="w"></span>
+<span class="w">            </span><span class="nt">replace</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;^#</span><span class="nv"> </span><span class="s">(.*\s*)$&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;^\s*-(.*\s*)$&#39;</span><span class="p p-Indicator">]</span><span class="w"></span>
 </code></pre></div>
 <h2 id="input">Input</h2>
 <div class="highlight"><pre><span></span><code>ok-mkdocs-custom-extract/
+├── drone.yml
 ├── fibo.litcoffee
 └── mkdocs.yml
 </code></pre></div>
@@ -734,9 +747,24 @@ This note about complexity will appear in the doc page.
 │   │   │   └── min/
 │   │   └── workers/
 │   └── stylesheets/
+├── drone_develop/
+│   └── index.html
 └── fibo/
     └── index.html
 </code></pre></div>
+<div class="admonition quote">
+<p class="admonition-title">drone_develop</p>
+<h2 id="developing">Developing</h2>
+<h1 id="_1"></h1>
+<p>You can clone the repository with</p>
+<pre><code>git clone https://this_is_a_dummy_url
+</code></pre>
+<p>You can build the distribution with</p>
+<pre><code> pip install build
+ python -m build .
+</code></pre>
+<p>That will produce a <code>.whl</code> file in the <code>dist</code> subdirectory.</p></div>
+
 <div class="admonition quote">
 <p class="admonition-title">fibo</p>
 <p>This paragraph is here to make sure the extraction starts immediately.</p>

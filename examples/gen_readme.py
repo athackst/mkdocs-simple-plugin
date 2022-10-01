@@ -187,7 +187,7 @@ class GenerateExampleReadme():
         os.system(f"rm -rf {folder}/site {folder}/mkdocs.yml")
 
 
-def generate(*args, **kwargs):
+def on_startup(*args, **kwargs):
     """Generate all of the readmes"""
     file_loader = FileSystemLoader('.')
     env = Environment(loader=file_loader)
@@ -212,4 +212,4 @@ def generate(*args, **kwargs):
 
 
 if __name__ == "__main__":
-    generate()
+    on_startup()

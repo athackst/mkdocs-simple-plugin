@@ -163,7 +163,7 @@
       "args": [
         "--ignore-urls=https://fonts.gstatic.com,https://twitter.com/althack",
         "--ignore-files=./site/404.html",
-        "--swap-urls=^.*/athackst.github.io/mkdocs-simple-plugin/:/",
+        "--swap-urls=^.*/althack.dev/mkdocs-simple-plugin/:/",
         "./site"
       ],
       "dependsOrder": "sequence",

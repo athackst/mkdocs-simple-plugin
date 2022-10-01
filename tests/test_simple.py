@@ -43,11 +43,13 @@ class TestSimple(TestCase):
     def test_is_hidden(self, os_stat):
         """Test is_hidden for correctness."""
         simple_test = simple.Simple(**self.default_settings)
+        simple_test.ignore_hidden = True
         os_stat.return_value.st_file_attributes = 0
         self.assertFalse(simple_test.is_hidden('test.md'))
         self.assertFalse(simple_test.is_hidden('./folder/test.md'))
         self.assertTrue(simple_test.is_hidden('__pycache__'))
         self.assertTrue(simple_test.is_hidden('.mkdocsignore'))
+        self.assertTrue(simple_test.is_hidden(".git/objects/34/49807110bdc8"))
         # Check hidden file attribute
         os_stat.return_value.st_file_attributes = stat.FILE_ATTRIBUTE_HIDDEN
         self.assertTrue(simple_test.is_hidden('/test/file'))
@@ -56,42 +58,6 @@ class TestSimple(TestCase):
         """Test ignored files."""
         simple_test = simple.Simple(**self.default_settings)
         self.fs.create_file("directory/file")
-        self.assertFalse(
-            simple_test.is_ignored(
-                base_path="directory",
-                name="file"
-            )
-        )
-
-    def test_ignored_hidden(self):
-        """Test ignored files."""
-        simple_test = simple.Simple(**self.default_settings)
-
-        self.fs.create_file("directory/.hidden")
-        simple_test.ignore_hidden = True
-        self.assertTrue(
-            simple_test.is_ignored(
-                base_path="directory",
-                name=".hidden"
-            )
-        )
-        simple_test.ignore_hidden = False
-        self.assertFalse(
-            simple_test.is_ignored(
-                base_path="directory",
-                name=".hidden"
-            )
-        )
-
-        self.fs.create_file("directory/file")
-        simple_test.ignore_hidden = True
-        self.assertFalse(
-            simple_test.is_ignored(
-                base_path="directory",
-                name="file"
-            )
-        )
-        simple_test.ignore_hidden = False
         self.assertFalse(
             simple_test.is_ignored(
                 base_path="directory",
@@ -154,9 +120,9 @@ class TestSimple(TestCase):
             simple_test.is_ignored(
                 base_path=".",
                 name="hello.md"))
-        self.assertIn("directory/*test*", simple_test.ignore_folders)
-        self.assertIn("*test*", simple_test.ignore_folders)
-        self.assertEqual(2, len(simple_test.ignore_folders))
+        self.assertIn("directory/*test*", simple_test.ignore_glob)
+        self.assertIn("*test*", simple_test.ignore_glob)
+        self.assertEqual(2, len(simple_test.ignore_glob))
 
     def test_ignored_mkdocsignore_empty(self):
         """Test empty mkdocsignore file."""
@@ -172,15 +138,56 @@ class TestSimple(TestCase):
             simple_test.is_ignored(
                 base_path=".",
                 name="hello.md"))
-        self.assertIn("directory/*", simple_test.ignore_folders)
-        self.assertEqual(1, len(simple_test.ignore_folders))
+        self.assertIn("directory/*", simple_test.ignore_glob)
+        self.assertEqual(1, len(simple_test.ignore_glob))
 
-    def test_in_extensions(self):
-        """Test extensions to search."""
-        self.default_settings["include_extensions"] = [".md"]
+    def test_should_copy(self):
+        """Test should_copy."""
         simple_test = simple.Simple(**self.default_settings)
-        self.assertTrue(simple_test.in_extensions(name="helloworld.md"))
-        self.assertFalse(simple_test.in_extensions(name="md.helloworld"))
+        simple_test.copy_glob = ["*.md"]
+        self.assertTrue(simple_test.should_copy_file(name="helloworld.md"))
+        self.assertFalse(simple_test.should_copy_file(name="md.helloworld"))
+
+        simple_test.copy_glob = [".pages"]
+        self.assertTrue(simple_test.should_copy_file(name=".pages"))
+
+    def test_get_files(self):
+        """Test getting all files."""
+        simple_test = simple.Simple(**self.default_settings)
+        # /foo
+        #  ├── baz.md
+        #  ├── .mkdocsignore
+        #  └── bar
+        #      ├── spam.md // ignored
+        #      ├── hello.txt
+        #      └── eggs.md
+        #  └── bat
+        #      ├── hello.md
+        #      └── world.md
+        # /goo
+        #  └── day.md
+        # boo.md
+        self.fs.create_file("/foo/baz.md")
+        self.fs.create_file("/foo/.mkdocsignore", contents="bar/spam.md*")
+        self.fs.create_file("/foo/bar/spam.md")
+        self.fs.create_file("/foo/bar/hello.txt")
+        self.fs.create_file("/foo/bar/eggs.md")
+        self.fs.create_file("/foo/bat/hello.md")
+        self.fs.create_file("/foo/bat/world.md")
+        self.fs.create_file("/goo/day.md")
+        self.fs.create_file("boo.md")
+
+        files = simple_test.get_files()
+        self.assertIn("foo/baz.md", files)
+        self.assertIn("foo/.mkdocsignore", files)
+        self.assertIn("foo/bar/hello.txt", files)
+        self.assertIn("foo/bar/eggs.md", files)
+        self.assertNotIn("foo/bar/spam.md", files)
+        self.assertIn("foo/bat/hello.md", files)
+        self.assertIn("foo/bat/world.md", files)
+        self.assertIn("goo/day.md", files)
+        self.assertIn("boo.md", files)
+        self.assertEqual(8, len(files))
 
     def test_build_docs(self):
         """Test build docs."""
@@ -189,8 +196,8 @@ class TestSimple(TestCase):
         # /foo
         #  ├── baz.md
         #  ├── .mkdocsignore //hidden + ignore settings
+        #  ├── .pages //include in copy
         #  └── bar
-        #      ├── .hidden  // hidden file
         #      ├── spam.md // ignored
         #      ├── hello.txt  // wrong extension
         #      └── eggs.md
@@ -202,21 +209,23 @@ class TestSimple(TestCase):
         # boo.md // not included
         self.fs.create_file("/foo/baz.md")
         self.fs.create_file("/foo/.mkdocsignore", contents="bar/spam.md*")
+        self.fs.create_file("/foo/.pages")
         self.fs.create_file("/foo/bar/spam.md")
         self.fs.create_file("/foo/bar/eggs.md")
-        self.fs.create_file("/foo/bar/.hidden")
         self.fs.create_file("/foo/bat/hello.md")
         self.fs.create_file("/foo/bat/world.md")
         self.fs.create_file("/goo/day.md")
         self.fs.create_file("boo.md")
 
-        simple_test.ignore_folders = set(["foo/bat/**"])
-        simple_test.include_folders = set(["foo/*"])
+        simple_test.ignore_glob = set(["foo/bat/**"])
+        simple_test.include_folders = set(["foo/"])
+        simple_test.copy_glob = set(["*.md", ".pages"])
 
         paths = simple_test.build_docs()
         self.assertIn("foo/baz.md", paths)
         self.assertIn("foo/bar/eggs.md", paths)
-        self.assertEqual(2, len(paths))
+        self.assertIn("foo/.pages", paths)
+        self.assertEqual(3, len(paths))
 
 
 if __name__ == '__main__':

@@ -1,0 +1,105 @@
+### Lint
+
+Linting helps maintain style consistency.  This package follows the [google 
+style guide](https://google.github.io/styleguide/pyguide.html).  Conformity
+is enforced with flake8 and pydodstyle.
+
+```bash
+./tests/run_linters.sh
+```
+
+<details>
+<summary>Code</summary>
+
+```bash
+echo "Running flake8 linter -------->"
+flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude=setup.py
+flake8 . --count --exit-zero --max-complexity=10 --max-line-length=80 --statistics --exclude=setup.py
+
+echo "Running pydocstyle"
+pydocstyle --count --convention=google --add-ignore=D415,D107 .
+```
+</details>
+### Different Python versions
+
+You can even test the package with different versions of python in a container
+by running the test_local script.  This builds a docker container with the 
+version of python you specify and runs the integration tests within the 
+container. 
+
+```bash
+./tests/test_local.sh
+```
+{% include "versions.snippet" %}
+
+<details>
+<summary>Code</summary>
+
+```bash
+set -e
+
+End-to-end testing via Bats (Bash automated tests)
+function docker_run_integration_tests() {
+docker build -t mkdocs-simple-test-runner:$1 -f- . <<EOF
+FROM python:$1
+RUN apt-get -y update && apt-get -y install bats gcc sudo
+COPY . /workspace
+WORKDIR /workspace
+EOF
+
+echo "Running E2E tests via Bats in Docker (python:$1) -------->"
+docker run --rm -it mkdocs-simple-test-runner:$1 tests/run_unit_tests.sh
+docker run --rm -it mkdocs-simple-test-runner:$1 tests/run_linters.sh
+docker run --rm -it mkdocs-simple-test-runner:$1 tests/run_integration_tests.sh
+}
+
+if [[ ! -z "$PYTHON_V_ONLY" ]]; then
+echo "only v $PYTHON_V_ONLY"
+docker_run_integration_tests "$PYTHON_V_ONLY"
+else
+docker_run_integration_tests "3"
+docker_run_integration_tests "3.7"
+docker_run_integration_tests "3.8"
+docker_run_integration_tests "3.9"
+docker_run_integration_tests "3.10"
+fi
+```
+</details>
+### Unit tests
+
+Unit tests help ensure individual functions perform as expected.  Unit tests
+in this module use the the standard python unittest framework.
+
+```bash
+./tests/run_unit_tests.sh
+```
+
+<details>
+<summary>Code</summary>
+```bash
+python3 -m unittest tests/test_*.py
+```
+</details>
+### Integration tests
+
+Integration testing allows the plugin to be tested with mkdocs using example
+configurations.
+
+Integration testing uses bats, install it with
+
+```bash
+sudo apt-get install bats
+```
+Then run the tests
+
+```bash
+./tests/run_integration_tests.sh
+```
+<details>
+<summary>Code</summary>
+
+```bash
+./examples/gen_readme.py
+./tests/integration_test.bats
+```
+</details>

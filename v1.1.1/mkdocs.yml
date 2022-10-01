@@ -1,0 +1,41 @@
+site_name: athackst/mkdocs-simple-plugin
+docs_dir: /tmp/mkdocs-simple/mkdocs-simple-plugin
+plugins:
+  - simple:
+      include_extensions:
+        - .yml
+        - .png
+        - .pages
+        - .bats
+        - .sh
+  - awesome-pages
+  - macros
+  - search
+edit_uri: ''
+site_url: https://athackst.github.io/mkdocs-simple-plugin
+repo_url: https://github.com/athackst/mkdocs-simple-plugin
+theme:
+  name: material
+  palette:
+    primary: green
+    accent: green
+markdown_extensions:
+  - admonition
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      use_pygments: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji ''
+      emoji_generator: !!python/name:materialx.emoji.to_svg ''
+  - mkdocs-click
+extra:
+  social:
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/althack
+    - icon: fontawesome/brands/docker
+      link: https://hub.docker.com/u/althack
+    - icon: fontawesome/regular/face-laugh
+      link: https://allisonthackston.com
+  analytics:
+    provider: google
+    property: G-VPNW28KW9L

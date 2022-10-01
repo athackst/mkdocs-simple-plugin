@@ -1,0 +1,62 @@
+#### Python
+
+block comments starting with: `"""md`
+
+```python
+"""md
+This is a documentation comment.
+"""
+```
+
+line comments starting with:
+`# md` and ending with `# /md`,
+stripping leading spaces and `#``,
+and only capturing comment lines.
+
+```python
+# md
+# This is a documentation comment.
+# /md
+```
+
+#### C, C++, and Javascript
+block comments starting with: `/** md`
+
+```c
+/** md
+This is a documentation comment.
+**/
+```
+
+in line comments starting with
+`// md`, ending with `// end md`,
+stripping leading spaces and `//`,
+and only capturing comment lines.
+
+```c
+// md
+// This is a documentation comment.
+// end md
+```
+
+#### YAML, Dockerfiles, and shell scripts
+line-comment blocks starting with
+`# md` and ending with `# /md`,
+stripping leading spaces and `#`
+
+```yaml
+# md
+# This is a documentation comment.
+# /md
+```
+
+#### HTML and xml
+line-comment blocks starting with
+`<!-- md` and ending with `-->`
+
+```xml
+<!-- md
+This is a documentation comment.
+-->
+```
+

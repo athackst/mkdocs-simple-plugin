@@ -1,0 +1,4 @@
+# This example shows how to merge a docs folder with other documentation.
+site_name: ok-mkdocs-docs-merge
+plugins:
+  - simple

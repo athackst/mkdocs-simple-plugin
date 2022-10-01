@@ -28,7 +28,7 @@
 #           # (optional) Specify a different theme [mkdocs|readthedocs|material]
 #           theme: material
 #           # (optional) Load a configuration file from a string
-#           config: "{additional_css: value}"
+#           config: "mkdocs.yml"
 #           # (optional) Version or alias.  Specify multiple aliases with space
 #           # example: version: v0.1.0 latest
 #           version: latest
@@ -74,6 +74,7 @@ inputs:
   config:
     description: "Configuration file"
     required: false
+    default: mkdocs.yml
   version:
     description: "Version to publish"
     required: false

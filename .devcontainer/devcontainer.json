@@ -38,7 +38,8 @@
 		"yzhang.markdown-all-in-one",
 		"shakram02.bash-beautify",
 		"eamodio.gitlens",
-		"streetsidesoftware.code-spell-checker"
+		"streetsidesoftware.code-spell-checker",
+		"rogalmic.bash-debug"
 	],
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "pip install --upgrade pip && pip install --user -r requirements.txt",

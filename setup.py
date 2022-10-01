@@ -14,10 +14,10 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     keywords='mkdocs readme wiki',
-    url='http://athackst.github.io/mkdocs-simple-plugin',
+    url='http://althack.dev/mkdocs-simple-plugin',
     project_urls={
         "Issues": "https://github.com/athackst/mkdocs-simple-plugin/issues",
-        "Documentation": "http://athackst.github.io/mkdocs-simple-plugin",
+        "Documentation": "http://althack.dev/mkdocs-simple-plugin",
         "Source Code": "https://github.com/athackst/mkdocs-simple-plugin",
     },
     author='Allison Thackston',

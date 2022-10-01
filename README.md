@@ -1,7 +1,7 @@
 ![mkdocs-simple-plugin](https://github.com/athackst/mkdocs-simple-plugin/raw/main/media/mkdocs-simple-plugin.png)
 
 [![Test](https://github.com/athackst/mkdocs-simple-plugin/workflows/Test/badge.svg)](https://github.com/athackst/mkdocs-simple-plugin)
-[![Docs](https://github.com/athackst/mkdocs-simple-plugin/workflows/Docs/badge.svg)](https://athackst.github.io/mkdocs-simple-plugin) 
+[![Docs](https://github.com/athackst/mkdocs-simple-plugin/workflows/Docs/badge.svg)](https://althack.dev/mkdocs-simple-plugin) 
 [![Docker](https://img.shields.io/docker/pulls/althack/mkdocs-simple-plugin)](https://hub.docker.com/r/althack/mkdocs-simple-plugin) 
 [![pypi](https://img.shields.io/pypi/dm/mkdocs-simple-plugin?label=pypi%20downloads&color=blue)](https://pypi.org/project/mkdocs-simple-plugin/) 
 [![Github Action](https://img.shields.io/badge/github%20action-download-blue)](https://github.com/marketplace/actions/mkdocs-simple-action)
@@ -30,11 +30,11 @@ You may be wondering why you would want to generate a static site for your proje
 
     Finally, you may be interested in this plugin if you have a desire for easy-to-generate stylized documentation.  This plugin lets you take documentation you may already have -- either in markdown files or in your code -- and formats them into a searchable documentation website.  You can keep your documentation where it is (thank you very much).
 
-See [mkdocs-simple-plugin](https://athackst.github.io/mkdocs-simple-plugin/mkdocs_simple_plugin/plugin) for usage.
+See [mkdocs-simple-plugin](https://althack.dev/mkdocs-simple-plugin/mkdocs_simple_plugin/plugin) for usage.
 
 ## Contributing
 
-See the [contributing guide](https://athackst.github.io/mkdocs-simple-plugin/CONTRIBUTING)
+See the [contributing guide](https://althack.dev/mkdocs-simple-plugin/CONTRIBUTING)
 
 ## License
 

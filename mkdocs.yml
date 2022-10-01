@@ -6,10 +6,10 @@ plugins:
   - macros
   - search
   - mike
-hooks:
-  - examples/gen_readme.py
 edit_uri: ''
 site_url: https://althack.dev/mkdocs-simple-plugin
+hooks:
+  - examples/gen_readme.py
 repo_url: https://github.com/athackst/mkdocs-simple-plugin
 theme:
   name: material

@@ -1,0 +1,32 @@
+---
+### develop
+# ## Developing
+#
+# You can clone the repository with
+# ```
+# git clone https://this_is_a_dummy_url
+# ```
+###
+kind: pipeline
+name: bootstrap
+steps:
+  - name: fetch tags
+    image: alpine/git
+    commands:
+    - git fetch --tags
+
+  - name: build_install_test
+    image: python
+    commands:
+      - python --version
+      - pwd
+      - pip install flake8
+### develop
+# You can build the distribution with
+# ```
+      - pip install build
+      - python -m build .
+# ```
+# That will produce a `.whl` file in the `dist` subdirectory.
+###
+      - flake8 --max-line-length=80 --extend-exclude=build

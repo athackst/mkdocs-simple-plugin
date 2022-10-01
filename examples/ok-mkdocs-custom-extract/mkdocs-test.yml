@@ -4,6 +4,12 @@
 # everything from the beginning of the file to the first line of code
 # (a line indented by at least four spaces), together with any later Markdown
 # block preceded by a comment containing `# DOCPAGE`.
+#
+# Similarly, you may want to have to have a custom extraction even for a
+# standard file pattern, or for one particular file; the `drone.yml` pattern
+# could for example extract development documentation from a Drone yml file.
+# Note this latter pattern takes advantage of the fact that you can have just
+# a single top-level block of parameters in an `extract:` section.
 site_name: ok-mkdocs-custom-extract
 plugins:
   - simple:
@@ -12,3 +18,9 @@ plugins:
           extract:
             - {stop: '^\s{4,}\S'}  # No start, so active from beginning
             - {start: '# DOCPAGE', stop: '^\s{4,}\S'}
+        - pattern: 'drone.yml'
+          destination: 'drone_develop.md'
+          extract:
+            start: '### develop'
+            stop: '^\s*###'
+            replace: ['^# (.*\s*)$', '^\s*-(.*\s*)$']

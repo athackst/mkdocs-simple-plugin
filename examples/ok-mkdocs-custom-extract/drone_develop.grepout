@@ -1,0 +1,10 @@
+<h2 id="developing">Developing</h2>
+<h1 id="_1"></h1>
+<p>You can clone the repository with</p>
+<pre><code>git clone https://this_is_a_dummy_url
+</code></pre>
+<p>You can build the distribution with</p>
+<pre><code> pip install build
+ python -m build .
+</code></pre>
+<p>That will produce a <code>.whl</code> file in the <code>dist</code> subdirectory.</p></div>

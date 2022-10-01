@@ -49,12 +49,14 @@ Inline parameters configure a block's extraction.
 You can add a `.mkdocsignore` file to ignore a directory or files by glob
 pattern.
 
+See [example mkdocsignore usage](../examples/ok-mkdocsignore/README.md)
+
 ## Default settings
 
 Below are the default settings of the plugin.
 
 ```yaml
-{{ mkdocs_simple_config }}
+{{ config.mkdocs_simple_config }}
 ```
 
 !!!Note
@@ -67,11 +69,13 @@ Below are the default settings of the plugin.
 
 ## Build
 
-Then, you can build the mkdocs from the command line.
+You can build mkdocs from the command line using the standard command
 
 ```bash
 mkdocs build
 ```
+
+or you can generate and build at the same time [see generator](generator.md).
 
 ## Run a local server
 
@@ -347,7 +351,7 @@ class SimplePlugin(BasePlugin[SimplePluginConfig]):
         """Update configuration to use a temporary build directory."""
         default_config = dict((name, config_option.default)
                               for name, config_option in self.config_scheme)
-        self.mkdocs_simple_config = yaml.dump(
+        config.mkdocs_simple_config = yaml.dump(
             default_config,
             sort_keys=False,
             default_flow_style=False,

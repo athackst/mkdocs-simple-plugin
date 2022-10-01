@@ -1,0 +1,7 @@
+# This example shows how to rename a single file in the doc site.
+site_name: ok-with-rename
+plugins:
+  - simple:
+      semiliterate:
+      - pattern: '^foo.bar$'
+        destination: baz.md

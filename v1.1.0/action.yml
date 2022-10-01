@@ -1,0 +1,74 @@
+# md
+# ## Deploy from GitHub Actions
+# 
+# Create a YAML file with the following contents in the `.github/workflows` directory in your repository
+# 
+# ```yaml
+# jobs:
+#   docs:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
+#       - name: Build docs
+#         uses: athackst/mkdocs-simple-plugin
+#         with:
+#           # (optional) Specify branch 
+#           publish_branch: gh-pages 
+#           # (optional) The URL of the repository the docs should point to
+#           repo_url: https://github.com/owner/repository 
+#           # (optional) The name of the site
+#           site_name: owner/repository 
+#           # (optional) The URL of the site
+#           site_url: https://owner.github.io/repository 
+#           # (optional) The edit URI
+#           edit_uri: edit/main/
+#           # (optional) Specify a google analytics key 
+#           google_analytics: UA-XXXXXXX
+#           # (optional) Specify a different theme [mkdocs|readthedocs|material]
+#           theme: material
+#           # (optional) Load a configuration file from a string
+#           configuration: "{additional_css: value}"
+# ```
+# /md
+name: "MkDocs Simple action"
+description: "Generate a configuration free mkdocs site"
+branding:
+  icon: "book"
+  color: "green"
+inputs:
+  publish_branch:
+    description: "Set a target branch for deployment."
+    required: false
+    default: "gh-pages"
+  repo_url:
+    description: "Set the repository url."
+    required: false
+    default: "https://github.com/${{ github.repository }}"
+  site_name:
+    description: "Set the site name."
+    required: false
+    default: "${{ github.repository }}"
+  site_url:
+    description: "Set the site url."
+    required: false
+    default: "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
+  site_dir:
+    description: "Directory to build the site."
+    required: false
+  edit_uri:
+    description: "Set the edit uri"
+    required: false
+    default: "edit/main/"
+  theme:
+    description: "Set the theme"
+    required: false
+    default: material
+  config:
+    description: "Configuration file"
+    required: false
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - deploy.sh

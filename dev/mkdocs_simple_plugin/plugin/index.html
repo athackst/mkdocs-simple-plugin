@@ -1208,9 +1208,56 @@ and only capturing comment lines.</p>
 <h3 id="ignoring-files">Ignoring files</h3>
 <p>You can add a <code>.mkdocsignore</code> file to ignore a directory or files by glob
 pattern.</p>
+<p>See <a href="../../examples/ok-mkdocsignore/">example mkdocsignore usage</a></p>
 <h2 id="default-settings">Default settings</h2>
 <p>Below are the default settings of the plugin.</p>
-<div class="highlight"><pre><span></span><code><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">mkdocs_simple_config</span><span class="w"> </span><span class="p p-Indicator">}}</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="nt">include_folders</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*&#39;</span><span class="w"></span>
+<span class="nt">ignore_folders</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+<span class="nt">ignore_hidden</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="nt">merge_docs_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="nt">build_docs_dir</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span><span class="w"></span>
+<span class="nt">include_extensions</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.bmp</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.tif</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.tiff</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.gif</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.svg</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.jpeg</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.jpg</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.jif</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.jiff</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.jp2</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.jpx</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.j2k</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.j2c</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.fpx</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.pcd</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.png</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.pdf</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CNAME</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.snippet</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.pages</span><span class="w"></span>
+<span class="nt">semiliterate</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.*</span><span class="w"></span>
+<span class="w">  </span><span class="nt">terminate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\W*md-ignore</span><span class="w"></span>
+<span class="w">  </span><span class="nt">extract</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\s*&quot;&quot;&quot;\W?md\b</span><span class="w"></span>
+<span class="w">    </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\s*&quot;&quot;&quot;\s*$</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\s*#+\W?md\b</span><span class="w"></span>
+<span class="w">    </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\s*#\s?\/md\s*$</span><span class="w"></span>
+<span class="w">    </span><span class="nt">replace</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\s*# ?(.*\n?)$</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^.*$</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\s*/\*+\W?md\b</span><span class="w"></span>
+<span class="w">    </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\s*\*\*/\s*$</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\s*\/\/+\W?md\b</span><span class="w"></span>
+<span class="w">    </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\s*\/\/\send\smd\s*$</span><span class="w"></span>
+<span class="w">    </span><span class="nt">replace</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\s*\/\/\s?(.*\n?)$</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^.*$</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;!--\W?md\b</span><span class="w"></span>
+<span class="w">    </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--&gt;\s*$</span><span class="w"></span>
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1294,9 +1341,10 @@ regular expression and a template, or by just a regular expression.</p>
 <code>replace</code> patterns matches, processing stops; no further expressions
 are checked.</p>
 <h2 id="build">Build</h2>
-<p>Then, you can build the mkdocs from the command line.</p>
+<p>You can build mkdocs from the command line using the standard command</p>
 <div class="highlight"><pre><span></span><code>mkdocs build
 </code></pre></div>
+<p>or you can generate and build at the same time <a href="../generator/">see generator</a>.</p>
 <h2 id="run-a-local-server">Run a local server</h2>
 <p>One of the best parts of mkdocs is the ability to serve (and update!) your
 documentation site locally.</p>

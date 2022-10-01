@@ -176,6 +176,8 @@ teardown() {
     assertValidSite
     assertFileExists site/fibo/index.html
     assertParGrep fibo
+    assertFileExists site/drone_develop/index.html
+    assertParGrep drone_develop
 }
 
 @test "ignore site directory" {
@@ -237,7 +239,7 @@ teardown() {
     assertParGrep module
 }
 
-@test "build a site with iniline settings" {
+@test "build a site with inline settings" {
     cd ${fixturesDir}/ok-mkdocs-inline-settings
     assertGen
     assertValidSite

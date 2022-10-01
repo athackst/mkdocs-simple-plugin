@@ -1,0 +1,38 @@
+##### start
+
+(optional) The regex pattern to indicate the start of extraction.
+
+Only the first mode whose `start` expression matches is activated, so at
+most one mode of extraction can be active at any time.
+When an extraction is active, lines from the scanned
+file are processed into the destination file.
+
+!!!Note
+      The (last) extraction mode (if any) with no `start`
+      parameter is active starting at the first line of the scanned
+      file; there is no way this mode can be reactivated if it stops.
+      This convention allows for convenient "front-matter" extraction.
+
+##### stop
+
+(optional) The regex pattern to indicate the stop of extraction.
+
+After the extraction has stopped, the file will continue to be searched
+for matching patterns starting with the _next_ line of the scanned file.
+In this way the entire file will be processed looking for start-stop
+pairs.
+
+##### replace
+
+(optional) The `replace` parameter allows extracted lines from a file to
+be transformed in simple ways by regular expressions, for
+example to strip leading comment symbols if necessary.
+
+The `replace` parameter is a list of substitutions to attempt.
+Each substitution is specified either by a two-element list of a
+regular expression and a template, or by just a regular expression.
+
+Once one of the
+`replace` patterns matches, processing stops; no further expressions
+are checked.
+

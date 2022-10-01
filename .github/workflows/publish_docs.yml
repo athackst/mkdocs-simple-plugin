@@ -13,19 +13,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Set up Python 3
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3
-          cache: 'pip'
-      - run: pip install -r requirements.txt
-      - name: Build Docs
-        run: ./build.sh
-      - name: Setup environment
-        run: |
-          echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV
-      - name: Publish Docs
+      - name: Publish dev docs
         uses: ./
         with:
-          version: ${{ env.VERSION }} latest
+          version: dev
+      - name: Publish Release docs
+        if: ${{ github.event.release.tag_name }}
+        uses: ./
+        with:
+          version: ${{ github.event.release.tag_name }} latest
           default_version: ${{ github.event.release.tag_name }}

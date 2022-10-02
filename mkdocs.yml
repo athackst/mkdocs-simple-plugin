@@ -5,9 +5,9 @@ plugins:
   - awesome-pages
   - macros
   - search
-  - mike
+  - mike:
+      canonical_version: latest
 edit_uri: ''
-site_url: https://althack.dev/mkdocs-simple-plugin
 hooks:
   - examples/gen_readme.py
 repo_url: https://github.com/athackst/mkdocs-simple-plugin

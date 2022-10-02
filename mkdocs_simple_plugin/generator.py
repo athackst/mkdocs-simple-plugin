@@ -53,8 +53,6 @@ def default_config():
     # and may not exist.
     config['edit_uri'] = ''
 
-    config['site_url'] = 'http://localhost'
-
     def maybe_set_string(name):
         env_variable = "INPUT_" + name.upper()
         config_variable = name.lower()

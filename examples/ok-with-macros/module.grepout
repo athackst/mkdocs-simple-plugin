@@ -13,7 +13,6 @@ plugins:
   - macros:
       verbose: true
 edit_uri: ''
-site_url: http://localhost
 extra:
   test: true
 

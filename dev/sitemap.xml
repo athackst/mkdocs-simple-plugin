@@ -11,6 +11,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/LICENSE/</loc>
+         <lastmod>2022-10-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/action/</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>

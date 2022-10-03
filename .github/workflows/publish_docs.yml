@@ -7,6 +7,10 @@ on:
     types: [published]
   workflow_dispatch:
 
+# Add a concurrency group so that doc publish doesn't interfere with each other.
+concurrency: 
+  group: publish-docs
+
 jobs:
   docs:
     runs-on: ubuntu-latest

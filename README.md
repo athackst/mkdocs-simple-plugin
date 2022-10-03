@@ -38,4 +38,4 @@ See the [contributing guide](https://althack.dev/mkdocs-simple-plugin/latest/CON
 
 ## License
 
-This software is licensed under [Apache 2.0](https://github.com/athackst/mkdocs-simple-plugin/blob/master/LICENSE)
+This software is licensed under [Apache 2.0](https://althack.dev/mkdocs-simple-plugin/latest/LICENSE)

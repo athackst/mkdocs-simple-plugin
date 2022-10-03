@@ -148,7 +148,7 @@ class SimplePlugin(BasePlugin):
                     ".bmp", ".tif", ".tiff", ".gif", ".svg", ".jpeg",
                     ".jpg", ".jif", ".jiff", ".jp2", ".jpx", ".j2k",
                     ".j2c", ".fpx", ".pcd", ".png", ".pdf", "CNAME",
-                    ".snippet", ".pages", "LICENSE"
+                    ".snippet", ".pages"
                 ])),
         #
         # ### semiliterate
@@ -169,6 +169,9 @@ class SimplePlugin(BasePlugin):
             config_options.Type(
                 list,
                 default=[
+                    {
+                        'pattern': r'^LICENSE$',
+                    },
                     {
                         'pattern': r'.*',
                         'terminate': r'^\W*md-ignore',

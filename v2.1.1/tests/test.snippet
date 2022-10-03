@@ -1,3 +1,19 @@
+### Lint
+Linting helps maintain style consistency.  This package follows the [google 
+style guide](https://google.github.io/styleguide/pyguide.html).  Conformity
+is enforced with flake8 and pydodstyle.
+```bash
+./tests/run_linters.sh
+```
+<details>
+<summary>Code</summary>
+```bash
+echo "Running flake8 linter -------->"
+flake8 --count .
+echo "Running pydocstyle"
+pydocstyle --count .
+```
+</details>
 ### Different Python versions
 You can even test the package with different versions of python in a container
 by running the test_local script.  This builds a docker container with the 
@@ -64,21 +80,5 @@ Then run the tests
 ```bash
 ./examples/gen_readme.py
 ./tests/integration_test.bats
-```
-</details>
-### Lint
-Linting helps maintain style consistency.  This package follows the [google 
-style guide](https://google.github.io/styleguide/pyguide.html).  Conformity
-is enforced with flake8 and pydodstyle.
-```bash
-./tests/run_linters.sh
-```
-<details>
-<summary>Code</summary>
-```bash
-echo "Running flake8 linter -------->"
-flake8 --count .
-echo "Running pydocstyle"
-pydocstyle --count .
 ```
 </details>

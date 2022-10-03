@@ -1,267 +1,272 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/CONTRIBUTING/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/action/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/docker/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-custom-extract/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-docs/docs/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-docs-extensions/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-docs-ignore/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-docs-ignore/test/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-docs-ignore/other-folder/subfolder/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-docs-ignore/other-folder/subfolder/draft/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-docs-ignore/subfolder/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-docs-ignore/subfolder/draft/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-docs-include/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-docs-include/test/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-docs-include/subfolder/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-docs-include/subfolder/draft/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-docs-merge/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-docs-merge/test/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-docs-merge/docs/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-docs-merge/docs/draft/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-docs-no-merge/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-docs-no-merge/test/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-docs-no-merge/docs/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-docs-no-merge/docs/draft/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-ignore-file/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-ignore-file/test/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-ignore-site-dir/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-inline-settings/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-inline-settings/main/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocs-readme/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocsignore/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocsignore/hello/hello/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-mkdocsignore/hello/foo/bar/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-source-extract/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-source-extract/main/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-source-extract/module/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-source-replace/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-source-replace/module/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-source-with-snippet/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-source-with-snippet/module/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-source-with-snippet/snippet/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-source-with-snippet/snippet2/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-with-macros/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-with-macros/example/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-with-macros/module/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-with-mkdocstrings/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-with-mkdocstrings/example/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-with-mkdocstrings/module/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/examples/ok-with-rename/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/mkdocs_simple_plugin/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/mkdocs_simple_plugin/generator/</loc>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://athackst.github.io/mkdocs-simple-plugin/latest/mkdocs_simple_plugin/plugin/</loc>
+         <loc>None</loc>
+         <lastmod>2022-10-03</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>None</loc>
          <lastmod>2022-10-03</lastmod>
          <changefreq>daily</changefreq>
     </url>

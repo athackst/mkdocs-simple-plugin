@@ -77,20 +77,25 @@ class Simple():
     def get_files(self) -> list:
         """Get a list of files to process, excluding ignored files."""
         files = []
-        # Get all of the folders that match the include pattern.
+        # Get all of the entries that match the include pattern.
         entries = []
-        for entry in self.include_folders:
-            entries.extend(pathlib.Path().glob(entry))
-        # Get all of the files in the folder that aren't ignored.
+        for pattern in self.include_folders:
+            entries.extend(pathlib.Path().glob(pattern))
+        # Ignore any entries that match the ignore pattern
+        entries[:] = [
+            entry for entry in entries
+            if not self.is_path_ignored(str(entry))]
+        # Add any files
+        files[:] = [
+            os.path.normpath(entry) for entry in entries if entry.is_file()]
+        # Iterate through directories to get files
         for entry in entries:
-            # Add files to list
-            if entry.is_file() and not self.is_path_ignored(entry):
-                files.extend([os.path.normpath(entry)])
-            # Add all files in folders to list
-            for root, _, filenames in os.walk(entry):
+            for root, directories, filenames in os.walk(entry):
                 files.extend([os.path.join(root, f)
                              for f in filenames if not self.is_ignored(root, f)]
                              )
+                directories[:] = [
+                    d for d in directories if not self.is_ignored(root, d)]
         return files
 
     def is_ignored(self, base_path: str, name: str) -> bool:
@@ -121,10 +126,6 @@ class Simple():
                 set(os.path.join(base_path, filter) for filter in ignore_list))
         # Check for ignore paths in patterns
         if any(fnmatch.fnmatch(path, filter)
-                for filter in self.ignore_glob):
-            return True
-        # Check for ignore folder in patterns
-        if any(fnmatch.fnmatch(base_path, filter)
                 for filter in self.ignore_glob):
             return True
         return False

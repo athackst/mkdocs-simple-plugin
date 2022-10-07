@@ -158,7 +158,7 @@ class TestSimple(TestCase):
         #  ├── baz.md
         #  ├── .pages
         #  └── bar
-        #      ├── spam.md // ignored
+        #      ├── spam.md
         #      ├── hello.txt
         #      └── eggs.md
         #  └── bat
@@ -194,40 +194,45 @@ class TestSimple(TestCase):
         simple_test = simple.Simple(**self.default_settings)
         # /foo
         #  ├── baz.md
-        #  ├── .mkdocsignore
         #  └── bar // ignore content in this folder
-        #      ├── spam.md
         #      ├── hello.txt
-        #      └── eggs.md
-        #          └── bat
-        #              ├── hello.md
-        #              └── world.md
+        #      ├── spam.md
+        #      ├── eggs.md
+        #      └── bat
+        #          ├── hello.md
+        #          └── world.md
         # /goo
         #  └── day.md
-        #  └── night.md  // ignored
+        #  └── night.md  // ignored from .mkdocsignore
         # boo.md
+        # moo.md
+        # .mkdocsignore
         self.fs.create_file("/foo/baz.md")
-        self.fs.create_file("/foo/.mkdocsignore", contents="goo/night.md")
-        self.fs.create_file("/foo/bar/spam.md")
         self.fs.create_file("/foo/bar/hello.txt")
+        self.fs.create_file("/foo/bar/spam.md")
         self.fs.create_file("/foo/bar/eggs.md")
         self.fs.create_file("/foo/bar/bat/hello.md")
         self.fs.create_file("/foo/bar/bat/world.md")
         self.fs.create_file("/goo/day.md")
+        self.fs.create_file("/goo/night.md")
         self.fs.create_file("boo.md")
+        self.fs.create_file(".mkdocsignore",
+                            contents="\n".join([
+                                "goo/night.md",
+                                "moo.md"]))
 
         simple_test.ignore_glob = set(["foo/bar"])
         files = simple_test.get_files()
         self.assertIn("foo/baz.md", files)
-        self.assertIn("foo/.mkdocsignore", files)
         self.assertNotIn("foo/bar/hello.txt", files)
-        self.assertNotIn("foo/bar/eggs.md", files)
         self.assertNotIn("foo/bar/spam.md", files)
+        self.assertNotIn("foo/bar/eggs.md", files)
         self.assertNotIn("foo/bar/bat/hello.md", files)
         self.assertNotIn("foo/bar/bat/world.md", files)
         self.assertIn("goo/day.md", files)
         self.assertNotIn("goo/night.md", files)
         self.assertIn("boo.md", files)
+        self.assertIn(".mkdocsignore", files)
         self.assertEqual(4, len(files))
 
     def test_build_docs(self):
@@ -239,8 +244,8 @@ class TestSimple(TestCase):
         #  ├── .mkdocsignore //hidden + ignore settings
         #  ├── .pages //include in copy
         #  └── bar
-        #      ├── spam.md // ignored
         #      ├── hello.txt  // wrong extension
+        #      ├── spam.md // ignored  from .mkdocsignore
         #      └── eggs.md
         #  └── bat // ignore directory
         #      ├── hello.md

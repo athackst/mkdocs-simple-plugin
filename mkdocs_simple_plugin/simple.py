@@ -10,30 +10,6 @@ from mkdocs import utils
 from mkdocs_simple_plugin.semiliterate import Semiliterate
 
 
-def copy_directory(from_dir: str, to_dir: str):
-    """Copy all files from source to destination directory."""
-    if sys.version_info >= (3, 8):
-        # pylint: disable=unexpected-keyword-arg
-        shutil.copytree(from_dir, to_dir, dirs_exist_ok=True)
-        utils.log.debug("mkdocs-simple-plugin: %s/* --> %s/*",
-                        from_dir, to_dir)
-    else:
-        for source_directory, _, files in os.walk(from_dir):
-            destination_directory = source_directory.replace(
-                from_dir, to_dir, 1)
-            os.makedirs(destination_directory, exist_ok=True)
-            for file_ in files:
-                source_file = os.path.join(source_directory, file_)
-                destination_file = os.path.join(destination_directory,
-                                                file_)
-                if os.path.exists(destination_file):
-                    os.remove(destination_file)
-                shutil.copy(source_file, destination_directory)
-                utils.log.debug(
-                    "mkdocs-simple-plugin: %s/* --> %s/*",
-                    source_file, destination_file)
-
-
 class Simple():
     """Mkdocs Simple Plugin"""
 
@@ -168,6 +144,29 @@ class Simple():
     def merge_docs(self, from_dir):
         """Merge docs directory"""
         # Copy contents of docs directory if merging
+        def copy_directory(from_dir: str, to_dir: str):
+            """Copy all files from source to destination directory."""
+            if sys.version_info >= (3, 8):
+                # pylint: disable=unexpected-keyword-arg
+                shutil.copytree(from_dir, to_dir, dirs_exist_ok=True)
+                utils.log.debug("mkdocs-simple-plugin: %s/* --> %s/*",
+                                from_dir, to_dir)
+            else:
+                for source_directory, _, files in os.walk(from_dir):
+                    destination_directory = source_directory.replace(
+                        from_dir, to_dir, 1)
+                    os.makedirs(destination_directory, exist_ok=True)
+                    for file_ in files:
+                        source_file = os.path.join(source_directory, file_)
+                        destination_file = os.path.join(destination_directory,
+                                                        file_)
+                        if os.path.exists(destination_file):
+                            os.remove(destination_file)
+                        shutil.copy(source_file, destination_directory)
+                        utils.log.debug(
+                            "mkdocs-simple-plugin: %s/* --> %s/*",
+                            source_file, destination_file)
+
         if os.path.exists(from_dir):
             copy_directory(from_dir, self.build_dir)
             self.ignore_paths.add(from_dir)

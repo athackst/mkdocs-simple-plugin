@@ -9,20 +9,6 @@ from pyfakefs.fake_filesystem_unittest import TestCase
 from mkdocs_simple_plugin import simple
 
 
-class TestSimpleHelpers(TestCase):
-    """Test Simple helper functions."""
-
-    def setUp(self):
-        """Set up with fake filesystem"""
-        self.setUpPyfakefs()
-
-    def test_copy_directory(self):
-        """Test copy_directory"""
-        self.fs.create_file('/test/file.txt')
-        simple.copy_directory("/test", '/bar')
-        self.assertTrue(os.path.exists("/bar/file.txt"))
-
-
 class TestSimple(TestCase):
     """Test Simple class."""
 
@@ -274,6 +260,13 @@ class TestSimple(TestCase):
         self.assertIn("foo/bar/eggs.md", paths)
         self.assertIn("foo/.pages", paths)
         self.assertEqual(3, len(paths))
+
+    def test_merge_docs(self):
+        """Test copy_directory"""
+        self.fs.create_file('/test/file.txt')
+        simple_test = simple.Simple(**self.default_settings)
+        simple_test.merge_docs("/test")
+        self.assertTrue(os.path.exists("/build_dir/file.txt"))
 
 
 if __name__ == '__main__':

@@ -40,19 +40,21 @@ class TestSimple(TestCase):
         self.setUpPyfakefs()
 
     @patch("os.stat")
-    def test_is_hidden(self, os_stat):
-        """Test is_hidden for correctness."""
+    def test_should_extract_file(self, os_stat):
+        """Test should_extract_file for correctness."""
         simple_test = simple.Simple(**self.default_settings)
+        # Check ignore_hidden
         simple_test.ignore_hidden = True
         os_stat.return_value.st_file_attributes = 0
-        self.assertFalse(simple_test.is_hidden('test.md'))
-        self.assertFalse(simple_test.is_hidden('./folder/test.md'))
-        self.assertTrue(simple_test.is_hidden('__pycache__'))
-        self.assertTrue(simple_test.is_hidden('.mkdocsignore'))
-        self.assertTrue(simple_test.is_hidden(".git/objects/34/49807110bdc8"))
+        self.assertTrue(simple_test.should_extract_file('test.md'))
+        self.assertTrue(simple_test.should_extract_file('./folder/test.md'))
+        self.assertFalse(simple_test.should_extract_file('__pycache__'))
+        self.assertFalse(simple_test.should_extract_file('.mkdocsignore'))
+        self.assertFalse(simple_test.should_extract_file(
+            ".git/objects/34/49807110bdc8"))
         # Check hidden file attribute
         os_stat.return_value.st_file_attributes = stat.FILE_ATTRIBUTE_HIDDEN
-        self.assertTrue(simple_test.is_hidden('/test/file'))
+        self.assertFalse(simple_test.should_extract_file('/test/file'))
 
     def test_ignored_default(self):
         """Test ignored files."""

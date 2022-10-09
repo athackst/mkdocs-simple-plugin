@@ -137,8 +137,8 @@ class Simple():
 
         return any(match_pattern(name, pattern) for pattern in self.copy_glob)
 
-    def is_hidden(self, filepath):
-        """Return true if filepath is hidden."""
+    def should_extract_file(self, name: str):
+        """Check if file should be extracted."""
         def has_hidden_attribute(filepath):
             """Returns true if hidden attribute is set."""
             try:
@@ -148,6 +148,7 @@ class Simple():
                 return False
 
         def has_hidden_prefix(filepath):
+            """Returns true if the file starts with a hidden prefix."""
             parts = filepath.split(os.path.sep)
 
             def hidden_prefix(name):
@@ -157,7 +158,12 @@ class Simple():
                            for pattern in self.hidden_prefix)
             return any(hidden_prefix(part) for part in parts)
 
-        return has_hidden_prefix(filepath) or has_hidden_attribute(filepath)
+        extract = True
+        if self.ignore_hidden:
+            is_hidden = has_hidden_prefix(name) or has_hidden_attribute(name)
+            extract = not is_hidden
+
+        return extract
 
     def merge_docs(self, from_dir):
         """Merge docs directory"""
@@ -190,14 +196,13 @@ class Simple():
         """
         # Check if it's hidden
         path = os.path.join(from_dir, name)
-        if self.ignore_hidden and self.is_hidden(path):
+        if not self.should_extract_file(path):
             return False
-        extracted = False
         for item in self.semiliterate:
             if item.try_extraction(from_dir, name, to_dir):
-                extracted = True
+                return True
 
-        return extracted
+        return False
 
     def try_copy_file(self, from_dir: str, name: str, to_dir: str) -> bool:
         """Copy file with the same name to a new directory.

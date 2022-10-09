@@ -50,3 +50,5 @@ jobs:
         uses: athackst/htmlproofer-action@main
         with:
           directory: "./site"
+      - name: Check for diffs
+        run: git diff --exit-code

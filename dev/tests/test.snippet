@@ -1,3 +1,49 @@
+### Lint
+Linting helps maintain style consistency.  This package follows the [google 
+style guide](https://google.github.io/styleguide/pyguide.html).  Conformity
+is enforced with flake8 and pydodstyle.
+```bash
+./tests/run_linters.sh
+```
+<details>
+<summary>Code</summary>
+```bash
+echo "Running flake8 linter -------->"
+flake8 --count .
+echo "Running pydocstyle"
+pydocstyle --count .
+```
+</details>
+### Unit tests
+Unit tests help ensure individual functions perform as expected.  Unit tests
+in this module use the the standard python unittest framework.
+```bash
+./tests/run_unit_tests.sh
+```
+<details>
+<summary>Code</summary>
+```bash
+python3 -m unittest tests/test_*.py
+```
+</details>
+### Integration tests
+Integration testing allows the plugin to be tested with mkdocs using example
+configurations.
+Integration testing uses bats, install it with
+```bash
+sudo apt-get install bats
+```
+Then run the tests
+```bash
+./tests/run_integration_tests.sh
+```
+<details>
+<summary>Code</summary>
+```bash
+./examples/gen_readme.py
+./tests/integration_test.bats
+```
+</details>
 ### Different Python versions
 You can even test the package with different versions of python in a container
 by running the test_local script.  This builds a docker container with the 
@@ -34,51 +80,5 @@ else
  docker_run_integration_tests "3.9"
  docker_run_integration_tests "3.10"
 fi
-```
-</details>
-### Unit tests
-Unit tests help ensure individual functions perform as expected.  Unit tests
-in this module use the the standard python unittest framework.
-```bash
-./tests/run_unit_tests.sh
-```
-<details>
-<summary>Code</summary>
-```bash
-python3 -m unittest tests/test_*.py
-```
-</details>
-### Integration tests
-Integration testing allows the plugin to be tested with mkdocs using example
-configurations.
-Integration testing uses bats, install it with
-```bash
-sudo apt-get install bats
-```
-Then run the tests
-```bash
-./tests/run_integration_tests.sh
-```
-<details>
-<summary>Code</summary>
-```bash
-./examples/gen_readme.py
-./tests/integration_test.bats
-```
-</details>
-### Lint
-Linting helps maintain style consistency.  This package follows the [google 
-style guide](https://google.github.io/styleguide/pyguide.html).  Conformity
-is enforced with flake8 and pydodstyle.
-```bash
-./tests/run_linters.sh
-```
-<details>
-<summary>Code</summary>
-```bash
-echo "Running flake8 linter -------->"
-flake8 --count .
-echo "Running pydocstyle"
-pydocstyle --count .
 ```
 </details>

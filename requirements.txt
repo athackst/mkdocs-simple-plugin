@@ -13,5 +13,5 @@ mkdocstrings-python-legacy==0.2.3
 pip-upgrader==1.4.15
 pydocstyle==6.1.1
 pyfakefs==5.0.0
-pymdown-extensions==9.7
+pymdown-extensions==9.8
 PyYAML==6.0

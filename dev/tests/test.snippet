@@ -54,18 +54,6 @@ Then run the tests
 ./tests/integration_test.bats
 ```
 </details>
-### Unit tests
-Unit tests help ensure individual functions perform as expected.  Unit tests
-in this module use the the standard python unittest framework.
-```bash
-./tests/run_unit_tests.sh
-```
-<details>
-<summary>Code</summary>
-```bash
-python3 -m unittest tests/test_*.py
-```
-</details>
 ### Lint
 Linting helps maintain style consistency.  This package follows the [google 
 style guide](https://google.github.io/styleguide/pyguide.html).  Conformity
@@ -80,5 +68,17 @@ echo "Running flake8 linter -------->"
 flake8 --count .
 echo "Running pydocstyle"
 pydocstyle --count .
+```
+</details>
+### Unit tests
+Unit tests help ensure individual functions perform as expected.  Unit tests
+in this module use the the standard python unittest framework.
+```bash
+./tests/run_unit_tests.sh
+```
+<details>
+<summary>Code</summary>
+```bash
+python3 -m unittest tests/test_*.py
 ```
 </details>

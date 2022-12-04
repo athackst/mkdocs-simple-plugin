@@ -67,6 +67,12 @@
       }
     },
     {
+      "label": "build docker",
+      "type": "shell",
+      "command": "docker build -t althack/mkdocs-simple-plugin:latest -f Dockerfile .",
+      "problemMatcher": []
+    },
+    {
       "label": "test",
       "type": "shell",
       "dependsOrder": "sequence",

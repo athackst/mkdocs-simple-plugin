@@ -10,6 +10,9 @@
 			"VARIANT": "3.10"
 		}
 	},
+	"features": {
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
+	},
 	"remoteEnv": {
 		"PATH":"${containerEnv:PATH}:/home/vscode/.local/bin"
 	},

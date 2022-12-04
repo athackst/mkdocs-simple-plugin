@@ -16,10 +16,16 @@ RUN \
     git-fast-import \
     git-lfs \
     openssh \
+    cairo-dev \
+    freetype-dev \
+    libffi-dev \
+    jpeg-dev \
+    libpng-dev \
+    zlib-dev \
   && apk add --no-cache --virtual .build gcc musl-dev \
   && apk add --no-cache --upgrade bash \
   && pip install --upgrade pip \
-  && pip install --no-cache-dir mkdocs-material mike \
+  && pip install --no-cache-dir mkdocs-material mike pillow cairosvg \
   && pip install --no-cache-dir . \
   && rm -rf /tmp/*
 

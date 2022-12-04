@@ -5,17 +5,22 @@ plugins:
   - awesome-pages
   - macros
   - search
+  - social
   - mike:
       canonical_version: latest
 edit_uri: ''
-hooks:
-  - examples/gen_readme.py
+site_url: https://www.althack.dev/mkdocs-simple-plugin/
 repo_url: https://github.com/athackst/mkdocs-simple-plugin
 theme:
   name: material
   palette:
     primary: green
     accent: green
+site_description: Make documenting your code a simple part of developing software.
+site_author: Allison Thackston
+copyright: Apache-2.0
+hooks:
+  - examples/gen_readme.py
 markdown_extensions:
   - admonition
   - pymdownx.superfences

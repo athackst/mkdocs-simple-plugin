@@ -159,7 +159,15 @@ class GenerateExampleReadme():
 
         def output_criteria(path):
             """The files to include in the output."""
-            ignore_list = ['css', 'fonts', 'img', 'js', 'search', "xml", "404"]
+            ignore_list = [
+                'css',
+                'fonts',
+                'img',
+                'js',
+                'search',
+                "xml",
+                "404",
+                "assets"]
             return not any(extension in path.name for extension in ignore_list)
         paths = DisplayablePath.make_tree(
             Path(site_folder), criteria=output_criteria)

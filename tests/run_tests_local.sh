@@ -23,11 +23,12 @@ function docker_run_integration_tests() {
 docker build -t mkdocs-simple-test-runner:$1 -f- . <<EOF
   FROM python:$1
   RUN apt-get -y update && apt-get -y install bats gcc sudo
+  RUN python3 -m pip install --upgrade pip
   COPY . /workspace
   WORKDIR /workspace
 EOF
 
-echo "Running E2E tests via Bats in Docker (python:$1) -------->"
+echo "<-------- Running E2E tests via Bats in Docker (python:$1) -------->"
 docker run --rm -it mkdocs-simple-test-runner:$1 tests/run_unit_tests.sh
 docker run --rm -it mkdocs-simple-test-runner:$1 tests/run_linters.sh
 docker run --rm -it mkdocs-simple-test-runner:$1 tests/run_integration_tests.sh
@@ -42,6 +43,7 @@ else
   docker_run_integration_tests "3.8"
   docker_run_integration_tests "3.9"
   docker_run_integration_tests "3.10"
+  docker_run_integration_tests "3.11"
 fi
 # ```
 # </details>

@@ -1,5 +1,5 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
-// https://github.com/microsoft/vscode-dev-containers/tree/v0.155.1/containers/python-3
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/python
 {
 	"name": "Python 3",
 	"build": {
@@ -13,6 +13,11 @@
 	"remoteEnv": {
 		"PATH":"${containerEnv:PATH}:/home/vscode/.local/bin"
 	},
+	// Mount local aliases if any
+	"mounts": [
+		"source=/${env:HOME}/.bash_aliases,target=/home/vscode/.bash_aliases,type=bind,consistency=cached",
+		"source=/${env:HOME}/.aliases,target=/home/vscode/.aliases,type=bind,consistency=cached"
+	],
 	// Set *default* container specific settings.json values on container create.
 	"settings": {
 		"terminal.integrated.defaultProfile.linux": "bash",
@@ -30,7 +35,6 @@
 		"python.linting.pylintPath": "/usr/local/py-utils/bin/pylint",
 		"python.testing.pytestPath": "/usr/local/py-utils/bin/pytest"
 	},
-
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"ms-python.python",

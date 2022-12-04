@@ -12,10 +12,6 @@ RUN apt-get update \
    # Ruby for html-proofer
    && apt-get install -y --no-install-recommends ruby ruby-dev \
    && gem install html-proofer \
-   # git settings
-   && apt-get install -y --no-install-recommends wget \
-   && wget -O /etc/profile.d/git_aliases.sh https://github.com/athackst/workstation_setup/raw/main/user/.aliases/git_aliases.sh \
-   && echo "source /etc/profile.d/git_aliases.sh" >> /home/vscode/.bashrc \
    # Clean up
    && apt-get autoremove -y \
    && apt-get clean -y \

@@ -39,16 +39,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Set up Python 3
-        uses: actions/setup-python@v4
+      - uses: actions/cache@v3
         with:
-          python-version: "3.x"
-          cache: 'pip'
-      - name: Build Docs
-        run: ./build.sh
+          key: ${{ github.ref }}
+          path: .cache
+      - name: Build dev docs
+        uses: ./
+        with:
+          push: false
+      - name: whats happening
+        run: |
+          tree
       - name: Test html
         uses: athackst/htmlproofer-action@main
         with:
           directory: "./site"
+          url_swap: |
+            ^.*althack.dev\/mkdocs-simple-plugin:
+            ^\/mkdocs-simple-plugin:
+            ^\/latest:
       - name: Check for diffs
         run: git diff --exit-code

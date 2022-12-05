@@ -61,7 +61,6 @@ def main():
 
 ```
 site/
-├── assets/
 ├── example/
 │   └── index.html
 ├── index.html

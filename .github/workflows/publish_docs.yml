@@ -17,6 +17,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          key: ${{ github.ref }}
+          path: .cache
       - name: Publish dev docs
         uses: ./
         with:

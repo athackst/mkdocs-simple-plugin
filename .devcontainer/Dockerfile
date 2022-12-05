@@ -12,6 +12,8 @@ RUN apt-get update \
    # Ruby for html-proofer
    && apt-get install -y --no-install-recommends ruby ruby-dev \
    && gem install html-proofer \
+   # Dependencies for social cards
+   && apt-get install libcairo2-dev libfreetype6-dev libffi-dev libjpeg-dev libpng-dev libz-dev \
    # Clean up
    && apt-get autoremove -y \
    && apt-get clean -y \

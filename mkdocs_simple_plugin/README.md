@@ -2,15 +2,8 @@
 
 ## Prerequisites
 
-You will need to have [MKDocs](https://www.mkdocs.org/) installed on your system.
-I recommend installing it via pip to get the latest version.
+{% include "setup.snippet" %}
 
-```bash
-sudo apt-get install python-pip
-pip install --upgrade pip --user
-pip install -r requirements.txt
-pip install -e .
-```
 
 ## Building
 

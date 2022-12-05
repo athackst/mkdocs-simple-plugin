@@ -9,6 +9,7 @@ COPY mkdocs_simple_plugin mkdocs_simple_plugin
 COPY README.md README.md
 COPY VERSION VERSION
 COPY setup.py setup.py
+COPY pyproject.toml pyproject.toml
 
 RUN \
   apk add --no-cache \

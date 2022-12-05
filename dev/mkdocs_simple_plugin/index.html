@@ -847,12 +847,19 @@
 <h1 id="developing">Developing</h1>
 <h2 id="prerequisites">Prerequisites</h2>
 <p>You will need to have <a href="https://www.mkdocs.org/">MKDocs</a> installed on your system.
-I recommend installing it via pip to get the latest version.</p>
-<div class="highlight"><pre><span></span><code>sudo apt-get install python-pip
-pip install --upgrade pip --user
-pip install -r requirements.txt
-pip install -e .
-</code></pre></div>
+I recommend installing it via pip to get the latest version.
+<div class="highlight"><pre><span></span><code>sudo apt-get update
+sudo apt-get install -y --no-install-recommends <span class="se">\</span>
+ python-pip <span class="se">\</span>
+ libcairo2-dev <span class="se">\</span>
+ libfreetype6-dev <span class="se">\</span>
+ libffi-dev <span class="se">\</span>
+ libjpeg-dev <span class="se">\</span>
+ libpng-dev <span class="se">\</span>
+ libz-dev
+pip install --upgrade pip
+pip install --user -r requirements.txt
+</code></pre></div></p>
 <h2 id="building">Building</h2>
 <p>Building this package requires  using <code>mkdocs_simple_gen</code> to generate the site.
 <div class="highlight"><pre><span></span><code>mkdocs_simple_gen --build -- --verbose

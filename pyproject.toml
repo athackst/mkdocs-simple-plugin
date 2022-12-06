@@ -59,3 +59,15 @@ pattern = "(?P<version>.+)"
 include = [
     "/mkdocs_simple_plugin",
 ]
+
+[tool.hatch.build.targets.wheel]
+packages = ["mkdocs_simple_plugin"]
+
+[tool.hatch.envs.docs]
+dependencies = [
+  "mkdocs",
+  "mkdocs-simple-plugin"
+]
+[tool.hatch.envs.docs.scripts]
+build = "mkdocs_simple_gen --build"
+serve = "mkdocs_simple_gen --serve"

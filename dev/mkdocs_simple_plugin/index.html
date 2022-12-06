@@ -896,7 +896,7 @@ version of python you specify and runs the integration tests within the
 container. 
 <div class="highlight"><pre><span></span><code>./tests/test_local.sh
 </code></pre></div>
-<em>Python 3.x, 3.7, 3.8, 3.9, 3.10 supported.</em></p>
+<em>Python 3.x, 3.7, 3.8, 3.9, 3.10, 3.11 supported.</em></p>
 <details>
 <summary>Code</summary>
 <div class="highlight"><pre><span></span><code><span class="nb">set</span> -e
@@ -905,10 +905,11 @@ End-to-end testing via Bats <span class="o">(</span>Bash automated tests<span cl
 docker build -t mkdocs-simple-test-runner:<span class="nv">$1</span> -f- . <span class="s">&lt;&lt;EOF</span>
 <span class="s"> FROM python:$1</span>
 <span class="s"> RUN apt-get -y update &amp;&amp; apt-get -y install bats gcc sudo</span>
+<span class="s"> RUN python3 -m pip install --upgrade pip</span>
 <span class="s"> COPY . /workspace</span>
 <span class="s"> WORKDIR /workspace</span>
 <span class="s">EOF</span>
-<span class="nb">echo</span> <span class="s2">&quot;Running E2E tests via Bats in Docker (python:</span><span class="nv">$1</span><span class="s2">) --------&gt;&quot;</span>
+<span class="nb">echo</span> <span class="s2">&quot;&lt;-------- Running E2E tests via Bats in Docker (python:</span><span class="nv">$1</span><span class="s2">) --------&gt;&quot;</span>
 docker run --rm -it mkdocs-simple-test-runner:<span class="nv">$1</span> tests/run_unit_tests.sh
 docker run --rm -it mkdocs-simple-test-runner:<span class="nv">$1</span> tests/run_linters.sh
 docker run --rm -it mkdocs-simple-test-runner:<span class="nv">$1</span> tests/run_integration_tests.sh
@@ -922,6 +923,7 @@ docker run --rm -it mkdocs-simple-test-runner:<span class="nv">$1</span> tests/r
  docker_run_integration_tests <span class="s2">&quot;3.8&quot;</span>
  docker_run_integration_tests <span class="s2">&quot;3.9&quot;</span>
  docker_run_integration_tests <span class="s2">&quot;3.10&quot;</span>
+ docker_run_integration_tests <span class="s2">&quot;3.11&quot;</span>
 <span class="k">fi</span>
 </code></pre></div>
 </details>

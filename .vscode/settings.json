@@ -6,6 +6,7 @@
         "autopep",
         "bdist",
         "codeql",
+        "devcontainers",
         "dockerfiles",
         "dockerhub",
         "DOCPAGE",
@@ -35,6 +36,7 @@
         "pypi",
         "pytest",
         "releasebot",
+        "rogalmic",
         "sdist",
         "setuptools",
         "shakram",
@@ -76,13 +78,13 @@
         "setup.py"
     ],
     "python.linting.pylintArgs": [
-        "--init-hook='import sys; sys.path.append(\"/home/vscode/.local/lib/python3.10/site-packages\")'"
+        "--init-hook='import sys; sys.path.append(\"/home/vscode/.local/lib/python3.11/site-packages\")'"
     ],
     "python.autoComplete.extraPaths": [
-        "/home/vscode/.local/lib/python3.10/site-packages"
+        "/home/vscode/.local/lib/python3.11/site-packages"
     ],
     "python.analysis.extraPaths": [
-        "/home/vscode/.local/lib/python3.10/site-packages"
+        "/home/vscode/.local/lib/python3.11/site-packages"
     ],
     "[python]": {
         "editor.tabSize": 4,

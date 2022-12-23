@@ -84,9 +84,9 @@ class TestDefaultConfig(unittest.TestCase):
         """Test setting the site url."""
         self._test_env_setting(
             env_variable="SITE_URL",
-            env_value="https://althack.dev/mkdocs-simple-plugin/",
+            env_value="https://www.althack.dev/mkdocs-simple-plugin/",
             config_name="site_url",
-            config_value="https://althack.dev/mkdocs-simple-plugin/")
+            config_value="https://www.althack.dev/mkdocs-simple-plugin/")
 
     def test_site_dir(self):
         """Test setting the site url."""

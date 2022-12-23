@@ -46,8 +46,8 @@ mkdocs_simple_gen = "mkdocs_simple_plugin.generator:main"
 simple = "mkdocs_simple_plugin.plugin:SimplePlugin"
 
 [project.urls]
-Documentation = "http://althack.dev/mkdocs-simple-plugin"
-Homepage = "http://althack.dev/mkdocs-simple-plugin"
+Documentation = "http://www.althack.dev/mkdocs-simple-plugin"
+Homepage = "http://www.althack.dev/mkdocs-simple-plugin"
 Issues = "https://github.com/athackst/mkdocs-simple-plugin/issues"
 "Source Code" = "https://github.com/athackst/mkdocs-simple-plugin"
 

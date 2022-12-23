@@ -7,7 +7,7 @@
 # ```bash
 sudo apt-get update
 sudo apt-get install -y --no-install-recommends \
-  python-pip \
+  python3-pip \
   libcairo2-dev \
   libfreetype6-dev \
   libffi-dev \

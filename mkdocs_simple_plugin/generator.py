@@ -67,7 +67,6 @@ def default_config():
     # Set the config variables via environment if exist
     maybe_set_string("site_name")
     maybe_set_string("site_url")
-    maybe_set_string("site_dir")
     maybe_set_string("repo_url")
     maybe_set_dict("theme", "name")
     return config

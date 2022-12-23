@@ -23,7 +23,7 @@ if [[ "${INPUT_PUSH}" == "1" || "${INPUT_PUSH,,}" == "true" ]]; then
         mike deploy --config-file ${INPUT_CONFIG} -p -u -b ${INPUT_PUBLISH_BRANCH} ${INPUT_VERSION}
     else
         echo -e "${CYAN}Deploying docs to ${INPUT_PUBLISH_BRANCH}${UNSET}"
-        mkdocs gh-deploy --config-file ${INPUT_CONFIG} -b ${INPUT_PUBLISH_BRANCH} 
+        mkdocs gh-deploy --config-file ${INPUT_CONFIG} -b ${INPUT_PUBLISH_BRANCH} -d ${INPUT_SITE_DIR}
     fi
 
     if [ "${INPUT_DEFAULT_VERSION}" ]; then 
@@ -31,5 +31,5 @@ if [[ "${INPUT_PUSH}" == "1" || "${INPUT_PUSH,,}" == "true" ]]; then
         mike set-default -p -b ${INPUT_PUBLISH_BRANCH} ${INPUT_DEFAULT_VERSION}
     fi
 else 
-    mkdocs build --config-file ${INPUT_CONFIG}
+    mkdocs build --config-file ${INPUT_CONFIG} -d ${INPUT_SITE_DIR}
 fi

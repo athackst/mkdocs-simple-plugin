@@ -73,10 +73,26 @@
       }
     },
     {
-      "label": "build docker",
+      "label": "action build",
       "type": "shell",
       "command": "docker build -t althack/mkdocs-simple-plugin:latest -f Dockerfile .",
       "problemMatcher": []
+    },
+    {
+      "label": "action dry run",
+      "type": "shell",
+      "command": "docker run --rm -v ${workspaceFolder}:/docs -e INPUT_SITE_DIR -e INPUT_CONFIG althack/mkdocs-simple-plugin:latest deploy.sh",
+      "options": {
+        "env": {
+          "INPUT_SITE_DIR": "/tmp/site",
+          "INPUT_CONFIG": "mkdocs.yml"
+        }
+      }
+    },
+    {
+      "label": "action serve",
+      "type": "shell",
+      "command": "docker run --rm -p 8000:8000 -v ${PWD}:/docs -it althack/mkdocs-simple-plugin:latest"
     },
     {
       "label": "test",

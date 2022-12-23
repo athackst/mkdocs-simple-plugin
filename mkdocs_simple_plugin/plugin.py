@@ -90,6 +90,7 @@ mkdocs serve
 import os
 import shutil
 import tempfile
+import time
 import yaml
 
 
@@ -256,6 +257,12 @@ class SimplePlugin(BasePlugin):
         """Set up internal variables."""
         self.orig_docs_dir = None
         self.paths = None
+        self.local_config = {'last_build_time': None}
+        self.dirty = False
+
+    def on_startup(self, *, command, dirty: bool) -> None:
+        """Performs one-time instrumentation of plugin on startup"""
+        self.dirty = dirty
 
     def on_config(self, config, **kwargs):
         """Update configuration to use a temporary build directory."""
@@ -267,12 +274,17 @@ class SimplePlugin(BasePlugin):
             default_flow_style=False,
             allow_unicode=True,
             encoding=None)
+        self.local_config.update(self.config)
 
         # Create a temporary build directory, and set some options to serve it
         # PY2 returns a byte string by default. The Unicode prefix ensures a
         # Unicode string is returned. And it makes MkDocs temp dirs easier to
         # identify.
-        build_docs_dir = self.config['build_docs_dir']
+        build_docs_dir = self.local_config['build_docs_dir']
+        self.local_config['dirty'] = self.dirty and bool(build_docs_dir)
+        if self.local_config['dirty']:
+            utils.log.debug("mkdocs-simple-plugin: incremental mode engaged")
+
         if not build_docs_dir:
             build_docs_dir = tempfile.mkdtemp(
                 prefix="mkdocs_simple_" +
@@ -282,7 +294,7 @@ class SimplePlugin(BasePlugin):
         utils.log.info(
             "mkdocs-simple-plugin: build_docs_dir: %s",
             build_docs_dir)
-        self.config['build_docs_dir'] = build_docs_dir
+        self.local_config['build_docs_dir'] = build_docs_dir
         # Clean out build folder on config
         shutil.rmtree(build_docs_dir, ignore_errors=True)
         os.makedirs(build_docs_dir, exist_ok=True)
@@ -291,26 +303,27 @@ class SimplePlugin(BasePlugin):
         # Update the docs_dir with our temporary one
         config['docs_dir'] = build_docs_dir
         # Add all markdown extensions to include list
-        self.config['include_extensions'] = list(utils.markdown_extensions) + \
-            self.config['include_extensions']
+        self.local_config['include_extensions'] = list(
+            utils.markdown_extensions) + self.local_config['include_extensions']
 
         # Always ignore the output paths
-        self.config["ignore_paths"] = [
+        self.local_config["ignore_paths"] = [
             get_config_site_dir(config.config_file_path),
             config['site_dir'],
-            self.config['build_docs_dir']]
+            self.local_config['build_docs_dir']]
         return config
 
     def on_pre_build(self, *, config):
         """Build documentation directory with files according to settings."""
         # Configure simple
-        simple = Simple(**self.config)
+        simple = Simple(**self.local_config)
 
         # Merge docs
-        if self.config["merge_docs_dir"]:
+        if self.config["merge_docs_dir"] and not simple.is_incremental():
             simple.merge_docs(self.orig_docs_dir)
         # Copy all of the valid doc files into build_docs_dir
         self.paths = simple.build_docs()
+        self.local_config['last_build_time'] = time.time()
 
     def on_serve(self, server, *, config, builder):
         """Add files to watch server."""

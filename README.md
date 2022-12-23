@@ -2,8 +2,8 @@
 
 [![Test](https://github.com/athackst/mkdocs-simple-plugin/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/athackst/mkdocs-simple-plugin/actions/workflows/test.yml)
 [![Docs](https://github.com/athackst/mkdocs-simple-plugin/actions/workflows/publish_docs.yml/badge.svg?branch=main)](https://github.com/athackst/mkdocs-simple-plugin/actions/workflows/publish_docs.yml)
-[![Docker](https://img.shields.io/docker/pulls/althack/mkdocs-simple-plugin)](https://hub.docker.com/r/althack/mkdocs-simple-plugin) 
-[![pypi](https://img.shields.io/pypi/dm/mkdocs-simple-plugin?label=pypi%20downloads&color=blue)](https://pypi.org/project/mkdocs-simple-plugin/) 
+[![Docker](https://img.shields.io/docker/pulls/althack/mkdocs-simple-plugin)](https://hub.docker.com/r/althack/mkdocs-simple-plugin)
+[![pypi](https://img.shields.io/pypi/dm/mkdocs-simple-plugin?label=pypi%20downloads&color=blue)](https://pypi.org/project/mkdocs-simple-plugin/)
 [![Github Action](https://img.shields.io/badge/github%20action-download-blue)](https://github.com/marketplace/actions/mkdocs-simple-action)
 
 # mkdocs-simple-plugin
@@ -16,7 +16,7 @@ You may be wondering why you would want to generate a static site for your proje
 
 * **My repository is too big for a single documentation source.**
 
-    Sometimes it isn't feasible to consolidate all documentation within an upper level `docs` directory.  In general, if your codebase is too large to fit well within a single `include` directory, your codebase is also too large for documentation in a single `docs` directory.  
+    Sometimes it isn't feasible to consolidate all documentation within an upper level `docs` directory.  In general, if your codebase is too large to fit well within a single `include` directory, your codebase is also too large for documentation in a single `docs` directory.
 
     Since it's typically easier to keep documentation up to date when it lives as close to the code as possible, it is better to create multiple sources for documentation.
 

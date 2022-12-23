@@ -5,6 +5,7 @@ import shutil
 import stat
 import sys
 import pathlib
+import traceback
 
 from mkdocs import utils
 from mkdocs_simple_plugin.semiliterate import Semiliterate
@@ -24,6 +25,8 @@ class Simple():
             ignore_hidden: bool,
             ignore_paths: list,
             semiliterate: dict,
+            dirty: bool,
+            last_build_time: float,
             **kwargs):
         """Initialize module instance with settings.
 
@@ -37,6 +40,9 @@ class Simple():
             ignore_paths (list): Absolute filepaths to exclude
             semiliterate (dict): Settings for processing file content in
                 Semiliterate
+            dirty (bool): Whether the server is running in dirty mode
+            last_build_time (float): For dirty builds, the time at which the
+                previous build was run
 
         """
         self.build_dir = build_docs_dir
@@ -47,6 +53,8 @@ class Simple():
         self.hidden_prefix = set([".", "__"])
         self.ignore_paths = set(ignore_paths)
         self.semiliterate = []
+        self.dirty = dirty
+        self.last_build_time = last_build_time
         for item in semiliterate:
             self.semiliterate.append(Semiliterate(**item))
 
@@ -141,6 +149,10 @@ class Simple():
 
         return extract
 
+    def is_incremental(self) -> bool:
+        """Whether the plugin is currently running in incremental mode"""
+        return self.dirty and self.last_build_time is not None
+
     def merge_docs(self, from_dir):
         """Merge docs directory"""
         # Copy contents of docs directory if merging
@@ -166,6 +178,8 @@ class Simple():
                         utils.log.debug(
                             "mkdocs-simple-plugin: %s/* --> %s/*",
                             source_file, destination_file)
+        if self.is_incremental():
+            return
 
         if os.path.exists(from_dir):
             copy_directory(from_dir, self.build_dir)
@@ -178,6 +192,10 @@ class Simple():
         for file in files:
             if not os.path.isfile(file):
                 continue
+            if self.is_incremental() and (
+                    os.path.getmtime(file) < self.last_build_time):
+                continue
+
             from_dir = os.path.dirname(file)
             name = os.path.basename(file)
             build_prefix = os.path.normpath(

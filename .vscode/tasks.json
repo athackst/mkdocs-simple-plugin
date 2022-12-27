@@ -167,7 +167,8 @@
       "type": "shell",
       "command": "htmlproofer",
       "args": [
-        "--ignore-urls=https://fonts.gstatic.com,https://twitter.com/althack",
+        "--ignore-urls='https://fonts.gstatic.com,https://twitter.com/althack'",
+        "--swap-urls='^.*althack.dev\/mkdocs-simple-plugin:,^\/mkdocs-simple-plugin:,^\/latest:'",
         "./site"
       ],
       "dependsOrder": "sequence",

@@ -218,12 +218,9 @@ class LazyFile:
         if not arg:
             return
         if self.file_object is None:
+            filename = os.path.join(self.file_directory, self.file_name)
             os.makedirs(self.file_directory, exist_ok=True)
-            self.file_object = open(
-                os.path.join(
-                    self.file_directory,
-                    self.file_name),
-                'a+')
+            self.file_object = open(filename, 'w+')
         self.file_object.write(arg)
 
     def close(self):
@@ -255,6 +252,9 @@ class StreamExtract:
         self.terminate = terminate
         self.patterns = patterns
         self.wrote_something = False
+        self.streams = {
+            output_stream.file_name: output_stream
+        }
 
     def transcribe(self, text: str):
         """Write some text and record if something was written."""
@@ -286,8 +286,13 @@ class StreamExtract:
         """Set output stream from filename."""
         output_stream = self.output_stream
         if filename:
+            # If we've opened this file before, re-use its stream.
+            if filename in self.streams:
+                return self.set_output_stream(self.streams[filename])
+            # Otherwise, make a new one and save it to the list.
             output_stream = LazyFile(
                 self.output_stream.file_directory, filename)
+            self.streams[filename] = output_stream
         self.set_output_stream(output_stream)
 
     def set_output_stream(self, stream: LazyFile):

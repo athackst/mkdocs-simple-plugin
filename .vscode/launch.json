@@ -31,6 +31,18 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "Test: Serve Mkdocs",
+            "type": "python",
+            "request": "launch",
+            "program": "/home/vscode/.local/bin/mkdocs",
+            "args": [
+                "serve",
+                "--verbose"
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        },
+        {
             // Attach a debugger to an example by running this in the example folder
             "name": "Test: Current example (mkdocs-test.yml)",
             "type": "python",

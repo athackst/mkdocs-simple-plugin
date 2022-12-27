@@ -51,6 +51,12 @@
       "problemMatcher": []
     },
     {
+      "label": "mkdocs serve (dirtyreload)",
+      "type": "shell",
+      "command": "mkdocs serve --dirtyreload",
+      "problemMatcher": []
+    },
+    {
       "label": "clean",
       "type": "shell",
       "command": "sudo rm -rf site/ build/ dist/ *.egg-info/ **/__pycache__/  **/docs_/ examples/*/mkdocs.yml examples/*/site/ examples/*/README.md",

@@ -129,7 +129,7 @@ class TestLazyFile(unittest.TestCase):
             lazy_file.write('second_line')
             lazy_file.close()
 
-        mock.assert_called_once_with(full_path, 'a+')
+        mock.assert_called_once_with(full_path, 'w+')
         self.assertEqual(mock.return_value.write.call_count, 2)
         mock.return_value.close.assert_called_once()
 

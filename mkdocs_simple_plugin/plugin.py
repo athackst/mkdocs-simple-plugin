@@ -90,6 +90,7 @@ mkdocs serve
 import os
 import shutil
 import tempfile
+import time
 import yaml
 
 
@@ -255,10 +256,22 @@ class SimplePlugin(BasePlugin):
     def __init__(self):
         """Set up internal variables."""
         self.orig_docs_dir = None
+        # Create a temporary build directory, and set some options to serve it
+        # PY2 returns a byte string by default. The Unicode prefix ensures a
+        # Unicode string is returned. And it makes MkDocs temp dirs easier to
+        # identify.
+        self.tmp_build_docs_dir = tempfile.mkdtemp(prefix="mkdocs_simple_")
         self.paths = None
+        self.dirty = False
+        self.last_build_time = None
+
+    def on_startup(self, *, command, dirty: bool) -> None:
+        """Configure the plugin on startup."""
+        self.dirty = dirty
 
     def on_config(self, config, **kwargs):
         """Update configuration to use a temporary build directory."""
+        # Save the config for documentation
         default_config = dict((name, config_option.default)
                               for name, config_option in self.config_scheme)
         config['mkdocs_simple_config'] = yaml.dump(
@@ -268,35 +281,32 @@ class SimplePlugin(BasePlugin):
             allow_unicode=True,
             encoding=None)
 
-        # Create a temporary build directory, and set some options to serve it
-        # PY2 returns a byte string by default. The Unicode prefix ensures a
-        # Unicode string is returned. And it makes MkDocs temp dirs easier to
-        # identify.
-        build_docs_dir = self.config['build_docs_dir']
-        if not build_docs_dir:
-            build_docs_dir = tempfile.mkdtemp(
-                prefix="mkdocs_simple_" +
-                os.path.basename(
-                    os.path.dirname(
-                        config.config_file_path)))
+        # Read previous config first so updates don't get overwritten
+        config_site_dir = get_config_site_dir(config.config_file_path)
+
+        # Set the build docs dir to tmp location if not set by user
+        if not self.config['build_docs_dir']:
+            self.config['build_docs_dir'] = self.tmp_build_docs_dir
+
         utils.log.info(
             "mkdocs-simple-plugin: build_docs_dir: %s",
-            build_docs_dir)
-        self.config['build_docs_dir'] = build_docs_dir
+            self.config['build_docs_dir'])
+
         # Clean out build folder on config
-        shutil.rmtree(build_docs_dir, ignore_errors=True)
-        os.makedirs(build_docs_dir, exist_ok=True)
+        if not self.dirty:
+            shutil.rmtree(self.config['build_docs_dir'], ignore_errors=True)
+        os.makedirs(self.config['build_docs_dir'], exist_ok=True)
         # Save original docs directory location
         self.orig_docs_dir = config['docs_dir']
         # Update the docs_dir with our temporary one
-        config['docs_dir'] = build_docs_dir
+        config['docs_dir'] = self.config['build_docs_dir']
         # Add all markdown extensions to include list
         self.config['include_extensions'] = list(utils.markdown_extensions) + \
             self.config['include_extensions']
 
         # Always ignore the output paths
         self.config["ignore_paths"] = [
-            get_config_site_dir(config.config_file_path),
+            config_site_dir,
             config['site_dir'],
             self.config['build_docs_dir']]
         return config
@@ -308,15 +318,18 @@ class SimplePlugin(BasePlugin):
 
         # Merge docs
         if self.config["merge_docs_dir"]:
-            simple.merge_docs(self.orig_docs_dir)
+            simple.merge_docs(self.orig_docs_dir, self.dirty)
         # Copy all of the valid doc files into build_docs_dir
-        self.paths = simple.build_docs()
+        # Save paths to add to watch if serving
+        self.paths = simple.build_docs(self.dirty, self.last_build_time)
+        self.last_build_time = time.time()
 
     def on_serve(self, server, *, config, builder):
         """Add files to watch server."""
         # watch the original docs/ directory
         if os.path.exists(self.orig_docs_dir):
             server.watch(self.orig_docs_dir)
+        server.watch(self.config["build_docs_dir"])
 
         # watch all the doc files
         for path in self.paths:

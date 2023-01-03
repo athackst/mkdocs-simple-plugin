@@ -244,6 +244,7 @@ class TestSimple(TestCase):
         self.fs.create_file("/foo/baz.md")
         self.fs.create_file("/foo/.mkdocsignore", contents="bar/spam.md*")
         self.fs.create_file("/foo/.pages")
+        self.fs.create_file("/foo/bar/hello.txt")
         self.fs.create_file("/foo/bar/spam.md")
         self.fs.create_file("/foo/bar/eggs.md")
         self.fs.create_file("/foo/bat/hello.md")
@@ -261,12 +262,200 @@ class TestSimple(TestCase):
         self.assertIn("foo/.pages", paths)
         self.assertEqual(3, len(paths))
 
-    def test_merge_docs(self):
+    def test_build_docs_dirty_copy(self):
+        """Test dirty build of doc copy."""
+        simple_test = simple.Simple(**self.default_settings)
+        simple_test.include_folders = set(["foo/"])
+
+        # /foo
+        #  ├── bar.md
+
+        test_filename = "foo/bar.md"
+        self.fs.create_file(test_filename)
+        built_filename = "/build_dir/foo/bar.md"
+
+        # Get the modification time of the original file
+        src_time = os.path.getmtime(test_filename)
+
+        paths = simple_test.build_docs(dirty=True, last_build_time=0)
+        # Check that the file was built
+        self.assertIn(test_filename, paths)
+        # Check that the output file exists
+        self.assertTrue(os.path.exists(built_filename))
+        # Get the modification time
+        dest_time = os.path.getmtime(built_filename)
+        # Check that the time is newer
+        self.assertLess(src_time, dest_time)
+
+        # Run again, but this time set the last build time
+        paths = simple_test.build_docs(dirty=True, last_build_time=dest_time)
+        # Check that the file was not built
+        self.assertNotIn(test_filename, paths)
+        # Check that the file still exists in the output
+        self.assertTrue(os.path.exists(built_filename))
+        # Get the modification time
+        dirty_time = os.path.getmtime(built_filename)
+        # Check that it is the same as the previous
+        self.assertEqual(dest_time, dirty_time)
+
+        # Update a fake file
+        with open(test_filename, 'w') as f:
+            f.write('Modified!')
+
+        paths = simple_test.build_docs(dirty=True, last_build_time=dirty_time)
+        # Check that path was built
+        self.assertIn(test_filename, paths)
+        # Check that destination file exists
+        self.assertTrue(os.path.exists(built_filename))
+        # Get the modification time
+        modified_time = os.path.getmtime(built_filename)
+        # Check that the modification time is newer
+        self.assertLess(dirty_time, modified_time)
+
+    def test_build_docs_dirty_extract(self):
+        """Test dirty build of doc extraction."""
+        settings = self.default_settings
+        settings["semiliterate"] = [
+            {
+                'pattern': r'.*'
+            }
+        ]
+        simple_test = simple.Simple(**settings)
+        simple_test.include_folders = set(["foo/"])
+
+        # /foo
+        #  ├── bar.txt
+        test_filename = "foo/bar.txt"
+        self.fs.create_file(test_filename, contents="Hello, world!")
+        built_filename = "/build_dir/foo/bar.md"
+
+        # Get the modification time of the original file
+        src_time = os.path.getmtime(test_filename)
+
+        paths = simple_test.build_docs(dirty=True, last_build_time=0)
+        # Check that the file was built
+        self.assertIn(test_filename, paths)
+        # Check that the output file exists
+        self.assertTrue(os.path.exists(built_filename))
+        # Get the modification time
+        dest_time = os.path.getmtime(built_filename)
+        # Check that the time is newer
+        self.assertLess(src_time, dest_time)
+        with open(built_filename, 'r') as f:
+            self.assertEqual(f.read(), "Hello, world!\n")
+
+        # Run again, but this time set the last build time
+        paths = simple_test.build_docs(dirty=True, last_build_time=dest_time)
+        # Check that the file was not built
+        self.assertNotIn(test_filename, paths)
+        # Check that the file still exists in the output
+        self.assertTrue(os.path.exists(built_filename))
+        # Get the modification time
+        dirty_time = os.path.getmtime(built_filename)
+        # Check that it is the same as the previous
+        self.assertEqual(dest_time, dirty_time)
+        with open(built_filename, 'r') as f:
+            self.assertEqual(f.read(), "Hello, world!\n")
+
+        # Update a fake file
+        with open(test_filename, 'w') as f:
+            f.write('Modified!')
+
+        paths = simple_test.build_docs(dirty=True, last_build_time=dirty_time)
+        # Check that path was built
+        self.assertIn(test_filename, paths)
+        # Check that destination file exists
+        self.assertTrue(os.path.exists(built_filename))
+        # Get the modification time
+        modified_time = os.path.getmtime(built_filename)
+        # Check that the modification time is newer
+        self.assertLess(dirty_time, modified_time)
+        with open(built_filename, 'r') as f:
+            self.assertEqual(f.read(), "Modified!\n")
+
+        # Ensure that the file is getting overwritten
+        # Update a fake file
+        with open(test_filename, 'w') as f:
+            f.write('Second time!')
+
+        paths = simple_test.build_docs(
+            dirty=True, last_build_time=modified_time)
+        # Check that path was built
+        self.assertIn(test_filename, paths)
+        # Check that destination file exists
+        self.assertTrue(os.path.exists(built_filename))
+        # Get the modification time
+        second_time = os.path.getmtime(built_filename)
+        # Check that the modification time is newer
+        self.assertLess(modified_time, second_time)
+        with open(built_filename, 'r') as f:
+            self.assertEqual(f.read(), "Second time!\n")
+
+    def test_merge_docs_copy(self):
         """Test copy_directory"""
         self.fs.create_file('/test/file.txt')
         simple_test = simple.Simple(**self.default_settings)
         simple_test.merge_docs("/test")
         self.assertTrue(os.path.exists("/build_dir/file.txt"))
+
+    def test_merge_docs_update(self):
+        """Test merge with update."""
+        simple_test = simple.Simple(**self.default_settings)
+        test_filename = "/test/file.txt"
+        built_filename = "/build_dir/file.txt"
+
+        # Create a fake file
+        os.mkdir("test")
+        with open(test_filename, 'w') as f:
+            f.write('Hello, World!')
+
+        # Get the modification time of the original file
+        src_time = os.path.getmtime(test_filename)
+
+        # Merge the docs directory to copy to built
+        simple_test.merge_docs("/test")
+        self.assertTrue(os.path.exists(built_filename))
+
+        # Get the modification time of the copied file
+        dest_time = os.path.getmtime(built_filename)
+
+        # Copied and modified time should be the same
+        self.assertLess(src_time, dest_time)
+
+        # Update a fake file
+        with open(test_filename, 'w') as f:
+            f.write('Modified!')
+
+        # Get the modification time of the updated file
+        updated_src_time = os.path.getmtime(test_filename)
+
+        # Updated and original mod time should not be the same
+        self.assertLess(src_time, updated_src_time)
+
+        # Merge the docs directory to copy to built
+        simple_test.merge_docs("/test")
+        self.assertTrue(os.path.exists(built_filename))
+
+        # Get the modification time of the copied file
+        updated_dest_time = os.path.getmtime(built_filename)
+
+        # Original and copied file should not be the same
+        self.assertNotEqual(src_time, updated_dest_time)
+        # New mod time should be less than copied time
+        self.assertLess(updated_src_time, updated_dest_time)
+
+        # Merge the docs without updates
+        simple_test.merge_docs("/test")
+        self.assertTrue(os.path.exists(built_filename))
+
+        # Get the updated time
+        no_update_dest_time = os.path.getmtime(built_filename)
+        self.assertLess(updated_dest_time, no_update_dest_time)
+
+        # Test dirty copy no update
+        simple_test.merge_docs("/test", dirty=True)
+        dirty_dest_time = os.path.getmtime(built_filename)
+        self.assertEqual(no_update_dest_time, dirty_dest_time)
 
 
 if __name__ == '__main__':

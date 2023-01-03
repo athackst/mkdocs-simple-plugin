@@ -730,38 +730,38 @@
 
 <h2 id="deploy-from-github-actions">Deploy from GitHub Actions</h2>
 <p>Create a YAML file with the following contents in the <code>.github/workflows</code> directory in your repository</p>
-<div class="highlight"><pre><span></span><code><span class="nt">jobs</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">docs</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span><span class="w"></span>
-<span class="w">    </span><span class="nt">steps</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Checkout</span><span class="w"></span>
-<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v2</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build docs</span><span class="w"></span>
-<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">athackst/mkdocs-simple-plugin</span><span class="w"></span>
-<span class="w">        </span><span class="nt">with</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="c1"># (optional) Specify branch </span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">docs</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Checkout</span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v2</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build docs</span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">athackst/mkdocs-simple-plugin</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">          </span><span class="c1"># (optional) Specify branch </span>
 <span class="w">          </span><span class="nt">publish_branch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gh-pages</span><span class="w"> </span>
-<span class="w">          </span><span class="c1"># (optional) The URL of the repository the docs should point to</span><span class="w"></span>
+<span class="w">          </span><span class="c1"># (optional) The URL of the repository the docs should point to</span>
 <span class="w">          </span><span class="nt">repo_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/owner/repository</span><span class="w"> </span>
-<span class="w">          </span><span class="c1"># (optional) The name of the site</span><span class="w"></span>
+<span class="w">          </span><span class="c1"># (optional) The name of the site</span>
 <span class="w">          </span><span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">owner/repository</span><span class="w"> </span>
-<span class="w">          </span><span class="c1"># (optional) The URL of the site</span><span class="w"></span>
+<span class="w">          </span><span class="c1"># (optional) The URL of the site</span>
 <span class="w">          </span><span class="nt">site_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://owner.github.io/repository</span><span class="w"> </span>
-<span class="w">          </span><span class="c1"># (optional) The edit URI</span><span class="w"></span>
-<span class="w">          </span><span class="nt">edit_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">edit/main/</span><span class="w"></span>
-<span class="w">          </span><span class="c1"># (optional) Specify a google analytics key </span><span class="w"></span>
-<span class="w">          </span><span class="nt">google_analytics</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UA-XXXXXXX</span><span class="w"></span>
-<span class="w">          </span><span class="c1"># (optional) Specify a different theme [mkdocs|readthedocs|material]</span><span class="w"></span>
-<span class="w">          </span><span class="nt">theme</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">material</span><span class="w"></span>
-<span class="w">          </span><span class="c1"># (optional) Load a configuration file from a string</span><span class="w"></span>
-<span class="w">          </span><span class="nt">config</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mkdocs.yml&quot;</span><span class="w"></span>
-<span class="w">          </span><span class="c1"># (optional) Version or alias.  Specify multiple aliases with space</span><span class="w"></span>
-<span class="w">          </span><span class="c1"># example: version: v0.1.0 latest</span><span class="w"></span>
-<span class="w">          </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">latest</span><span class="w"></span>
-<span class="w">          </span><span class="c1"># (optional) The version that will be served by the root of your site</span><span class="w"></span>
-<span class="w">          </span><span class="nt">default_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">latest</span><span class="w"></span>
-<span class="w">          </span><span class="c1"># (optional) Whether to push the docs to the remote branch</span><span class="w"></span>
-<span class="w">          </span><span class="nt">push</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">          </span><span class="c1"># (optional) The edit URI</span>
+<span class="w">          </span><span class="nt">edit_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">edit/main/</span>
+<span class="w">          </span><span class="c1"># (optional) Specify a google analytics key </span>
+<span class="w">          </span><span class="nt">google_analytics</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UA-XXXXXXX</span>
+<span class="w">          </span><span class="c1"># (optional) Specify a different theme [mkdocs|readthedocs|material]</span>
+<span class="w">          </span><span class="nt">theme</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">material</span>
+<span class="w">          </span><span class="c1"># (optional) Load a configuration file from a string</span>
+<span class="w">          </span><span class="nt">config</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mkdocs.yml&quot;</span>
+<span class="w">          </span><span class="c1"># (optional) Version or alias.  Specify multiple aliases with space</span>
+<span class="w">          </span><span class="c1"># example: version: v0.1.0 latest</span>
+<span class="w">          </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">latest</span>
+<span class="w">          </span><span class="c1"># (optional) The version that will be served by the root of your site</span>
+<span class="w">          </span><span class="nt">default_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">latest</span>
+<span class="w">          </span><span class="c1"># (optional) Whether to push the docs to the remote branch</span>
+<span class="w">          </span><span class="nt">push</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 </code></pre></div>
 
 

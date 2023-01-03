@@ -711,24 +711,24 @@
 <!-- DO NOT EDIT! This file is auto-generated from README.md.ninja -->
 <h1 id="advanced-replacement">Advanced replacement</h1>
 <h2 id="mkdocsyml">mkdocs.yml</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># This example shows how to replace lines with regex expressions!</span><span class="w"></span>
-<span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ok-source-replace</span><span class="w"></span>
-<span class="nt">plugins</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">simple</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">semiliterate</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">\.py$</span><span class="w"></span>
-<span class="w">          </span><span class="nt">extract</span><span class="p">:</span><span class="w"></span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\s*&quot;&quot;&quot;\W?md\b</span><span class="w"></span>
-<span class="w">              </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\s*&quot;&quot;&quot;\s*$</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="c1"># This example shows how to replace lines with regex expressions!</span>
+<span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ok-source-replace</span>
+<span class="nt">plugins</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">simple</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">semiliterate</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">\.py$</span>
+<span class="w">          </span><span class="nt">extract</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\s*&quot;&quot;&quot;\W?md\b</span>
+<span class="w">              </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\s*&quot;&quot;&quot;\s*$</span>
 <span class="w">              </span><span class="nt">replace</span><span class="p">:</span><span class="w"> </span>
-<span class="w">                </span><span class="c1"># replace &quot;foo&quot; with &quot;bar&quot;</span><span class="w"></span>
+<span class="w">                </span><span class="c1"># replace &quot;foo&quot; with &quot;bar&quot;</span>
 <span class="w">                </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;(.*)foo(.*)$&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;\\1bar\\2&quot;</span><span class="p p-Indicator">]</span><span class="w"> </span>
-<span class="w">                </span><span class="c1"># only capture what&#39;s after args and replace with parameter prefix</span><span class="w"></span>
+<span class="w">                </span><span class="c1"># only capture what&#39;s after args and replace with parameter prefix</span>
 <span class="w">                </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;args:(.*)$&quot;</span><span class="p p-Indicator">,</span><span class="s">&quot;parameters:\\1&quot;</span><span class="p p-Indicator">]</span><span class="w"> </span>
-<span class="w">                </span><span class="c1"># capture everything after `only_this:`</span><span class="w"></span>
-<span class="w">                </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;only_this:(.*)$&quot;</span><span class="w"></span>
-<span class="w">                </span><span class="c1"># drop lines starting with drop </span><span class="w"></span>
-<span class="w">                </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;^drop&quot;</span><span class="w"></span>
+<span class="w">                </span><span class="c1"># capture everything after `only_this:`</span>
+<span class="w">                </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;only_this:(.*)$&quot;</span>
+<span class="w">                </span><span class="c1"># drop lines starting with drop </span>
+<span class="w">                </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;^drop&quot;</span>
 </code></pre></div>
 <h2 id="input">Input</h2>
 <div class="highlight"><pre><span></span><code>ok-source-replace/
@@ -756,7 +756,7 @@
 
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Main test.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main test.&quot;&quot;&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello, world!&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="mi">0</span>
 </code></pre></div></p>

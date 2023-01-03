@@ -751,7 +751,7 @@
 <p>Using the docker image, you don't need to have the plugin or its dependencies installed on your system to build, test, and deploy a mkdocs generated site.</p>
 <h2 id="run-in-a-docker-container">Run in a docker container</h2>
 <p>Install, build and serve your docs:</p>
-<div class="highlight"><pre><span></span><code>docker run --rm -it --network<span class="o">=</span>host -v <span class="si">${</span><span class="nv">PWD</span><span class="si">}</span>:/docs --user <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(</span>id -g<span class="k">)</span> althack/mkdocs-simple-plugin
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>--network<span class="o">=</span>host<span class="w"> </span>-v<span class="w"> </span><span class="si">${</span><span class="nv">PWD</span><span class="si">}</span>:/docs<span class="w"> </span>--user<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span>:<span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span>althack/mkdocs-simple-plugin
 </code></pre></div>
 <p>Explanation of docker command-line options</p>
 <!-- markdownlint-disable MD038 -->
@@ -790,10 +790,10 @@
 <p>The docker image runs <code>mkdocs serve</code> by default.</p>
 <h2 id="set-up-a-command-line-alias">Set up a command-line alias</h2>
 <p>Add an alias for the docker command to serve docs from any workspace.</p>
-<div class="highlight"><pre><span></span><code><span class="nb">echo</span> <span class="s1">&#39;function mkdocs_simple() { </span>
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;function mkdocs_simple() { </span>
 <span class="s1">    local port=${1:-&quot;8000&quot;}</span>
 <span class="s1">    docker run --rm -p ${port}:8000 -v ${PWD}:/docs --user $(id -u):$(id -g) althack/mkdocs-simple-plugin</span>
-<span class="s1">}&#39;</span> &gt;&gt; ~/.bashrc
+<span class="s1">}&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
 </code></pre></div>
 
 

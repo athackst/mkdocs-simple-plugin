@@ -711,20 +711,20 @@
 <!-- DO NOT EDIT! This file is auto-generated from README.md.ninja -->
 <h1 id="extract-docs-with-macros">Extract docs with macros</h1>
 <h2 id="mkdocsyml">mkdocs.yml</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># You can even use this with other plugins, like </span><span class="w"></span>
-<span class="c1"># [macros](https://pypi.org/project/mkdocs-macros-plugin/) to achieve advanced </span><span class="w"></span>
-<span class="c1"># configurations.</span><span class="w"></span>
-<span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ok-with-macros</span><span class="w"></span>
-<span class="nt">docs_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/tmp/mkdocs-simple/ok-with-macros/docs</span><span class="w"></span>
-<span class="nt">plugins</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">search</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">simple</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="nt">include_extensions</span><span class="p">:</span><span class="w"></span>
-<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;.yml&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">macros</span><span class="p">:</span><span class="w"></span>
-<span class="w">          </span><span class="nt">verbose</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span><span class="w"></span>
-<span class="nt">extra</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="c1"># You can even use this with other plugins, like </span>
+<span class="c1"># [macros](https://pypi.org/project/mkdocs-macros-plugin/) to achieve advanced </span>
+<span class="c1"># configurations.</span>
+<span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ok-with-macros</span>
+<span class="nt">docs_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/tmp/mkdocs-simple/ok-with-macros/docs</span>
+<span class="nt">plugins</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">search</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">simple</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">include_extensions</span><span class="p">:</span>
+<span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;.yml&quot;</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">macros</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">verbose</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="nt">extra</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
 </code></pre></div>
 <h2 id="input">Input</h2>
 <div class="highlight"><pre><span></span><code>ok-with-macros/
@@ -753,7 +753,7 @@
 
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Test function which takes no parameters.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test function which takes no parameters.</span>
 
 <span class="sd">    It says &quot;Hello, world!&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>

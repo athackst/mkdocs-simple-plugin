@@ -384,27 +384,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#unit-tests" class="md-nav__link">
-    Unit tests
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#lint" class="md-nav__link">
-    Lint
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#different-python-versions" class="md-nav__link">
-    Different Python versions
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#integration-tests" class="md-nav__link">
     Integration tests
   </a>
@@ -817,27 +796,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#unit-tests" class="md-nav__link">
-    Unit tests
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#lint" class="md-nav__link">
-    Lint
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#different-python-versions" class="md-nav__link">
-    Different Python versions
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#integration-tests" class="md-nav__link">
     Integration tests
   </a>
@@ -902,90 +860,28 @@
 <h2 id="prerequisites">Prerequisites</h2>
 <p>You will need to have <a href="https://www.mkdocs.org/">MKDocs</a> installed on your system.
 I recommend installing it via pip to get the latest version.
-<div class="highlight"><pre><span></span><code>sudo apt-get update
-sudo apt-get install -y --no-install-recommends <span class="se">\</span>
- python3-pip <span class="se">\</span>
- libcairo2-dev <span class="se">\</span>
- libfreetype6-dev <span class="se">\</span>
- libffi-dev <span class="se">\</span>
- libjpeg-dev <span class="se">\</span>
- libpng-dev <span class="se">\</span>
- libz-dev
-pip install --upgrade pip
-pip install --user -r requirements.txt
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>--no-install-recommends<span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>python3-pip<span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>libcairo2-dev<span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>libfreetype6-dev<span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>libffi-dev<span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>libjpeg-dev<span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>libpng-dev<span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>libz-dev
+pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
+pip<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>-r<span class="w"> </span>requirements.txt
 </code></pre></div></p>
 <h2 id="building">Building</h2>
 <p>Building this package requires  using <code>mkdocs_simple_gen</code> to generate the site.
-<div class="highlight"><pre><span></span><code>mkdocs_simple_gen --build -- --verbose
+<div class="highlight"><pre><span></span><code>mkdocs_simple_gen<span class="w"> </span>--build<span class="w"> </span>--<span class="w"> </span>--verbose
 </code></pre></div></p>
 <h2 id="testing">Testing</h2>
-<h3 id="unit-tests">Unit tests</h3>
-<p>Unit tests help ensure individual functions perform as expected.  Unit tests
-in this module use the the standard python unittest framework.
-<div class="highlight"><pre><span></span><code>./tests/run_unit_tests.sh
-</code></pre></div></p>
-<details>
-<summary>Code</summary>
-<div class="highlight"><pre><span></span><code>python3 -m unittest tests/test_*.py
-</code></pre></div>
-</details>
-<h3 id="lint">Lint</h3>
-<p>Linting helps maintain style consistency.  This package follows the <a href="https://google.github.io/styleguide/pyguide.html">google 
-style guide</a>.  Conformity
-is enforced with flake8 and pydodstyle.
-<div class="highlight"><pre><span></span><code>./tests/run_linters.sh
-</code></pre></div></p>
-<details>
-<summary>Code</summary>
-<div class="highlight"><pre><span></span><code><span class="nb">echo</span> <span class="s2">&quot;Running flake8 linter --------&gt;&quot;</span>
-flake8 --count .
-<span class="nb">echo</span> <span class="s2">&quot;Running pydocstyle&quot;</span>
-pydocstyle --count .
-</code></pre></div>
-</details>
-<h3 id="different-python-versions">Different Python versions</h3>
-<p>You can even test the package with different versions of python in a container
-by running the test_local script.  This builds a docker container with the 
-version of python you specify and runs the integration tests within the 
-container. 
-<div class="highlight"><pre><span></span><code>./tests/test_local.sh
-</code></pre></div>
-<em>Python 3.x, 3.7, 3.8, 3.9, 3.10, 3.11 supported.</em></p>
-<details>
-<summary>Code</summary>
-<div class="highlight"><pre><span></span><code><span class="nb">set</span> -e
-End-to-end testing via Bats <span class="o">(</span>Bash automated tests<span class="o">)</span>
-<span class="k">function</span> docker_run_integration_tests<span class="o">()</span> <span class="o">{</span>
-docker build -t mkdocs-simple-test-runner:<span class="nv">$1</span> -f- . <span class="s">&lt;&lt;EOF</span>
-<span class="s"> FROM python:$1</span>
-<span class="s"> RUN apt-get -y update &amp;&amp; apt-get -y install bats gcc sudo</span>
-<span class="s"> RUN python3 -m pip install --upgrade pip</span>
-<span class="s"> COPY . /workspace</span>
-<span class="s"> WORKDIR /workspace</span>
-<span class="s">EOF</span>
-<span class="nb">echo</span> <span class="s2">&quot;&lt;-------- Running E2E tests via Bats in Docker (python:</span><span class="nv">$1</span><span class="s2">) --------&gt;&quot;</span>
-docker run --rm -it mkdocs-simple-test-runner:<span class="nv">$1</span> tests/run_unit_tests.sh
-docker run --rm -it mkdocs-simple-test-runner:<span class="nv">$1</span> tests/run_linters.sh
-docker run --rm -it mkdocs-simple-test-runner:<span class="nv">$1</span> tests/run_integration_tests.sh
-<span class="o">}</span>
-<span class="k">if</span> <span class="o">[[</span> ! -z <span class="s2">&quot;</span><span class="nv">$PYTHON_V_ONLY</span><span class="s2">&quot;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
- <span class="nb">echo</span> <span class="s2">&quot;only v </span><span class="nv">$PYTHON_V_ONLY</span><span class="s2">&quot;</span>
- docker_run_integration_tests <span class="s2">&quot;</span><span class="nv">$PYTHON_V_ONLY</span><span class="s2">&quot;</span>
-<span class="k">else</span>
- docker_run_integration_tests <span class="s2">&quot;3&quot;</span>
- docker_run_integration_tests <span class="s2">&quot;3.7&quot;</span>
- docker_run_integration_tests <span class="s2">&quot;3.8&quot;</span>
- docker_run_integration_tests <span class="s2">&quot;3.9&quot;</span>
- docker_run_integration_tests <span class="s2">&quot;3.10&quot;</span>
- docker_run_integration_tests <span class="s2">&quot;3.11&quot;</span>
-<span class="k">fi</span>
-</code></pre></div>
-</details>
 <h3 id="integration-tests">Integration tests</h3>
 <p>Integration testing allows the plugin to be tested with mkdocs using example
 configurations.
 Integration testing uses bats, install it with
-<div class="highlight"><pre><span></span><code>sudo apt-get install bats
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>bats
 </code></pre></div>
 Then run the tests
 <div class="highlight"><pre><span></span><code>./tests/run_integration_tests.sh
@@ -1003,10 +899,10 @@ Then run the tests
 <p><a href="https://github.com/pypa/hatch"><img alt="Hatch project" src="https://img.shields.io/badge/%F0%9F%A5%9A-Hatch-4051b5.svg" /></a></p>
 <p>The project uses Hatch to build and package the plugin</p>
 <h3 id="build-the-package">Build the package</h3>
-<div class="highlight"><pre><span></span><code>hatch build
+<div class="highlight"><pre><span></span><code>hatch<span class="w"> </span>build
 </code></pre></div>
 <h3 id="publish-the-package">Publish the package</h3>
-<div class="highlight"><pre><span></span><code>hatch publish
+<div class="highlight"><pre><span></span><code>hatch<span class="w"> </span>publish
 </code></pre></div>
 
 

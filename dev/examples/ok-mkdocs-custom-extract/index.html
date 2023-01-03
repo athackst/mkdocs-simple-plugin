@@ -711,32 +711,32 @@
 <!-- DO NOT EDIT! This file is auto-generated from README.md.ninja -->
 <h1 id="front-matter-extraction">Front matter extraction</h1>
 <h2 id="mkdocsyml">mkdocs.yml</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># This example shows how to set up custom extraction modes. Litcoffee files</span><span class="w"></span>
-<span class="c1"># consist of interspersed Markdown and Coffeescript code. The pattern</span><span class="w"></span>
-<span class="c1"># defined here extracts a documentation page from each such file, consisting of:</span><span class="w"></span>
-<span class="c1"># everything from the beginning of the file to the first line of code</span><span class="w"></span>
-<span class="c1"># (a line indented by at least four spaces), together with any later Markdown</span><span class="w"></span>
-<span class="c1"># block preceded by a comment containing `# DOCPAGE`.</span><span class="w"></span>
-<span class="c1">#</span><span class="w"></span>
-<span class="c1"># Similarly, you may want to have to have a custom extraction even for a</span><span class="w"></span>
-<span class="c1"># standard file pattern, or for one particular file; the `drone.yml` pattern</span><span class="w"></span>
-<span class="c1"># could for example extract development documentation from a Drone yml file.</span><span class="w"></span>
-<span class="c1"># Note this latter pattern takes advantage of the fact that you can have just</span><span class="w"></span>
-<span class="c1"># a single top-level block of parameters in an `extract:` section.</span><span class="w"></span>
-<span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ok-mkdocs-custom-extract</span><span class="w"></span>
-<span class="nt">plugins</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">simple</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">semiliterate</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;\.litcoffee&#39;</span><span class="w"></span>
-<span class="w">          </span><span class="nt">extract</span><span class="p">:</span><span class="w"></span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;^\s{4,}\S&#39;</span><span class="p p-Indicator">}</span><span class="w">  </span><span class="c1"># No start, so active from beginning</span><span class="w"></span>
-<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#</span><span class="nv"> </span><span class="s">DOCPAGE&#39;</span><span class="p p-Indicator">,</span><span class="nt"> stop</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;^\s{4,}\S&#39;</span><span class="p p-Indicator">}</span><span class="w"></span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;drone.yml&#39;</span><span class="w"></span>
-<span class="w">          </span><span class="nt">destination</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;drone_develop.md&#39;</span><span class="w"></span>
-<span class="w">          </span><span class="nt">extract</span><span class="p">:</span><span class="w"></span>
-<span class="w">            </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;###</span><span class="nv"> </span><span class="s">develop&#39;</span><span class="w"></span>
-<span class="w">            </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;^\s*###&#39;</span><span class="w"></span>
-<span class="w">            </span><span class="nt">replace</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;^#</span><span class="nv"> </span><span class="s">(.*\s*)$&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;^\s*-(.*\s*)$&#39;</span><span class="p p-Indicator">]</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="c1"># This example shows how to set up custom extraction modes. Litcoffee files</span>
+<span class="c1"># consist of interspersed Markdown and Coffeescript code. The pattern</span>
+<span class="c1"># defined here extracts a documentation page from each such file, consisting of:</span>
+<span class="c1"># everything from the beginning of the file to the first line of code</span>
+<span class="c1"># (a line indented by at least four spaces), together with any later Markdown</span>
+<span class="c1"># block preceded by a comment containing `# DOCPAGE`.</span>
+<span class="c1">#</span>
+<span class="c1"># Similarly, you may want to have to have a custom extraction even for a</span>
+<span class="c1"># standard file pattern, or for one particular file; the `drone.yml` pattern</span>
+<span class="c1"># could for example extract development documentation from a Drone yml file.</span>
+<span class="c1"># Note this latter pattern takes advantage of the fact that you can have just</span>
+<span class="c1"># a single top-level block of parameters in an `extract:` section.</span>
+<span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ok-mkdocs-custom-extract</span>
+<span class="nt">plugins</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">simple</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">semiliterate</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;\.litcoffee&#39;</span>
+<span class="w">          </span><span class="nt">extract</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;^\s{4,}\S&#39;</span><span class="p p-Indicator">}</span><span class="w">  </span><span class="c1"># No start, so active from beginning</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#</span><span class="nv"> </span><span class="s">DOCPAGE&#39;</span><span class="p p-Indicator">,</span><span class="nt"> stop</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;^\s{4,}\S&#39;</span><span class="p p-Indicator">}</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;drone.yml&#39;</span>
+<span class="w">          </span><span class="nt">destination</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;drone_develop.md&#39;</span>
+<span class="w">          </span><span class="nt">extract</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;###</span><span class="nv"> </span><span class="s">develop&#39;</span>
+<span class="w">            </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;^\s*###&#39;</span>
+<span class="w">            </span><span class="nt">replace</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;^#</span><span class="nv"> </span><span class="s">(.*\s*)$&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;^\s*-(.*\s*)$&#39;</span><span class="p p-Indicator">]</span>
 </code></pre></div>
 <h2 id="input">Input</h2>
 <div class="highlight"><pre><span></span><code>ok-mkdocs-custom-extract/

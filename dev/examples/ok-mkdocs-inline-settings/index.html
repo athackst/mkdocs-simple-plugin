@@ -711,11 +711,11 @@
 <!-- DO NOT EDIT! This file is auto-generated from README.md.ninja -->
 <h1 id="extract-with-inline-settings">Extract with inline settings</h1>
 <h2 id="mkdocsyml">mkdocs.yml</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># This is the simplest documentation site you could have.  </span><span class="w"></span>
-<span class="c1"># It&#39;s just a simple readme.</span><span class="w"></span>
-<span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ok-mkdocs-inline-settings</span><span class="w"></span>
-<span class="nt">plugins</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="c1"># This is the simplest documentation site you could have.  </span>
+<span class="c1"># It&#39;s just a simple readme.</span>
+<span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ok-mkdocs-inline-settings</span>
+<span class="nt">plugins</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple</span>
 </code></pre></div>
 <h2 id="input">Input</h2>
 <div class="highlight"><pre><span></span><code>ok-mkdocs-inline-settings/
@@ -724,9 +724,9 @@
 └── README.md
 </code></pre></div>
 <p><strong>hello_world.cpp</strong>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
 
-<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="cm">/** md file=main.md trim=2 stop=&quot;end-here&quot;</span>
 <span class="cm">  # Hello world</span>
 
@@ -735,10 +735,10 @@
 
 <span class="cm">  end-here</span>
 <span class="cm">  This shouldn&#39;t show up!</span>
-<span class="cm">  **/</span><span class="w"></span>
-<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Hello World!&quot;</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="cm">  **/</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Hello World!&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div></p>
 <h2 id="output">Output</h2>
 <div class="highlight"><pre><span></span><code>site/

@@ -56,6 +56,7 @@ jobs:
         uses: athackst/htmlproofer-action@main
         with:
           directory: "./site"
+          retries: 3
           url_swap: |
             ^.*althack.dev\/mkdocs-simple-plugin:
             ^\/mkdocs-simple-plugin:

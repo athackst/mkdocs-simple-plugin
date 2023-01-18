@@ -1,23 +1,19 @@
-FROM python:3.11-alpine
+FROM python:3.11
 
 ENV VIRTUAL_ENV=/opt/venv
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-RUN \
-  apk add --no-cache \
+RUN apt-get update && apt-get -y install --no-install-recommends bats gcc \
   git \
-  git-fast-import \
   git-lfs \
-  openssh \
-  cairo-dev \
-  freetype-dev \
+  python3-pip \
+  libcairo2-dev \
+  libfreetype6-dev \
   libffi-dev \
-  jpeg-dev \
+  libjpeg-dev \
   libpng-dev \
-  zlib-dev \
-  && apk add --no-cache --virtual .build gcc musl-dev \
-  && apk add --no-cache --upgrade bash \
+  libz-dev \
   && pip install --upgrade pip \
   && pip install --no-cache-dir mkdocs-material mike pillow cairosvg
 
@@ -30,6 +26,8 @@ COPY pyproject.toml pyproject.toml
 
 RUN pip install --no-cache-dir . \
   && rm -rf /tmp/*
+
+RUN git config --global --add safe.directory /docs
 
 WORKDIR /docs
 

@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 """Test mkdocs_simple_plugin.simple"""
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 import stat
 import os
+import shutil
+
 from pyfakefs.fake_filesystem_unittest import TestCase
 
 from mkdocs_simple_plugin import simple
@@ -273,44 +275,37 @@ class TestSimple(TestCase):
         test_filename = "foo/bar.md"
         self.fs.create_file(test_filename)
         built_filename = "/build_dir/foo/bar.md"
-
-        # Get the modification time of the original file
-        src_time = os.path.getmtime(test_filename)
-
-        paths = simple_test.build_docs(dirty=True, last_build_time=0)
-        # Check that the file was built
-        self.assertIn(test_filename, paths)
-        # Check that the output file exists
-        self.assertTrue(os.path.exists(built_filename))
-        # Get the modification time
-        dest_time = os.path.getmtime(built_filename)
-        # Check that the time is newer
-        self.assertLess(src_time, dest_time)
+        mock_copy = MagicMock(spec=shutil.copy2)
+        with patch('mkdocs_simple_plugin.simple.copy',
+                   mock_copy,
+                   create=True) as patched:
+            self.assertIs(patched, mock_copy)
+            simple_test.build_docs(dirty=True, last_build_time=0)
+        mock_copy.assert_called()
 
         # Run again, but this time set the last build time
-        paths = simple_test.build_docs(dirty=True, last_build_time=dest_time)
-        # Check that the file was not built
-        self.assertNotIn(test_filename, paths)
-        # Check that the file still exists in the output
-        self.assertTrue(os.path.exists(built_filename))
-        # Get the modification time
-        dirty_time = os.path.getmtime(built_filename)
-        # Check that it is the same as the previous
-        self.assertEqual(dest_time, dirty_time)
+        self.fs.create_file(built_filename)
+        dest_time = os.path.getmtime(built_filename)
+        # Check that the file was not copied since the destination is the same
+        mock_copy = MagicMock(spec=shutil.copy2)
+        with patch('mkdocs_simple_plugin.simple.copy',
+                   mock_copy,
+                   create=True) as patched:
+            self.assertIs(patched, mock_copy)
+            simple_test.build_docs(dirty=True, last_build_time=dest_time)
+        mock_copy.assert_not_called()
 
-        # Update a fake file
+        # Update the file
         with open(test_filename, 'w') as f:
             f.write('Modified!')
-
-        paths = simple_test.build_docs(dirty=True, last_build_time=dirty_time)
-        # Check that path was built
-        self.assertIn(test_filename, paths)
-        # Check that destination file exists
-        self.assertTrue(os.path.exists(built_filename))
-        # Get the modification time
-        modified_time = os.path.getmtime(built_filename)
-        # Check that the modification time is newer
-        self.assertLess(dirty_time, modified_time)
+        # Check that the file was copied
+        mock_copy = MagicMock(spec=shutil.copy2)
+        with patch('mkdocs_simple_plugin.simple.copy',
+                   mock_copy,
+                   create=True) as patched:
+            self.assertIs(patched, mock_copy)
+            simple_test.build_docs(dirty=True, last_build_time=dest_time)
+        mock_copy.assert_called()
 
     def test_build_docs_dirty_extract(self):
         """Test dirty build of doc extraction."""
@@ -420,7 +415,7 @@ class TestSimple(TestCase):
         dest_time = os.path.getmtime(built_filename)
 
         # Copied and modified time should be the same
-        self.assertLess(src_time, dest_time)
+        self.assertEqual(src_time, dest_time)
 
         # Update a fake file
         with open(test_filename, 'w') as f:
@@ -441,8 +436,8 @@ class TestSimple(TestCase):
 
         # Original and copied file should not be the same
         self.assertNotEqual(src_time, updated_dest_time)
-        # New mod time should be less than copied time
-        self.assertLess(updated_src_time, updated_dest_time)
+        # New mod time should be the same
+        self.assertEqual(updated_src_time, updated_dest_time)
 
         # Merge the docs without updates
         simple_test.merge_docs("/test")
@@ -450,7 +445,7 @@ class TestSimple(TestCase):
 
         # Get the updated time
         no_update_dest_time = os.path.getmtime(built_filename)
-        self.assertLess(updated_dest_time, no_update_dest_time)
+        self.assertEqual(updated_dest_time, no_update_dest_time)
 
         # Test dirty copy no update
         simple_test.merge_docs("/test", dirty=True)

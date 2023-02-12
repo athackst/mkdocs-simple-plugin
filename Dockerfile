@@ -27,7 +27,8 @@ COPY pyproject.toml pyproject.toml
 RUN pip install --no-cache-dir . \
   && rm -rf /tmp/*
 
-RUN git config --global --add safe.directory /docs
+RUN git config --global --add safe.directory /docs &&\
+    git config --global --add safe.directory /site
 
 WORKDIR /docs
 

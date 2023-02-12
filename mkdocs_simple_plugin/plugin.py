@@ -146,10 +146,10 @@ class SimplePlugin(BasePlugin):
             config_options.Type(
                 list,
                 default=[
-                    ".bmp", ".tif", ".tiff", ".gif", ".svg", ".jpeg",
-                    ".jpg", ".jif", ".jiff", ".jp2", ".jpx", ".j2k",
-                    ".j2c", ".fpx", ".pcd", ".png", ".pdf", "CNAME",
-                    ".snippet", ".pages"
+                    "*.bmp", "*.tif", "*.tiff", "*.gif", "*.svg", "*.jpeg",
+                    "*.jpg", "*.jif", "*.jiff", "*.jp2", "*.jpx", "*.j2k",
+                    "*.j2c", "*.fpx", "*.pcd", "*.png", "*.pdf", "CNAME",
+                    "*.snippet", ".pages"
                 ])),
         #
         # ### semiliterate

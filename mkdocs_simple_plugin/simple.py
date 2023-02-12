@@ -207,7 +207,7 @@ class Simple():
         original = os.path.join(from_dir, name)
         new_file = os.path.join(to_dir, name)
 
-        if not self.should_copy_file(name):
+        if not self.should_copy_file(os.path.join(from_dir, name)):
             return False
         try:
             os.makedirs(to_dir, exist_ok=True)

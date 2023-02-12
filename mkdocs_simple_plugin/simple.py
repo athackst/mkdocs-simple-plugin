@@ -1,9 +1,10 @@
 """Simple module handles document extraction from source files."""
 import os
 import fnmatch
-import shutil
 import stat
 import pathlib
+
+from shutil import copy2 as copy
 
 from mkdocs import utils
 from mkdocs_simple_plugin.semiliterate import Semiliterate
@@ -157,7 +158,7 @@ class Simple():
                             destination_file).st_mtime:
                         continue
                     os.remove(destination_file)
-                shutil.copy(source_file, destination_directory)
+                copy(source_file, destination_directory)
                 utils.log.info(
                     "mkdocs-simple-plugin: %s/* --> %s/*",
                     source_file, destination_file)
@@ -210,7 +211,7 @@ class Simple():
             return False
         try:
             os.makedirs(to_dir, exist_ok=True)
-            shutil.copy(original, new_file)
+            copy(original, new_file)
             utils.log.info("mkdocs-simple-plugin: %s --> %s",
                            original, new_file)
             return True

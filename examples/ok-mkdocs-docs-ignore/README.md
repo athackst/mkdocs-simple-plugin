@@ -9,7 +9,7 @@
 site_name: ok-mkdocs-docs-ignore
 plugins:
   - simple:
-      ignore_folders: ["subfolder"]
+      ignore: ["subfolder"]
 ```
 ## Input
 

@@ -107,22 +107,48 @@ class SimplePlugin(BasePlugin):
 
     # md file=config_scheme.snippet
     config_scheme = (
-        # ### include_folders
+        # ### include_folders (renamed)
+        #
+        # Renamed [folders](#folders)
+        ('include_folders', config_options.Deprecated(
+            moved_to="folders", removed=False)),
+        #
+        # ### folders
         #
         # Directories whose name matches a glob pattern in this list will be
         # searched for documentation
-        ('include_folders', config_options.Type(list, default=['*'])),
+        ('folders', config_options.Type(list, default=['*'])),
         #
-        # ### ignore_folders
+        # ### ignore_folders (renamed)
+        #
+        # Renamed [ignore](#ignore)
+        ('ignore_folders', config_options.Deprecated(
+            moved_to="ignore", removed=False)),
+        #
+        # ### ignore
         #
         # Directories whose name matches a glob pattern in this list will NOT be
         # searched for documentation.
-        ('ignore_folders', config_options.Type(list, default=[])),
+        ('ignore', config_options.Type(
+            list,
+            default=[
+                "venv",
+                ".cache/**",
+                ".devcontainer/**",
+                ".github/**",
+                ".vscode/**",
+                "**/__pycache__/**",
+                ".git/**",
+                "*.egg-info",
+            ])),
         #
-        # ### ignore_hidden
+        # ### ignore_hidden (deprecated)
         #
         # Hidden directories will not be searched if this is true.
-        ('ignore_hidden', config_options.Type(bool, default=True)),
+        ('ignore_hidden', config_options.Deprecated(
+            moved_to=None,
+            message="Common ignore files have been added to 'ignore' instead",
+            removed=True)),
         #
         # ### merge_docs_dir
         #
@@ -132,17 +158,28 @@ class SimplePlugin(BasePlugin):
         # the result.
         ('merge_docs_dir', config_options.Type(bool, default=True)),
         #
-        # ### build_docs_dir
+        # ### build_docs_dir (renamed)
+        #
+        # Renamed [build_dir](#build_dir)
+        ('build_docs_dir', config_options.Deprecated(
+            moved_to="build_dir", removed=False)),
+        #
+        # ### build_dir
         #
         # If set, the directory where docs will be collated to be build.
         # Otherwise, the build docs directory will be a temporary directory.
-        ('build_docs_dir', config_options.Type(str, default='')),
+        ('build_dir', config_options.Type(str, default='')),
         #
-        # ### include_extensions
+        # ### include_extensions (renamed)
+        #
+        # Renamed [include](#include)
+        ('include_extensions', config_options.Deprecated(
+            moved_to="include", message="", removed=False)),
+        # ### include
         #
         # Any file in the searched directories whose name contains a string in
         # this list will simply be copied to the generated documentation.
-        ('include_extensions',
+        ('include',
             config_options.Type(
                 list,
                 default=[
@@ -260,7 +297,7 @@ class SimplePlugin(BasePlugin):
         # PY2 returns a byte string by default. The Unicode prefix ensures a
         # Unicode string is returned. And it makes MkDocs temp dirs easier to
         # identify.
-        self.tmp_build_docs_dir = tempfile.mkdtemp(prefix="mkdocs_simple_")
+        self.tmp_build_dir = tempfile.mkdtemp(prefix="mkdocs_simple_")
         self.paths = None
         self.dirty = False
         self.last_build_time = None
@@ -285,31 +322,31 @@ class SimplePlugin(BasePlugin):
         config_site_dir = get_config_site_dir(config.config_file_path)
 
         # Set the build docs dir to tmp location if not set by user
-        if not self.config['build_docs_dir'] and self.config['merge_docs_dir']:
-            self.config['build_docs_dir'] = config['docs_dir']
+        if not self.config['build_dir'] and self.config['merge_docs_dir']:
+            self.config['build_dir'] = config['docs_dir']
         else:
-            self.config['build_docs_dir'] = self.tmp_build_docs_dir
+            self.config['build_dir'] = self.tmp_build_dir
 
         utils.log.info(
-            "mkdocs-simple-plugin: build_docs_dir: %s",
-            self.config['build_docs_dir'])
+            "mkdocs-simple-plugin: build_dir: %s",
+            self.config['build_dir'])
 
         # Create build directory
-        os.makedirs(self.config['build_docs_dir'], exist_ok=True)
+        os.makedirs(self.config['build_dir'], exist_ok=True)
         # Save original docs directory location
         self.orig_docs_dir = config['docs_dir']
         # Update the docs_dir with our temporary one if not merging
         if not self.config['merge_docs_dir']:
-            config['docs_dir'] = self.config['build_docs_dir']
+            config['docs_dir'] = self.config['build_dir']
         # Add all markdown extensions to include list
-        self.config['include_extensions'] = list(utils.markdown_extensions) + \
-            self.config['include_extensions']
+        self.config['include'] = list(utils.markdown_extensions) + \
+            self.config['include']
 
         # Always ignore the output paths
         self.config["ignore_paths"] = [
             os.path.abspath(config_site_dir),
             os.path.abspath(config['site_dir']),
-            os.path.abspath(self.config['build_docs_dir'])]
+            os.path.abspath(self.config['build_dir'])]
         if self.config['merge_docs_dir']:
             self.config["ignore_paths"].append(
                 os.path.abspath(config['docs_dir']))
@@ -352,8 +389,8 @@ class SimplePlugin(BasePlugin):
         """Add files to watch server."""
         # don't watch the build directory
         # pylint: disable=protected-access
-        if self.config["build_docs_dir"] in server._watched_paths:
-            server.unwatch(self.config["build_docs_dir"])
+        if self.config["build_dir"] in server._watched_paths:
+            server.unwatch(self.config["build_dir"])
 
         # watch all the doc files
         for path in self.paths:

@@ -8,8 +8,15 @@
 # container.
 #
 # ```bash
-# ./tests/test_local.sh
+# ./tests/run_local_tests.sh
 # ```
+#
+# Change the python version by setting the environment variable `PYTHON_V_ONLY`
+#
+# ```bash
+# ./tests/run_local_tests.sh -e PYTHON_V_ONLY="3.10"
+# ```
+#
 # {% include "versions.snippet" %}
 #
 # <details>

@@ -13,7 +13,7 @@ docs_dir: /tmp/mkdocs-simple/ok-with-macros/docs
 plugins:
     - search
     - simple:
-          include_extensions:
+          include:
               - ".yml"
     - macros:
           verbose: True
@@ -88,7 +88,7 @@ docs_dir: /tmp/mkdocs-simple/ok-with-macros/docs
 plugins:
   - search
   - simple:
-      include_extensions:
+      include:
         - .yml
   - macros:
       verbose: true
@@ -110,7 +110,7 @@ docs_dir: /tmp/mkdocs-simple/ok-with-macros/docs
 plugins:
   - search
   - simple:
-      include_extensions:
+      include:
         - .yml
   - macros:
       verbose: true

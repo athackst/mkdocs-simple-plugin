@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 """Test mkdocs_simple_plugin.simple"""
 import unittest
-from unittest.mock import patch
-import stat
 import os
 
 from pyfakefs.fake_filesystem_unittest import TestCase
@@ -16,32 +14,27 @@ class TestSimple(TestCase):
     def setUp(self) -> None:
         """Set defaults"""
         self.default_settings = {
-            "build_docs_dir": "/build_dir/",
-            "include_folders": ["*"],
-            "ignore_folders": [],
-            "ignore_hidden": True,
-            "include_extensions": [".md"],
+            "build_dir": "/build_dir/",
+            "folders": ["*"],
+            "ignore": [],
+            "include": ["*.md"],
             "ignore_paths": [],
             "semiliterate": {}
         }
         self.setUpPyfakefs()
 
-    @patch("os.stat")
-    def test_should_extract_file(self, os_stat):
+    def test_should_extract_file(self):
         """Test should_extract_file for correctness."""
         simple_test = simple.Simple(**self.default_settings)
-        # Check ignore_hidden
-        simple_test.ignore_hidden = True
-        os_stat.return_value.st_file_attributes = 0
-        self.assertTrue(simple_test.should_extract_file('test.md'))
-        self.assertTrue(simple_test.should_extract_file('./folder/test.md'))
-        self.assertFalse(simple_test.should_extract_file('__pycache__'))
-        self.assertFalse(simple_test.should_extract_file('.mkdocsignore'))
-        self.assertFalse(simple_test.should_extract_file(
-            ".git/objects/34/49807110bdc8"))
-        # Check hidden file attribute
-        os_stat.return_value.st_file_attributes = stat.FILE_ATTRIBUTE_HIDDEN
-        self.assertFalse(simple_test.should_extract_file('/test/file'))
+        # Create binary file
+        binary_data = b'\x80\xff'
+        self.fs.create_file("example.bin", contents=binary_data)
+        # Create text file
+        self.fs.create_file("example.md", contents="Hello_word")
+        # Test binary file
+        self.assertFalse(simple_test.should_extract_file("example.bin"))
+        # Test text file
+        self.assertTrue(simple_test.should_extract_file("example.md"))
 
     def test_ignored_default(self):
         """Test ignored files."""
@@ -73,7 +66,7 @@ class TestSimple(TestCase):
 
     def test_ignored_config(self):
         """Test ignored files from config."""
-        self.default_settings["ignore_folders"] = ["test/*"]
+        self.default_settings["ignore"] = ["test/*"]
         simple_test = simple.Simple(**self.default_settings)
         self.fs.create_file("directory/test.md")
         self.assertFalse(
@@ -254,7 +247,7 @@ class TestSimple(TestCase):
         self.fs.create_file("boo.md")
 
         simple_test.ignore_glob = set(["foo/bat/**"])
-        simple_test.include_folders = set(["foo/"])
+        simple_test.folders = set(["foo/"])
         simple_test.copy_glob = set(["*.md", ".pages"])
 
         paths = []
@@ -270,7 +263,7 @@ class TestSimple(TestCase):
     def test_build_docs_dirty_copy(self):
         """Test dirty build of doc copy."""
         simple_test = simple.Simple(**self.default_settings)
-        simple_test.include_folders = set(["foo/"])
+        simple_test.folders = set(["foo/"])
 
         # /foo
         #  ├── bar.md
@@ -335,7 +328,7 @@ class TestSimple(TestCase):
             }
         ]
         simple_test = simple.Simple(**settings)
-        simple_test.include_folders = set(["foo/"])
+        simple_test.folders = set(["foo/"])
 
         # /foo
         #  ├── bar.txt

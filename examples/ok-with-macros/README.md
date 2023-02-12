@@ -5,8 +5,8 @@
 ## mkdocs.yml
 
 ```yaml
-# You can even use this with other plugins, like 
-# [macros](https://pypi.org/project/mkdocs-macros-plugin/) to achieve advanced 
+# You can even use this with other plugins, like
+# [macros](https://pypi.org/project/mkdocs-macros-plugin/) to achieve advanced
 # configurations.
 site_name: ok-with-macros
 docs_dir: /tmp/mkdocs-simple/ok-with-macros/docs

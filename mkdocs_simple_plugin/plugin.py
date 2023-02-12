@@ -94,6 +94,7 @@ import time
 import yaml
 
 
+from mkdocs.structure.files import Files, File
 from mkdocs.plugins import BasePlugin
 from mkdocs.config import config_options
 from mkdocs import config as mkdocs_config
@@ -296,10 +297,7 @@ class SimplePlugin(BasePlugin):
         if not self.dirty:
             shutil.rmtree(self.config['build_docs_dir'], ignore_errors=True)
         os.makedirs(self.config['build_docs_dir'], exist_ok=True)
-        # Save original docs directory location
-        self.orig_docs_dir = config['docs_dir']
-        # Update the docs_dir with our temporary one
-        config['docs_dir'] = self.config['build_docs_dir']
+
         # Add all markdown extensions to include list
         self.config['include_extensions'] = list(utils.markdown_extensions) + \
             self.config['include_extensions']
@@ -309,32 +307,45 @@ class SimplePlugin(BasePlugin):
             config_site_dir,
             config['site_dir'],
             self.config['build_docs_dir']]
+        if self.config['merge_docs_dir']:
+            self.config["ignore_paths"].append(config['docs_dir'])
         return config
 
-    def on_pre_build(self, *, config):
-        """Build documentation directory with files according to settings."""
+    def on_files(self, files: Files, *, config):
+        """Update files based on plugin settings."""
         # Configure simple
         simple = Simple(**self.config)
 
-        # Merge docs
-        if self.config["merge_docs_dir"]:
-            simple.merge_docs(self.orig_docs_dir, self.dirty)
-        # Copy all of the valid doc files into build_docs_dir
         # Save paths to add to watch if serving
         self.paths = simple.build_docs(self.dirty, self.last_build_time)
         self.last_build_time = time.time()
 
+        if not self.config["merge_docs_dir"]:
+            # If not merging, remove files that are from the docs dir
+            # pylint: disable=protected-access
+            for file in files._files[:]:
+                relpath = os.path.relpath(file.abs_src_path, config['docs_dir'])
+                if not relpath.startswith(".."):
+                    files.remove(file)
+
+        for path in self.paths:
+            file = File(
+                src_dir=os.path.abspath(path.output_root),
+                path=path.output_relpath,
+                dest_dir=config.site_dir,
+                use_directory_urls=True
+            )
+            files.append(file)
+        return files
+
     def on_serve(self, server, *, config, builder):
         """Add files to watch server."""
-        # watch the original docs/ directory
-        if os.path.exists(self.orig_docs_dir):
-            server.watch(self.orig_docs_dir)
         # don't watch the build directory
         server.unwatch(self.config["build_docs_dir"])
 
         # watch all the doc files
         for path in self.paths:
-            server.watch(path)
+            server.watch(path.input_path)
 
         return server
 

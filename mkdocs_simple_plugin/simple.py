@@ -5,9 +5,18 @@ import stat
 import pathlib
 
 from shutil import copy2 as copy
+from dataclasses import dataclass
 
 from mkdocs import utils
 from mkdocs_simple_plugin.semiliterate import Semiliterate
+
+
+@dataclass
+class SimplePath:
+    """Paths processed by Simple."""
+    output_root: str
+    output_relpath: str
+    input_path: str
 
 
 class Simple():
@@ -179,12 +188,34 @@ class Simple():
             build_prefix = os.path.normpath(
                 os.path.join(self.build_dir, from_dir))
 
-            if (self.try_copy_file(from_dir, name, build_prefix) or
-                    self.try_extract(from_dir, name, build_prefix)):
-                paths.append(file)
+            copy_paths = self.try_copy_file(from_dir, name, build_prefix)
+            if copy_paths:
+                paths.append(
+                    SimplePath(
+                        output_root=".",
+                        output_relpath=os.path.relpath(path=file, start="."),
+                        input_path=file)
+                )
+                utils.log.info("mkdocs-simple-plugin: Added %s...", file)
+                continue
+
+            extracted_paths = self.try_extract(from_dir, name, build_prefix)
+            for path in extracted_paths:
+                paths.append(
+                    SimplePath(
+                        output_root=self.build_dir,
+                        output_relpath=os.path.relpath(
+                            path=path,
+                            start=self.build_dir),
+                        input_path=file))
+                utils.log.info(
+                    "mkdocs-simple-plugin: Added %s->%s...", file, path)
+            if extracted_paths:
+                continue
+
         return paths
 
-    def try_extract(self, from_dir: str, name: str, to_dir: str) -> bool:
+    def try_extract(self, from_dir: str, name: str, to_dir: str) -> list:
         """Extract content from file into destination.
 
         Returns the name of the file extracted if extractable.
@@ -192,31 +223,21 @@ class Simple():
         # Check if it's hidden
         path = os.path.join(from_dir, name)
         if not self.should_extract_file(path):
-            return False
+            return []
         for item in self.semiliterate:
-            if item.try_extraction(from_dir, name, to_dir):
-                return True
+            paths = item.try_extraction(from_dir, name, to_dir)
+            if paths:
+                return paths
 
-        return False
+        return []
 
-    def try_copy_file(self, from_dir: str, name: str, to_dir: str) -> bool:
+    def try_copy_file(self, from_dir: str, name: str, to_dir: str) -> list:
         """Copy file with the same name to a new directory.
 
         Returns true if file copied.
         """
         original = os.path.join(from_dir, name)
-        new_file = os.path.join(to_dir, name)
 
         if not self.should_copy_file(os.path.join(from_dir, name)):
-            return False
-        try:
-            os.makedirs(to_dir, exist_ok=True)
-            copy(original, new_file)
-            utils.log.info("mkdocs-simple-plugin: %s --> %s",
-                           original, new_file)
-            return True
-        except (OSError, IOError, UnicodeDecodeError) as error:
-            utils.log.warning(
-                "mkdocs-simple-plugin: %s.. skipping %s",
-                error, original)
-        return False
+            return []
+        return list(original)

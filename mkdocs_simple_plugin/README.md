@@ -1,4 +1,4 @@
-# Developing
+# Package Guide
 
 ## Prerequisites
 

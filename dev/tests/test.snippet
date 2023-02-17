@@ -1,12 +1,18 @@
-### Unit tests
-Unit tests help ensure individual functions perform as expected.  Unit tests
-in this module use the the standard python unittest framework.
+### Integration tests
+Integration testing allows the plugin to be tested with mkdocs using example
+configurations.
+Integration testing uses bats, install it with
 ```bash
-./tests/run_unit_tests.sh
+sudo apt-get install bats
+```
+Then run the tests
+```bash
+./tests/run_integration_tests.sh
 ```
 <details>
 <summary>Code</summary>
 ```bash
-python3 -m unittest tests/test_*.py
+./examples/gen_readme.py
+./tests/integration_test.bats
 ```
 </details>

@@ -2,6 +2,8 @@
 import os
 import re
 
+from dataclasses import dataclass
+
 from mkdocs import utils
 
 
@@ -17,6 +19,58 @@ def get_match(pattern: re.Pattern, line: str) -> re.Match:
     if not pattern:
         return None
     return pattern.search(line)
+
+
+@dataclass
+class InlineParams:
+    """Inline parameters for extraction."""
+    # md file=inline_params.snippet
+    # These parameters should be on the same line as the start block.
+    #
+    # For example:
+    #
+    # ```
+    #  /**md file="new_name.md" trim=2 content="^\s*\/\/\s?(.*)$"
+    # ```
+    #
+    # #### Set output file name
+    #
+    #  Filename is relative to the folder of the file being processed.
+    #
+    # ```
+    # file=<name>
+    # ```
+    filename_pattern: re.Pattern = re.compile(r"file=[\"']?(\w+.\w+)[\"']?\b")
+    filename: str = None
+    #
+    # #### Trim the front of a line
+    #
+    # Useful for removing leading spaces.
+    #
+    # ```
+    # trim=#
+    # ```
+    trim_pattern: re.Pattern = re.compile(r"trim=[\"']?(\d+)[\"']?\b")
+    trim: int = 0
+    # #### Capture content
+    #
+    # Regex expression to capture content, otherwise all lines are captured.
+    #
+    # ```
+    # content=<regex>
+    # ```
+    content_pattern: re.Pattern = re.compile(r"content=[\"']?([^\"']*)[\"']?")
+    content: str = None
+    #
+    # #### Stop capture
+    #
+    # Regex expression to indicate capture should stop.
+    #
+    # ```
+    # stop=<regex>
+    # ```
+    stop_pattern: re.Pattern = re.compile(r"stop=[\"']?([^\"']*)[\"']?")
+    # /md
 
 
 class ExtractionPattern:
@@ -89,90 +143,49 @@ class ExtractionPattern:
             else:
                 self.replace.append((re.compile(item[0]), item[1]))
 
-        # md file=inline_params.snippet
-        # These parameters should be on the same line as the start block.
-        #
-        # For example:
-        #
-        # ```
-        #  /**md file="new_name.md" trim=2 content="^\s*\/\/\s?(.*)$"
-        # ```
-        #
-        # #### Set output file name
-        #
-        #  Filename is relative to the folder of the file being processed.
-        #
-        # ```
-        # file=<name>
-        # ```
-        self._filename_pattern = re.compile(r"file=[\"']?(\w+.\w+)[\"']?\b")
-        self._filename = None
-        #
-        # #### Trim the front of a line
-        #
-        # Useful for removing leading spaces.
-        #
-        # ```
-        # trim=#
-        # ```
-        self._trim_pattern = re.compile(r"trim=[\"']?(\d+)[\"']?\b")
-        self._trim = 0
-        # #### Capture content
-        #
-        # Regex expression to capture content, otherwise all lines are captured.
-        #
-        # ```
-        # content=<regex>
-        # ```
-        self._content_pattern = re.compile(r"content=[\"']?([^\"']*)[\"']?")
-        self._content = None
-        #
-        # #### Stop capture
-        #
-        # Regex expression to indicate capture should stop.
-        #
-        # ```
-        # stop=<regex>
-        # ```
-        self._stop_pattern = re.compile(r"stop=[\"']?([^\"']*)[\"']?")
-        # /md
+        self.inline = InlineParams()
 
     def setup(self, line: str) -> None:
         """Process input parameters."""
-        self._filename = None
-        file_match = get_match(self._filename_pattern, line)
+        setup_inline = InlineParams()
+
+        file_match = get_match(setup_inline.filename_pattern, line)
         if file_match and file_match.lastindex:
-            self._filename = file_match[file_match.lastindex]
+            setup_inline.filename = file_match[file_match.lastindex]
 
-        self._trim = 0
-        trim_match = get_match(self._trim_pattern, line)
+        trim_match = get_match(setup_inline.trim_pattern, line)
         if trim_match and trim_match.lastindex:
-            self._trim = int(trim_match[trim_match.lastindex])
+            setup_inline.trim = int(trim_match[trim_match.lastindex])
 
-        self._content = None
-        content_match = get_match(self._content_pattern, line)
+        content_match = get_match(setup_inline.content_pattern, line)
         if content_match and content_match.lastindex:
             regex_pattern = content_match[content_match.lastindex]
-            self._content = re.compile(regex_pattern)
+            setup_inline.content = re.compile(regex_pattern)
 
+        # choose which stop option to use.
+        # Order by;
+        #     1. default from extraction pattern settings
+        #     2. default from inline params
         self.stop = self._stop_default
-        stop_match = get_match(self._stop_pattern, line)
+        stop_match = get_match(setup_inline.stop_pattern, line)
         if stop_match and stop_match.lastindex:
             regex_pattern = stop_match[stop_match.lastindex]
             self.stop = re.compile(regex_pattern)
 
+        self.inline = setup_inline
+
     def get_filename(self) -> str:
         """Returns the filename if defined in start arguments."""
-        return self._filename
+        return self.inline.filename
 
     def replace_line(self, line: str) -> str:
         """Apply the specified replacements to the line and return it."""
         # Process trimming
-        if self._trim:
-            line = line[self._trim:]
+        if self.inline.trim:
+            line = line[self.inline.trim:]
         # Process inline content regex
-        if self._content:
-            match_object = get_match(self._content, line)
+        if self.inline.content:
+            match_object = get_match(self.inline.content, line)
             if match_object.lastindex:
                 return match_object[match_object.lastindex]
         # Preform replace operations

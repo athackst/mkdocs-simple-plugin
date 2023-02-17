@@ -329,7 +329,8 @@ class SimplePlugin(BasePlugin):
         # watch the original docs/ directory
         if os.path.exists(self.orig_docs_dir):
             server.watch(self.orig_docs_dir)
-        server.watch(self.config["build_docs_dir"])
+        # don't watch the build directory
+        server.unwatch(self.config["build_docs_dir"])
 
         # watch all the doc files
         for path in self.paths:

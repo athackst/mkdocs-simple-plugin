@@ -1,9 +1,5 @@
 FROM python:3.11
 
-ENV VIRTUAL_ENV=/opt/venv
-RUN python3 -m venv $VIRTUAL_ENV
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-
 RUN apt-get update && apt-get -y install --no-install-recommends bats gcc \
   git \
   git-lfs \
@@ -14,8 +10,7 @@ RUN apt-get update && apt-get -y install --no-install-recommends bats gcc \
   libjpeg-dev \
   libpng-dev \
   libz-dev \
-  && pip install --upgrade pip \
-  && pip install --no-cache-dir mkdocs-material mike pillow cairosvg
+  vim
 
 WORKDIR /tmp
 COPY mkdocs_simple_plugin mkdocs_simple_plugin
@@ -24,11 +19,9 @@ COPY VERSION VERSION
 COPY setup.py setup.py
 COPY pyproject.toml pyproject.toml
 
-RUN pip install --no-cache-dir . \
-  && rm -rf /tmp/*
-
-RUN git config --global --add safe.directory /docs &&\
-    git config --global --add safe.directory /site
+RUN pip install --upgrade pip \
+ && pip install --no-cache-dir . \
+ && pip install --no-cache-dir mkdocs-material mike pillow cairosvg
 
 WORKDIR /docs
 

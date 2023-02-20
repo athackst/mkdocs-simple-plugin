@@ -1,14 +1,15 @@
 site_name: athackst/mkdocs-simple-plugin
-docs_dir: /tmp/mkdocs-simple/mkdocs-simple-plugin
+docs_dir: docs
 plugins:
-  - simple:
-      build_docs_dir: /tmp/mkdocs-simple/mkdocs-simple-plugin
+  - simple
   - awesome-pages
   - macros
   - search
   - social
   - mike:
       canonical_version: latest
+  - git-revision-date-localized:
+      fallback_to_build_date: true
 edit_uri: ''
 site_url: https://www.althack.dev/mkdocs-simple-plugin/
 site_dir: site
@@ -45,29 +46,3 @@ extra:
     property: G-VPNW28KW9L
   version:
     provider: mike
-nav:
-  - About: README.md
-  - Mkdocs Simple Generator: mkdocs_simple_plugin/generator.md
-  - Mkdocs Simple Plugin: mkdocs_simple_plugin/plugin.md
-  - Github Action: action.md
-  - Docker: docker/README.md
-  - Examples:
-      - Simple readme: examples/ok-mkdocs-readme/README.md
-      - Extra extensions: examples/ok-mkdocs-docs-extensions/README.md
-      - Ignore a folder: examples/ok-mkdocs-docs-ignore/README.md
-      - Ignore with .mkdocsignore: examples/ok-mkdocsignore/README.md
-      - Only include a specific folder: examples/ok-mkdocs-docs-include/README.md
-      - Merge into docs folder: examples/ok-mkdocs-docs-merge/README.md
-      - Don't merge docs folder: examples/ok-mkdocs-docs-no-merge/README.md
-      - Rename a file: examples/ok-with-rename/README.md
-      - Extract docs from source: examples/ok-source-extract/README.md
-      - Extract with inline settings: examples/ok-mkdocs-inline-settings/README.md
-      - Extract front matter: examples/ok-mkdocs-custom-extract/README.md
-      - Advanced replacement: examples/ok-source-replace/README.md
-      - Ignore extraction: examples/ok-mkdocs-ignore-file/README.md
-      - Embed macros: examples/ok-with-macros/README.md
-      - Embed mkdocstrings: examples/ok-with-mkdocstrings/README.md
-      - Embed snippets: examples/ok-source-with-snippet/README.md
-  - Developers:
-      - Package Guide: mkdocs_simple_plugin/README.md
-      - Contributing Guide: CONTRIBUTING.md

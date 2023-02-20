@@ -19,3 +19,4 @@ pymdown-extensions==10.0.1
 PyYAML==6.0
 hatch==1.7.0
 typing-extensions==4.6.3
+mkdocs-git-revision-date-localized-plugin

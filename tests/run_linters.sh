@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 pip install flake8 pydocstyle
-# md file="test.snippet" content="^#?\s?(.*)"
+# md file="linters.snippet" content="^#?\s?(.*)"
 # ### Lint
 # 
 # Linting helps maintain style consistency.  This package follows the [google 

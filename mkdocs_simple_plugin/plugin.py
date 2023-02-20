@@ -88,7 +88,6 @@ mkdocs serve
 
 """
 import os
-import shutil
 import tempfile
 import time
 import yaml
@@ -286,29 +285,34 @@ class SimplePlugin(BasePlugin):
         config_site_dir = get_config_site_dir(config.config_file_path)
 
         # Set the build docs dir to tmp location if not set by user
-        if not self.config['build_docs_dir']:
+        if not self.config['build_docs_dir'] and self.config['merge_docs_dir']:
+            self.config['build_docs_dir'] = config['docs_dir']
+        else:
             self.config['build_docs_dir'] = self.tmp_build_docs_dir
 
         utils.log.info(
             "mkdocs-simple-plugin: build_docs_dir: %s",
             self.config['build_docs_dir'])
 
-        # Clean out build folder on config
-        if not self.dirty:
-            shutil.rmtree(self.config['build_docs_dir'], ignore_errors=True)
+        # Create build directory
         os.makedirs(self.config['build_docs_dir'], exist_ok=True)
-
+        # Save original docs directory location
+        self.orig_docs_dir = config['docs_dir']
+        # Update the docs_dir with our temporary one if not merging
+        if not self.config['merge_docs_dir']:
+            config['docs_dir'] = self.config['build_docs_dir']
         # Add all markdown extensions to include list
         self.config['include_extensions'] = list(utils.markdown_extensions) + \
             self.config['include_extensions']
 
         # Always ignore the output paths
         self.config["ignore_paths"] = [
-            config_site_dir,
-            config['site_dir'],
-            self.config['build_docs_dir']]
+            os.path.abspath(config_site_dir),
+            os.path.abspath(config['site_dir']),
+            os.path.abspath(self.config['build_docs_dir'])]
         if self.config['merge_docs_dir']:
-            self.config["ignore_paths"].append(config['docs_dir'])
+            self.config["ignore_paths"].append(
+                os.path.abspath(config['docs_dir']))
         return config
 
     def on_files(self, files: Files, *, config):
@@ -324,24 +328,32 @@ class SimplePlugin(BasePlugin):
             # If not merging, remove files that are from the docs dir
             # pylint: disable=protected-access
             for file in files._files[:]:
-                relpath = os.path.relpath(file.abs_src_path, config['docs_dir'])
-                if not relpath.startswith(".."):
+                if file.abs_src_path.startswith(
+                        os.path.abspath(config['docs_dir'])):
                     files.remove(file)
+
+        dedupe_files = {}
+        for file in files:
+            dedupe_files[file.abs_dest_path] = file
 
         for path in self.paths:
             file = File(
                 src_dir=os.path.abspath(path.output_root),
                 path=path.output_relpath,
                 dest_dir=config.site_dir,
-                use_directory_urls=True
+                use_directory_urls=config["use_directory_urls"]
             )
+            if file.abs_dest_path in dedupe_files:
+                files.remove(dedupe_files[file.abs_dest_path])
             files.append(file)
         return files
 
     def on_serve(self, server, *, config, builder):
         """Add files to watch server."""
         # don't watch the build directory
-        server.unwatch(self.config["build_docs_dir"])
+        # pylint: disable=protected-access
+        if self.config["build_docs_dir"] in server._watched_paths:
+            server.unwatch(self.config["build_docs_dir"])
 
         # watch all the doc files
         for path in self.paths:

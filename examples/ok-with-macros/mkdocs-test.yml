@@ -10,6 +10,5 @@ plugins:
               - ".yml"
     - macros:
           verbose: True
-          include_dir: "."
 extra:
     test: True

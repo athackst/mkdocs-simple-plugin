@@ -14,6 +14,7 @@ plugins:
 
 ```
 ok-mkdocs-docs-merge/
+├── clean.sh
 ├── docs/
 │   ├── draft.md
 │   └── index.md

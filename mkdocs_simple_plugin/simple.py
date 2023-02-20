@@ -94,7 +94,7 @@ class Simple():
 
         # Check if its an internally required ignore path
         for ignored in self.ignore_paths:
-            if ignored in os.path.abspath(path):
+            if os.path.abspath(path).startswith(ignored):
                 return True
 
         # Update ignore patterns from .mkdocsignore file
@@ -196,7 +196,7 @@ class Simple():
                         output_relpath=os.path.relpath(path=file, start="."),
                         input_path=file)
                 )
-                utils.log.info("mkdocs-simple-plugin: Added %s...", file)
+                utils.log.info("mkdocs-simple-plugin: Added %s", file)
                 continue
 
             extracted_paths = self.try_extract(from_dir, name, build_prefix)
@@ -209,7 +209,7 @@ class Simple():
                             start=self.build_dir),
                         input_path=file))
                 utils.log.info(
-                    "mkdocs-simple-plugin: Added %s->%s...", file, path)
+                    "mkdocs-simple-plugin: Added %s->%s", file, path)
             if extracted_paths:
                 continue
 
@@ -237,7 +237,11 @@ class Simple():
         Returns true if file copied.
         """
         original = os.path.join(from_dir, name)
+        destination = os.path.join(to_dir, name)
 
         if not self.should_copy_file(os.path.join(from_dir, name)):
             return []
-        return list(original)
+
+        os.makedirs(to_dir, exist_ok=True)
+        copy(original, destination)
+        return [original]

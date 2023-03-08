@@ -388,8 +388,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#unit-tests" class="md-nav__link">
-    Unit tests
+  <a href="#integration-tests" class="md-nav__link">
+    Integration tests
   </a>
   
 </li>
@@ -801,8 +801,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#unit-tests" class="md-nav__link">
-    Unit tests
+  <a href="#integration-tests" class="md-nav__link">
+    Integration tests
   </a>
   
 </li>
@@ -882,14 +882,19 @@ pip<span class="w"> </span>install<span class="w"> </span>--user<span class="w">
 <div class="highlight"><pre><span></span><code>mkdocs_simple_gen<span class="w"> </span>--build<span class="w"> </span>--<span class="w"> </span>--verbose
 </code></pre></div></p>
 <h2 id="testing">Testing</h2>
-<h3 id="unit-tests">Unit tests</h3>
-<p>Unit tests help ensure individual functions perform as expected.  Unit tests
-in this module use the the standard python unittest framework.
-<div class="highlight"><pre><span></span><code>./tests/run_unit_tests.sh
+<h3 id="integration-tests">Integration tests</h3>
+<p>Integration testing allows the plugin to be tested with mkdocs using example
+configurations.
+Integration testing uses bats, install it with
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>bats
+</code></pre></div>
+Then run the tests
+<div class="highlight"><pre><span></span><code>./tests/run_integration_tests.sh
 </code></pre></div></p>
 <details>
 <summary>Code</summary>
-<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w"> </span>tests/test_*.py
+<div class="highlight"><pre><span></span><code>./examples/gen_readme.py
+./tests/integration_test.bats
 </code></pre></div>
 </details>
 

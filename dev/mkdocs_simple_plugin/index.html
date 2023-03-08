@@ -21,7 +21,7 @@
         <link rel="next" href="../action/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.0">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.1">
     
     
       
@@ -388,8 +388,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#integration-tests" class="md-nav__link">
-    Integration tests
+  <a href="#unit-tests" class="md-nav__link">
+    Unit tests
   </a>
   
 </li>
@@ -801,8 +801,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#integration-tests" class="md-nav__link">
-    Integration tests
+  <a href="#unit-tests" class="md-nav__link">
+    Unit tests
   </a>
   
 </li>
@@ -882,19 +882,14 @@ pip<span class="w"> </span>install<span class="w"> </span>--user<span class="w">
 <div class="highlight"><pre><span></span><code>mkdocs_simple_gen<span class="w"> </span>--build<span class="w"> </span>--<span class="w"> </span>--verbose
 </code></pre></div></p>
 <h2 id="testing">Testing</h2>
-<h3 id="integration-tests">Integration tests</h3>
-<p>Integration testing allows the plugin to be tested with mkdocs using example
-configurations.
-Integration testing uses bats, install it with
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>bats
-</code></pre></div>
-Then run the tests
-<div class="highlight"><pre><span></span><code>./tests/run_integration_tests.sh
+<h3 id="unit-tests">Unit tests</h3>
+<p>Unit tests help ensure individual functions perform as expected.  Unit tests
+in this module use the the standard python unittest framework.
+<div class="highlight"><pre><span></span><code>./tests/run_unit_tests.sh
 </code></pre></div></p>
 <details>
 <summary>Code</summary>
-<div class="highlight"><pre><span></span><code>./examples/gen_readme.py
-./tests/integration_test.bats
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w"> </span>tests/test_*.py
 </code></pre></div>
 </details>
 
@@ -992,7 +987,7 @@ Then run the tests
     <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.ce72ebac.min.js"></script>
+      <script src="../assets/javascripts/bundle.b78d2936.min.js"></script>
       
     
   </body>

@@ -58,7 +58,9 @@
     ],
     "yaml.customTags": [
         "tag:yaml.org,2002:python/name:materialx.emoji.twemoji",
-        "tag:yaml.org,2002:python/name:materialx.emoji.to_svg"
+        "tag:yaml.org,2002:python/name:materialx.emoji.to_svg",
+        "tag:yaml.org,2002:python/name:pymdownx.emoji.gemoji",
+        "tag:yaml.org,2002:python/name:pymdownx.emoji.to_png"
     ],
     "python.testing.unittestEnabled": true,
     "python.testing.unittestArgs": [

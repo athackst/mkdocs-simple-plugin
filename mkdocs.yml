@@ -10,6 +10,7 @@ plugins:
       canonical_version: latest
 edit_uri: ''
 site_url: https://www.althack.dev/mkdocs-simple-plugin/
+site_dir: site
 repo_url: https://github.com/athackst/mkdocs-simple-plugin
 theme:
   name: material

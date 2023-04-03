@@ -17,4 +17,4 @@ pydocstyle==6.3.0
 pyfakefs==5.2.0
 pymdown-extensions==9.10
 PyYAML==6.0
-hatch==1.6.3
+hatch==1.7.0

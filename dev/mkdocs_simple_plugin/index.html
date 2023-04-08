@@ -388,8 +388,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#lint" class="md-nav__link">
-    Lint
+  <a href="#unit-tests" class="md-nav__link">
+    Unit tests
   </a>
   
 </li>
@@ -801,8 +801,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#lint" class="md-nav__link">
-    Lint
+  <a href="#unit-tests" class="md-nav__link">
+    Unit tests
   </a>
   
 </li>
@@ -882,18 +882,14 @@ pip<span class="w"> </span>install<span class="w"> </span>--user<span class="w">
 <div class="highlight"><pre><span></span><code>mkdocs_simple_gen<span class="w"> </span>--build<span class="w"> </span>--<span class="w"> </span>--verbose
 </code></pre></div></p>
 <h2 id="testing">Testing</h2>
-<h3 id="lint">Lint</h3>
-<p>Linting helps maintain style consistency.  This package follows the <a href="https://google.github.io/styleguide/pyguide.html">google 
-style guide</a>.  Conformity
-is enforced with flake8 and pydodstyle.
-<div class="highlight"><pre><span></span><code>./tests/run_linters.sh
+<h3 id="unit-tests">Unit tests</h3>
+<p>Unit tests help ensure individual functions perform as expected.  Unit tests
+in this module use the the standard python unittest framework.
+<div class="highlight"><pre><span></span><code>./tests/run_unit_tests.sh
 </code></pre></div></p>
 <details>
 <summary>Code</summary>
-<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Running flake8 linter --------&gt;&quot;</span>
-flake8<span class="w"> </span>--count<span class="w"> </span>.
-<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Running pydocstyle&quot;</span>
-pydocstyle<span class="w"> </span>--count<span class="w"> </span>.
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w"> </span>tests/test_*.py
 </code></pre></div>
 </details>
 

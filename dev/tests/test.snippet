@@ -1,12 +1,16 @@
-### Unit tests
-Unit tests help ensure individual functions perform as expected.  Unit tests
-in this module use the the standard python unittest framework.
+### Lint
+Linting helps maintain style consistency.  This package follows the [google 
+style guide](https://google.github.io/styleguide/pyguide.html).  Conformity
+is enforced with flake8 and pydodstyle.
 ```bash
-./tests/run_unit_tests.sh
+./tests/run_linters.sh
 ```
 <details>
 <summary>Code</summary>
 ```bash
-python3 -m unittest tests/test_*.py
+echo "Running flake8 linter -------->"
+flake8 --count .
+echo "Running pydocstyle"
+pydocstyle --count .
 ```
 </details>

@@ -7,7 +7,7 @@ mike==1.1.2
 mkdocs-awesome-pages-plugin==2.9.1
 mkdocs-click==0.8.0
 mkdocs-macros-plugin==0.7.0
-mkdocs-material==9.1.9
+mkdocs-material==9.1.12
 mkdocs==1.4.3
 mkdocstrings-python-legacy==0.2.3
 mkdocstrings==0.21.2

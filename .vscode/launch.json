@@ -60,7 +60,7 @@
             "name": "mkdocs_simple_gen",
             "type": "python",
             "request": "launch",
-            "program": "/home/vscode/.local/bin/mkdocs_simple_gen",
+            "program": "${workspaceFolder}/mkdocs_simple_plugin/generator.py",
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal"
         },

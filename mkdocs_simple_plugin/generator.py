@@ -27,6 +27,7 @@ pip install mkdocs-simple-plugin
 """
 import os
 import tempfile
+import sys
 
 import click
 import yaml
@@ -120,7 +121,8 @@ def setup_config(config_file="mkdocs.yml"):
         except yaml.YAMLError as exc:
             print(exc)
             raise
-    write_config(config_file, config)
+    if config != local_config:
+        write_config(config_file, config)
     return config
 
 
@@ -146,4 +148,4 @@ if __name__ == "__main__":
     # pylint doesn't know how to parse the click decorators,
     # so disable no-value-for-parameter on main
     # pylint: disable=no-value-for-parameter
-    main(['--help'])
+    main(sys.argv)

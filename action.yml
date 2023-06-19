@@ -2,7 +2,7 @@
 # ## Deploy from GitHub Actions
 # 
 # Create a YAML file with the following contents in the `.github/workflows` directory in your repository
-# 
+# {% raw %}
 # ```yaml
 # jobs:
 #   docs:
@@ -45,7 +45,7 @@
 #           path: ${{ steps.mkdocs.outputs.artifact }}
 #           retention-days: 1
 # ```
-# 
+# {% endraw %}
 # /md
 name: "MkDocs Simple action"
 description: "Generate a configuration free mkdocs site"

@@ -8,4 +8,4 @@ dist/
 .cache
 venv/
 docs/
-site.tar
+artifact.tar

@@ -17,7 +17,6 @@ INPUT_CONFIG=${INPUT_CONFIG:-"mkdocs.yml"}
 echo "config: ${INPUT_CONFIG}"
 INPUT_PUSH=${INPUT_PUSH:-"true"}
 echo "push: ${INPUT_PUSH}"
-RUNNER_TEMP=${RUNNTER_TEMP:-"$PWD"}
 
 mkdocs_simple_gen --config-file ${INPUT_CONFIG}
 
@@ -48,9 +47,9 @@ chmod -c -R +rX "$INPUT_SITE_DIR" | while read line; do
     echo "::warning title=Invalid file permissions automatically fixed::$line"
 done
 # Create a tar the resulting files
-echo "Creating tar file $INPUT_SITE_DIR.tar"
-tar -cvf "$INPUT_SITE_DIR.tar" $INPUT_SITE_DIR
+echo "Creating tar file artifact.tar from $INPUT_SITE_DIR"
+tar -cvf "artifact.tar" -C $INPUT_SITE_DIR .
 
 if [ $GITHUB_OUTPUT ]; then
-    echo "ARTIFACT=$INPUT_SITE_DIR.tar" >> $GITHUB_OUTPUT
+    echo "ARTIFACT=artifact.tar" >> $GITHUB_OUTPUT
 fi

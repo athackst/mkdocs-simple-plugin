@@ -3,18 +3,12 @@ set -e
 
 git config --global --add safe.directory /docs
 
-PIP_OPTS=''
-
-if [ "$UID" -ne 0 ]; then
-  PIP_OPTS="--user"
-fi
-
-pip install ${PIP_OPTS} --upgrade pip
-pip install ${PIP_OPTS} /opt/mkdocs-simple-plugin
-pip install ${PIP_OPTS} mkdocs-material mike pillow cairosvg
-
 if [ -f "requirements.txt" ]; then
-    pip install ${PIP_OPTS} -r requirements.txt
+  if [ "$UID" -eq 0 ]; then
+    pip install -r requirements.txt
+  else
+    pip install --user -r requirements.txt
+  fi
 fi
 
 exec "$@"

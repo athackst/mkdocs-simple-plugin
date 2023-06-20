@@ -2,7 +2,7 @@
 # ## Deploy from GitHub Actions
 # 
 # Create a YAML file with the following contents in the `.github/workflows` directory in your repository
-# 
+# {% raw %}
 # ```yaml
 # jobs:
 #   docs:
@@ -11,6 +11,7 @@
 #       - name: Checkout
 #         uses: actions/checkout@v2
 #       - name: Build docs
+#         id: mkdocs
 #         uses: athackst/mkdocs-simple-plugin
 #         with:
 #           # (optional) Specify branch 
@@ -36,7 +37,15 @@
 #           default_version: latest
 #           # (optional) Whether to push the docs to the remote branch
 #           push: 1
+#       - name: Upload artifact
+#         uses: actions/upload-artifact@main
+#         with:
+#           name: 'github-pages'
+#           # Get the filename of the artifact created by the action
+#           path: ${{ steps.mkdocs.outputs.artifact }}
+#           retention-days: 1
 # ```
+# {% endraw %}
 # /md
 name: "MkDocs Simple action"
 description: "Generate a configuration free mkdocs site"
@@ -85,6 +94,9 @@ inputs:
     description: "Push to remote"
     required: false
     default: "true"
+outputs:
+  artifact:
+    description: "Compressed tar file of the site directory"
 runs:
   using: "docker"
   image: "Dockerfile"

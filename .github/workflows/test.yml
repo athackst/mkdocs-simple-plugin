@@ -46,10 +46,11 @@ jobs:
           key: ${{ github.ref }}
           path: .cache
       - name: Build dev docs
+        id: mkdocs
         uses: ./
         with:
           push: false
-      - name: whats happening
+      - name: Check output
         run: |
           tree
       - name: Test html
@@ -63,3 +64,9 @@ jobs:
             ^\/latest:
       - name: Check for diffs
         run: git diff --exit-code
+      - name: Upload artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: 'github-pages'
+          path: ${{ steps.mkdocs.outputs.artifact }}
+          retention-days: 1

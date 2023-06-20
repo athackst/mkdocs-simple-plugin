@@ -10,6 +10,14 @@ CYAN='\033[00;36m'
 git config --global --add safe.directory /github/workspace
 
 echo -e "${CYAN}Building docs${UNSET}"
+
+INPUT_SITE_DIR=${INPUT_SITE_DIR:-"site"}
+echo "site_dir: ${INPUT_SITE_DIR}"
+INPUT_CONFIG=${INPUT_CONFIG:-"mkdocs.yml"}
+echo "config: ${INPUT_CONFIG}"
+INPUT_PUSH=${INPUT_PUSH:-"true"}
+echo "push: ${INPUT_PUSH}"
+
 mkdocs_simple_gen --config-file ${INPUT_CONFIG}
 
 if [[ "${INPUT_PUSH}" == "1" || "${INPUT_PUSH,,}" == "true" ]]; then
@@ -32,4 +40,16 @@ if [[ "${INPUT_PUSH}" == "1" || "${INPUT_PUSH,,}" == "true" ]]; then
     fi
 else 
     mkdocs build --config-file ${INPUT_CONFIG}
+fi
+
+# Set permissions
+chmod -c -R +rX "$INPUT_SITE_DIR" | while read line; do
+    echo "::warning title=Invalid file permissions automatically fixed::$line"
+done
+# Create a tar the resulting files
+echo "Creating tar file artifact.tar from $INPUT_SITE_DIR"
+tar -cvf "artifact.tar" -C $INPUT_SITE_DIR .
+
+if [ $GITHUB_OUTPUT ]; then
+    echo "ARTIFACT=artifact.tar" >> $GITHUB_OUTPUT
 fi

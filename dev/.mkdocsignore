@@ -1,0 +1,8 @@
+venv
+.devcontainer
+.github
+.vscode
+**/__pycache__
+.git
+*.egg-info
+.cache

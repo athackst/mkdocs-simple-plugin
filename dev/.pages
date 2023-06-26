@@ -1,0 +1,10 @@
+nav:
+    - About: README.md
+    - Mkdocs Simple Generator: mkdocs_simple_plugin/generator
+    - Mkdocs Simple Plugin: mkdocs_simple_plugin/plugin
+    - Github Action: action.md
+    - Docker: docker
+    - Examples: examples
+    - Developers:
+        - Package Guide: mkdocs_simple_plugin/
+        - Contributing Guide: CONTRIBUTING.md

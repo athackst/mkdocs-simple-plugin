@@ -15,10 +15,10 @@
         <link rel="canonical" href="https://www.althack.dev/mkdocs-simple-plugin/latest/mkdocs_simple_plugin/plugin/">
       
       
-        <link rel="prev" href="../generator/">
+        <link rel="prev" href="../">
       
       
-        <link rel="next" href="../">
+        <link rel="next" href="../generator/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.16">
@@ -275,328 +275,26 @@
 
   
   
-    
-  
-  
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-      
-      
-      
-      
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
-      
-      
-      
-        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
-          Mkdocs Simple
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
-        <label class="md-nav__title" for="__nav_2">
-          <span class="md-nav__icon md-icon"></span>
-          Mkdocs Simple
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-              
-  
-  
   
     <li class="md-nav__item">
-      <a href="../generator/" class="md-nav__link">
+      <a href="../generator" class="md-nav__link">
         Mkdocs Simple Generator
       </a>
     </li>
   
 
-            
-          
-            
-              
-  
-  
     
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
-        
       
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Mkdocs Simple Plugin
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        Mkdocs Simple Plugin
-      </a>
-      
-        
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    Installation
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
-    Usage
-  </a>
-  
-    <nav class="md-nav" aria-label="Usage">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#example-usage-defaults" class="md-nav__link">
-    Example usage (defaults)
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#inline-parameters" class="md-nav__link">
-    Inline parameters
-  </a>
-  
-    <nav class="md-nav" aria-label="Inline parameters">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#set-output-file-name" class="md-nav__link">
-    Set output file name
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#trim-the-front-of-a-line" class="md-nav__link">
-    Trim the front of a line
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#capture-content" class="md-nav__link">
-    Capture content
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#stop-capture" class="md-nav__link">
-    Stop capture
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ignoring-files" class="md-nav__link">
-    Ignoring files
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#default-settings" class="md-nav__link">
-    Default settings
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#configuration-scheme" class="md-nav__link">
-    Configuration scheme
-  </a>
-  
-    <nav class="md-nav" aria-label="Configuration scheme">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#include_folders" class="md-nav__link">
-    include_folders
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ignore_folders" class="md-nav__link">
-    ignore_folders
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ignore_hidden" class="md-nav__link">
-    ignore_hidden
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#merge_docs_dir" class="md-nav__link">
-    merge_docs_dir
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#build_docs_dir" class="md-nav__link">
-    build_docs_dir
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#include_extensions" class="md-nav__link">
-    include_extensions
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#semiliterate" class="md-nav__link">
-    semiliterate
-  </a>
-  
-    <nav class="md-nav" aria-label="semiliterate">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pattern" class="md-nav__link">
-    pattern
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#destination" class="md-nav__link">
-    destination
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#terminate" class="md-nav__link">
-    terminate
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#extract" class="md-nav__link">
-    extract
-  </a>
-  
-    <nav class="md-nav" aria-label="extract">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#start" class="md-nav__link">
-    start
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#stop" class="md-nav__link">
-    stop
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#replace" class="md-nav__link">
-    replace
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#build" class="md-nav__link">
-    Build
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#run-a-local-server" class="md-nav__link">
-    Run a local server
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-            
-          
-            
-              
   
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
-        Developing
+      <a href="." class="md-nav__link">
+        Mkdocs Simple Plugin
       </a>
-    </li>
-  
-
-            
-          
-        </ul>
-      </nav>
     </li>
   
 
@@ -624,7 +322,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../docker/" class="md-nav__link">
+      <a href="../../docker" class="md-nav__link">
         Docker
       </a>
     </li>
@@ -644,17 +342,17 @@
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
       
       
       
-        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
           Examples
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
-        <label class="md-nav__title" for="__nav_5">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6">
           <span class="md-nav__icon md-icon"></span>
           Examples
         </label>
@@ -897,10 +595,58 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          Developers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Developers
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        Package Guide
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
       <a href="../../CONTRIBUTING/" class="md-nav__link">
         Contributing Guide
       </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -1390,6 +1136,17 @@ are checked.</p>
 documentation site locally.</p>
 <div class="highlight"><pre><span></span><code>mkdocs<span class="w"> </span>serve
 </code></pre></div>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Last update:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">June 26, 2023</span>
+      
+    
+  </small>
+</div>
 
 
   

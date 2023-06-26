@@ -1,5 +1,5 @@
 site_name: athackst/mkdocs-simple-plugin
-docs_dir: /tmp/mkdocs-simple/mkdocs-simple-plugin
+docs_dir: docs
 plugins:
   - simple
   - awesome-pages
@@ -8,6 +8,8 @@ plugins:
   - social
   - mike:
       canonical_version: latest
+  - git-revision-date-localized:
+      fallback_to_build_date: true
 edit_uri: ''
 site_url: https://www.althack.dev/mkdocs-simple-plugin/
 site_dir: site

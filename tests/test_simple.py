@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 """Test mkdocs_simple_plugin.simple"""
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 import stat
 import os
-import shutil
 
 from pyfakefs.fake_filesystem_unittest import TestCase
 
@@ -258,7 +257,11 @@ class TestSimple(TestCase):
         simple_test.include_folders = set(["foo/"])
         simple_test.copy_glob = set(["*.md", ".pages"])
 
-        paths = simple_test.build_docs()
+        paths = []
+        built_paths = simple_test.build_docs()
+        for path in built_paths:
+            paths.append(os.path.normpath(path.input_path))
+
         self.assertIn("foo/baz.md", paths)
         self.assertIn("foo/bar/eggs.md", paths)
         self.assertIn("foo/.pages", paths)
@@ -274,38 +277,54 @@ class TestSimple(TestCase):
 
         test_filename = "foo/bar.md"
         self.fs.create_file(test_filename)
-        built_filename = "/build_dir/foo/bar.md"
-        mock_copy = MagicMock(spec=shutil.copy2)
-        with patch('mkdocs_simple_plugin.simple.copy',
-                   mock_copy,
-                   create=True) as patched:
-            self.assertIs(patched, mock_copy)
-            simple_test.build_docs(dirty=True, last_build_time=0)
-        mock_copy.assert_called()
+        # Run build and make sure the file shows up in paths
+        input_paths = []
+        output_paths = []
+        built_paths = simple_test.build_docs(dirty=True, last_build_time=0)
+        for path in built_paths:
+            input_paths.append(os.path.normpath(path.input_path))
+            output_paths.append(
+                os.path.normpath(
+                    os.path.join(
+                        path.output_root,
+                        path.output_relpath)))
+        self.assertIn("foo/bar.md", input_paths)
+        self.assertIn("foo/bar.md", output_paths)
 
         # Run again, but this time set the last build time
-        self.fs.create_file(built_filename)
-        dest_time = os.path.getmtime(built_filename)
-        # Check that the file was not copied since the destination is the same
-        mock_copy = MagicMock(spec=shutil.copy2)
-        with patch('mkdocs_simple_plugin.simple.copy',
-                   mock_copy,
-                   create=True) as patched:
-            self.assertIs(patched, mock_copy)
-            simple_test.build_docs(dirty=True, last_build_time=dest_time)
-        mock_copy.assert_not_called()
+        dest_time = os.path.getmtime(test_filename)
+        input_paths = []
+        output_paths = []
+        built_paths = simple_test.build_docs(dirty=True,
+                                             last_build_time=dest_time)
+        for path in built_paths:
+            input_paths.append(os.path.normpath(path.input_path))
+            output_paths.append(
+                os.path.normpath(
+                    os.path.join(
+                        path.output_root,
+                        path.output_relpath)))
+        # Check that no files were updated
+        self.assertEqual([], input_paths)
+        self.assertEqual([], output_paths)
 
         # Update the file
-        with open(test_filename, 'w') as f:
-            f.write('Modified!')
-        # Check that the file was copied
-        mock_copy = MagicMock(spec=shutil.copy2)
-        with patch('mkdocs_simple_plugin.simple.copy',
-                   mock_copy,
-                   create=True) as patched:
-            self.assertIs(patched, mock_copy)
-            simple_test.build_docs(dirty=True, last_build_time=dest_time)
-        mock_copy.assert_called()
+        with open(test_filename, 'w') as file:
+            file.write('Modified!')
+        # Check that the file was built
+        input_paths = []
+        output_paths = []
+        built_paths = simple_test.build_docs(dirty=True,
+                                             last_build_time=dest_time)
+        for path in built_paths:
+            input_paths.append(os.path.normpath(path.input_path))
+            output_paths.append(
+                os.path.normpath(
+                    os.path.join(
+                        path.output_root,
+                        path.output_relpath)))
+        self.assertIn("foo/bar.md", input_paths)
+        self.assertIn("foo/bar.md", output_paths)
 
     def test_build_docs_dirty_extract(self):
         """Test dirty build of doc extraction."""
@@ -327,7 +346,11 @@ class TestSimple(TestCase):
         # Get the modification time of the original file
         src_time = os.path.getmtime(test_filename)
 
-        paths = simple_test.build_docs(dirty=True, last_build_time=0)
+        paths = []
+        built_paths = simple_test.build_docs(dirty=True, last_build_time=0)
+        for path in built_paths:
+            paths.append(os.path.normpath(path.input_path))
+
         # Check that the file was built
         self.assertIn(test_filename, paths)
         # Check that the output file exists
@@ -336,11 +359,15 @@ class TestSimple(TestCase):
         dest_time = os.path.getmtime(built_filename)
         # Check that the time is newer
         self.assertLess(src_time, dest_time)
-        with open(built_filename, 'r') as f:
-            self.assertEqual(f.read(), "Hello, world!\n")
+        with open(built_filename, 'r') as file:
+            self.assertEqual(file.read(), "Hello, world!\n")
 
         # Run again, but this time set the last build time
-        paths = simple_test.build_docs(dirty=True, last_build_time=dest_time)
+        paths = []
+        built_paths = simple_test.build_docs(dirty=True,
+                                             last_build_time=dest_time)
+        for path in built_paths:
+            paths.append(os.path.normpath(path.input_path))
         # Check that the file was not built
         self.assertNotIn(test_filename, paths)
         # Check that the file still exists in the output
@@ -349,14 +376,18 @@ class TestSimple(TestCase):
         dirty_time = os.path.getmtime(built_filename)
         # Check that it is the same as the previous
         self.assertEqual(dest_time, dirty_time)
-        with open(built_filename, 'r') as f:
-            self.assertEqual(f.read(), "Hello, world!\n")
+        with open(built_filename, 'r') as file:
+            self.assertEqual(file.read(), "Hello, world!\n")
 
         # Update a fake file
-        with open(test_filename, 'w') as f:
-            f.write('Modified!')
+        with open(test_filename, 'w') as file:
+            file.write('Modified!')
 
-        paths = simple_test.build_docs(dirty=True, last_build_time=dirty_time)
+        paths = []
+        built_paths = simple_test.build_docs(dirty=True,
+                                             last_build_time=dirty_time)
+        for path in built_paths:
+            paths.append(os.path.normpath(path.input_path))
         # Check that path was built
         self.assertIn(test_filename, paths)
         # Check that destination file exists
@@ -365,16 +396,18 @@ class TestSimple(TestCase):
         modified_time = os.path.getmtime(built_filename)
         # Check that the modification time is newer
         self.assertLess(dirty_time, modified_time)
-        with open(built_filename, 'r') as f:
-            self.assertEqual(f.read(), "Modified!\n")
+        with open(built_filename, 'r') as file:
+            self.assertEqual(file.read(), "Modified!\n")
 
         # Ensure that the file is getting overwritten
         # Update a fake file
-        with open(test_filename, 'w') as f:
-            f.write('Second time!')
-
-        paths = simple_test.build_docs(
-            dirty=True, last_build_time=modified_time)
+        with open(test_filename, 'w') as file:
+            file.write('Second time!')
+        paths = []
+        built_paths = simple_test.build_docs(dirty=True,
+                                             last_build_time=modified_time)
+        for path in built_paths:
+            paths.append(os.path.normpath(path.input_path))
         # Check that path was built
         self.assertIn(test_filename, paths)
         # Check that destination file exists
@@ -383,8 +416,8 @@ class TestSimple(TestCase):
         second_time = os.path.getmtime(built_filename)
         # Check that the modification time is newer
         self.assertLess(modified_time, second_time)
-        with open(built_filename, 'r') as f:
-            self.assertEqual(f.read(), "Second time!\n")
+        with open(built_filename, 'r') as file:
+            self.assertEqual(file.read(), "Second time!\n")
 
     def test_merge_docs_copy(self):
         """Test copy_directory"""
@@ -401,8 +434,8 @@ class TestSimple(TestCase):
 
         # Create a fake file
         os.mkdir("test")
-        with open(test_filename, 'w') as f:
-            f.write('Hello, World!')
+        with open(test_filename, 'w') as file:
+            file.write('Hello, World!')
 
         # Get the modification time of the original file
         src_time = os.path.getmtime(test_filename)
@@ -418,8 +451,8 @@ class TestSimple(TestCase):
         self.assertEqual(src_time, dest_time)
 
         # Update a fake file
-        with open(test_filename, 'w') as f:
-            f.write('Modified!')
+        with open(test_filename, 'w') as file:
+            file.write('Modified!')
 
         # Get the modification time of the updated file
         updated_src_time = os.path.getmtime(test_filename)

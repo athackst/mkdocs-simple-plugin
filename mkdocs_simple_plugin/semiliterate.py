@@ -137,7 +137,7 @@ class ExtractionPattern:
         self._stop_pattern = re.compile(r"stop=[\"']?([^\"']*)[\"']?")
         # /md
 
-    def setup(self, line: str):
+    def setup(self, line: str) -> None:
         """Process input parameters."""
         self._filename = None
         file_match = get_match(self._filename_pattern, line)
@@ -204,16 +204,16 @@ class LazyFile:
         self.file_name = name
         self.file_object = None
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         """Check equality if directory and names are the same."""
         return self.file_directory == other.file_directory \
             and self.file_name == other.file_name
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return the full file path as a string."""
         return os.path.join(self.file_directory, self.file_name)
 
-    def write(self, arg: str):
+    def write(self, arg: str) -> None:
         """Create and write the file, only if not empty."""
         if not arg:
             return
@@ -223,16 +223,15 @@ class LazyFile:
             self.file_object = open(filename, 'w+')
         self.file_object.write(arg)
 
-    def close(self):
+    def close(self) -> str:
         """Finish the file."""
         if self.file_object is not None:
-            utils.log.info(
-                "        ... extracted %s",
-                os.path.join(
-                    self.file_directory,
-                    self.file_name))
+            file = os.path.join(self.file_directory, self.file_name)
+            utils.log.debug("        ... extracted %s", file)
             self.file_object.close()
             self.file_object = None
+            return file
+        return None
 
 
 class StreamExtract:
@@ -252,11 +251,12 @@ class StreamExtract:
         self.terminate = terminate
         self.patterns = patterns
         self.wrote_something = False
+        self.output_files = []
         self.streams = {
             output_stream.file_name: output_stream
         }
 
-    def transcribe(self, text: str):
+    def transcribe(self, text: str) -> None:
         """Write some text and record if something was written."""
         self.output_stream.write(text)
         if text:
@@ -277,12 +277,14 @@ class StreamExtract:
             self.transcribe(get_line(match_object[match_object.lastindex]))
         return True
 
-    def close(self) -> bool:
+    def close(self) -> list:
         """Returns true if something was written"""
-        self.output_stream.close()
-        return self.wrote_something
+        file = self.output_stream.close()
+        if file and self.wrote_something:
+            self.output_files.append(file)
+        return self.output_files
 
-    def set_output_file(self, filename: str):
+    def set_output_file(self, filename: str) -> None:
         """Set output stream from filename."""
         output_stream = self.output_stream
         if filename:
@@ -295,13 +297,13 @@ class StreamExtract:
             self.streams[filename] = output_stream
         self.set_output_stream(output_stream)
 
-    def set_output_stream(self, stream: LazyFile):
+    def set_output_stream(self, stream: LazyFile) -> None:
         """Set the output stream."""
         if self.output_stream != stream:
             self.close()
             self.output_stream = stream
 
-    def extract(self, **kwargs) -> bool:
+    def extract(self, **kwargs) -> list:
         """Extract from file with semiliterate configuration.
 
         Invoke this method to perform the extraction. Returns true if
@@ -337,7 +339,7 @@ class StreamExtract:
             self.extract_line(line, active_pattern)
         return self.close()
 
-    def extract_line(self, line: str, extraction_pattern: re.Pattern):
+    def extract_line(self, line: str, extraction_pattern: re.Pattern) -> None:
         """Copy line to the output stream, applying specified replacements."""
         line = get_line(extraction_pattern.replace_line(line))
         self.transcribe(line)
@@ -420,19 +422,19 @@ class Semiliterate:
             from_directory: str,
             from_file: str,
             destination_directory: str,
-            **kwargs) -> bool:
+            **kwargs) -> list:
         """Try to extract documentation from file with name.
 
         Returns True if extraction was successful.
         """
         to_file = self.filename_match(from_file)
         if not to_file:
-            return False
+            return []
         from_file_path = os.path.join(from_directory, from_file)
         try:
             with open(from_file_path) as original_file:
                 utils.log.debug(
-                    "mkdocs-simple-plugin: Scanning %s...", from_file)
+                    "mkdocs-simple-plugin: Scanning %s...", from_file_path)
                 extraction = StreamExtract(
                     input_stream=original_file,
                     output_stream=LazyFile(destination_directory, to_file),
@@ -441,9 +443,10 @@ class Semiliterate:
                     **kwargs)
                 return extraction.extract()
         except (UnicodeDecodeError) as error:
-            utils.log.info("mkdocs-simple-plugin: skipping  %s\n %s",
-                           from_file_path, str(error))
+            utils.log.info("mkdocs-simple-plugin: Skipped  %s", from_file_path)
+            utils.log.debug(
+                "mkdocs-simple-plugin: Error details: %s", str(error))
         except (OSError, IOError) as error:
             utils.log.error("mkdocs-simple-plugin: could not build %s\n %s",
                             from_file_path, str(error))
-        return False
+        return []

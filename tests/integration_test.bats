@@ -6,6 +6,7 @@
 
 rootDir=$(pwd)
 fixturesDir=${rootDir}/examples
+testDir=''
 
 debugger() {
     echo "--- STATUS ---"
@@ -93,12 +94,12 @@ check_site_name() {
 #
 
 teardown() {
-    for dir in ${fixturesDir}/*
-    do
-        rm -rf ${dir}/site/
-        rm -rf ${dir}/docs_/
-        rm -f mkdocs.yml
-    done
+    echo "Cleaning ${testDir}"
+    rm -rf ${testDir}/site/
+    rm -f ${testDir}/mkdocs.yml
+    if [ -f "${testDir}/clean.sh" ]; then
+        ${testDir}/clean.sh
+    fi
 }
 
 ##
@@ -106,31 +107,36 @@ teardown() {
 #
 
 @test "build an empty mkdocs site with minimal configuration" {
-    cd ${fixturesDir}/ok-empty
+    testDir=${fixturesDir}/ok-empty
+    cd ${testDir}
     assertGen
     assertEmptySite
 }
 
 @test "build an empty mkdocs site with a config" {
-    cd ${fixturesDir}/ok-mkdocs-config
+    testDir=${fixturesDir}/ok-mkdocs-config
+    cd ${testDir}
     assertGen
     assertEmptySite
 }
 
 @test "build a mkdocs site with just a docs folder" {
-    cd ${fixturesDir}/ok-mkdocs-docs
+    testDir=${fixturesDir}/ok-mkdocs-docs
+    cd ${testDir}
     assertGen
     assertValidSite
 }
 
 @test "build a mkdocs site with just a readme" {
-    cd ${fixturesDir}/ok-mkdocs-readme
+    testDir=${fixturesDir}/ok-mkdocs-readme
+    cd ${testDir}
     assertGen
     assertValidSite
 }
 
 @test "build a mkdocs site that merges docs folder and other documentation" {
-    cd ${fixturesDir}/ok-mkdocs-docs-merge
+    testDir=${fixturesDir}/ok-mkdocs-docs-merge
+    cd ${testDir}
     assertGen
     assertFileExists site/test/index.html
     assertFileExists site/draft/index.html
@@ -140,7 +146,8 @@ teardown() {
 }
 
 @test "build a mkdocs site that doesn't merge docs folder and other documentation" {
-    cd ${fixturesDir}/ok-mkdocs-docs-no-merge
+    testDir=${fixturesDir}/ok-mkdocs-docs-no-merge
+    cd ${testDir}
     assertGen
     assertFileExists site/test/index.html
     assertFileNotExists site/draft/index.html
@@ -150,14 +157,16 @@ teardown() {
 }
 
 @test "build a mkdocs site that specifies a specific folder to include" {
-    cd ${fixturesDir}/ok-mkdocs-docs-include
+    testDir=${fixturesDir}/ok-mkdocs-docs-include
+    cd ${testDir}
     assertGen
     assertFileExists site/subfolder/draft/index.html
     assertFileExists site/subfolder/index.html
 }
 
 @test "build a mkdocs site that ignores a specific folder" {
-    cd ${fixturesDir}/ok-mkdocs-docs-ignore
+    testDir=${fixturesDir}/ok-mkdocs-docs-ignore
+    cd ${testDir}
     assertGen
     assertFileNotExists site/subfolder/index.html
     assertFileNotExists site/subfolder/draft/index.html
@@ -165,13 +174,15 @@ teardown() {
 }
 
 @test "build a mkdocs site that includes extra extensions" {
-    cd ${fixturesDir}/ok-mkdocs-docs-extensions
+    testDir=${fixturesDir}/ok-mkdocs-docs-extensions
+    cd ${testDir}
     assertGen
     assertFileExists site/test.txt
 }
 
 @test "use custom extraction parameters" {
-    cd ${fixturesDir}/ok-mkdocs-custom-extract
+    testDir=${fixturesDir}/ok-mkdocs-custom-extract
+    cd ${testDir}
     assertGen
     assertValidSite
     assertFileExists site/fibo/index.html
@@ -181,7 +192,8 @@ teardown() {
 }
 
 @test "ignore site directory" {
-    cd ${fixturesDir}/ok-mkdocs-ignore-site-dir
+    testDir=${fixturesDir}/ok-mkdocs-ignore-site-dir
+    cd ${testDir}
     assertGen
     cp index.md site/test.md
     mkdocs build -d test_site
@@ -191,7 +203,8 @@ teardown() {
 }
 
 @test "build a site extracted from source files" {
-    cd ${fixturesDir}/ok-source-extract
+    testDir=${fixturesDir}/ok-source-extract
+    cd ${testDir}
     assertGen
     assertValidSite
     assertFileExists site/main/index.html
@@ -201,7 +214,8 @@ teardown() {
 }
 
 @test "build a site extracted from source with mkdocstrings" {
-    cd ${fixturesDir}/ok-with-mkdocstrings
+    testDir=${fixturesDir}/ok-with-mkdocstrings
+    cd ${testDir}
     assertGen
     assertValidSite
     assertFileExists site/module/index.html
@@ -209,14 +223,16 @@ teardown() {
 }
 
 @test "one-off file rename" {
-    cd ${fixturesDir}/ok-with-rename
+    testDir=${fixturesDir}/ok-with-rename
+    cd ${testDir}
     assertGen
     assertValidSite
     assertFileExists site/baz/index.html
 }
 
 @test "build a site extracted from source with macros" {
-    cd ${fixturesDir}/ok-with-macros
+    testDir=${fixturesDir}/ok-with-macros
+    cd ${testDir}
     assertGen
     assertValidSite
     assertParGrep example
@@ -224,7 +240,8 @@ teardown() {
 }
 
 @test "build a site extracted from source with snippet" {
-    cd ${fixturesDir}/ok-source-with-snippet
+    testDir=${fixturesDir}/ok-source-with-snippet
+    cd ${testDir}
     assertGen
     assertValidSite
     assertParGrep module
@@ -233,21 +250,24 @@ teardown() {
 }
 
 @test "build a site with custom replace" {
-    cd ${fixturesDir}/ok-source-replace
+    testDir=${fixturesDir}/ok-source-replace
+    cd ${testDir}
     assertGen
     assertValidSite
     assertParGrep module
 }
 
 @test "build a site with inline settings" {
-    cd ${fixturesDir}/ok-mkdocs-inline-settings
+    testDir=${fixturesDir}/ok-mkdocs-inline-settings
+    cd ${testDir}
     assertGen
     assertValidSite
     assertParGrep main
 }
 
 @test "ignore a file" {
-    cd ${fixturesDir}/ok-mkdocs-ignore-file
+    testDir=${fixturesDir}/ok-mkdocs-ignore-file
+    cd ${testDir}
     assertGen
     assertValidSite
     assertFileExists site/test/index.html
@@ -255,7 +275,8 @@ teardown() {
 }
 
 @test "mkdocsignore" {
-    cd ${fixturesDir}/ok-mkdocsignore
+    testDir=${fixturesDir}/ok-mkdocsignore
+    cd ${testDir}
     assertGen
     assertValidSite
     assertFileNotExists site/test/foo/index.html
@@ -267,7 +288,8 @@ teardown() {
 }
 
 @test "serve a mkdocs site" {
-    cd ${fixturesDir}/ok-mkdocs-docs
+    testDir=${fixturesDir}/ok-mkdocs-docs
+    cd ${testDir}
     assertGen
     assertValidSite
     mkdocs serve &

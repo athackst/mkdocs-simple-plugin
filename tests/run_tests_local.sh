@@ -1,5 +1,5 @@
 #!/bin/bash
-# md file="test.snippet" content="^#?\s?(.*)"
+# md file="local_tests.snippet" content="^#?\s?(.*)"
 # ### Different Python versions
 # 
 # You can even test the package with different versions of python in a container

@@ -2,7 +2,7 @@
 set -e
 pip install -e .
 pip install pyfakefs
-# md file="test.snippet" content="^#?\s?(.*)"
+# md file="unit_tests.snippet" content="^#?\s?(.*)"
 # ### Unit tests
 #
 # Unit tests help ensure individual functions perform as expected.  Unit tests

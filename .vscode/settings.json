@@ -6,6 +6,7 @@
         "autopep",
         "bdist",
         "codeql",
+        "dedupe",
         "devcontainers",
         "dockerfiles",
         "dockerhub",
@@ -15,6 +16,7 @@
         "endfor",
         "endraw",
         "fontawesome",
+        "gemoji",
         "grepout",
         "htmlproofer",
         "indentless",
@@ -43,6 +45,7 @@
         "superfences",
         "thackston",
         "twemoji",
+        "unwatch",
         "VPNW",
         "yapf",
         "yzhang"

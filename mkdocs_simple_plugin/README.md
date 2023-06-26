@@ -1,4 +1,4 @@
-# Developing
+# Package Guide
 
 ## Prerequisites
 
@@ -11,7 +11,13 @@
 
 ## Testing
  
-{% include "tests/test.snippet" %}
+{% include "tests/linters.snippet" %}
+
+{% include "tests/unit_tests.snippet" %}
+
+{% include "tests/integration_tests.snippet" %}
+
+{% include "tests/local_tests.snippet" %}
 
 ## VSCode
 

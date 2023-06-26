@@ -193,6 +193,8 @@ class GenerateExampleReadme():
 
         # cleanup
         os.system(f"rm -rf {folder}/site {folder}/mkdocs.yml")
+        if os.path.exists(f"{folder}/clean.sh"):
+            os.system(f"./{folder}/clean.sh")
 
 
 def on_startup(*args, **kwargs):

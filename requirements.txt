@@ -11,7 +11,7 @@ mkdocs-material==9.1.18
 mkdocs==1.4.3
 mkdocstrings-python-legacy==0.2.3
 mkdocstrings==0.22.0
-pillow==9.5.0
+pillow==10.0.0
 pip-upgrader==1.4.15
 pydocstyle==6.3.0
 pyfakefs==5.2.2

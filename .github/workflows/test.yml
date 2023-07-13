@@ -58,7 +58,7 @@ jobs:
         with:
           directory: "./site"
           retries: 3
-          url_swap: |
+          swap_urls: |
             ^.*althack.dev\/mkdocs-simple-plugin:
             ^\/mkdocs-simple-plugin:
             ^\/latest:

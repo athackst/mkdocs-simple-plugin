@@ -12,7 +12,7 @@ template: |
   ```
   See it on pypi: [https://pypi.org/project/mkdocs-simple-plugin](https://pypi.org/project/mkdocs-simple-plugin/$RESOLVED_VERSION/)
 
-  ## Docker 
+  ## Docker
 
   Pull it with docker
 

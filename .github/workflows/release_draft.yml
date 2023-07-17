@@ -5,9 +5,17 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   update_release_draft:
+    permissions:
+      # write permission is required to create a github release
+      contents: write
     runs-on: ubuntu-latest
+    outputs:
+      tag_name: ${{ steps.release-draft.outputs.tag_name }}
     steps:
       # Drafts your next Release notes as Pull Requests are merged into "main"
       - uses: release-drafter/release-drafter@v5.24.0
@@ -17,12 +25,20 @@ jobs:
           config-name: release-drafter.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  update_version:
+    permissions:
+      # write permission is required to push updated version
+      contents: write
+    runs-on: ubuntu-latest
+    needs: update_release_draft
+    steps:
       - uses: actions/checkout@v3
         with:
           token: ${{ secrets.RELEASEBOT_TOKEN }}
-      - name: Update setup.py
+      - name: Bump setup.py
         env:
-          VERSION: ${{ steps.release-draft.outputs.tag_name }}
+          VERSION: ${{ needs.update_release_draft.outputs.tag_name }}
         run: |
           echo "Bumping version to ${VERSION}"
           echo "${VERSION}" > VERSION

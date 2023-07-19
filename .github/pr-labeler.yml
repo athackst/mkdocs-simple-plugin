@@ -1,4 +1,4 @@
 feature: ['feature/*', 'feat/*', 'new/*']
 bug: ['fix/*', 'bugfix/*', 'bug/*']
-maintenance: ['chore/*', 'maint/*', 'noop/*', 'no-op/*', 'upkeep/*']
+maintenance: ['chore/*', 'maint/*', 'noop/*', 'no-op/*', 'upkeep/*', 'dev/*']
 docs: ['docs/*', 'doc/*']

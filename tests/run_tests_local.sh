@@ -1,17 +1,17 @@
 #!/bin/bash
 # md file="local_tests.snippet" content="^#?\s?(.*)"
 # ### Different Python versions
-# 
+#
 # You can even test the package with different versions of python in a container
-# by running the test_local script.  This builds a docker container with the 
-# version of python you specify and runs the integration tests within the 
-# container. 
-# 
+# by running the test_local script.  This builds a docker container with the
+# version of python you specify and runs the integration tests within the
+# container.
+#
 # ```bash
 # ./tests/test_local.sh
 # ```
 # {% include "versions.snippet" %}
-# 
+#
 # <details>
 # <summary>Code</summary>
 #
@@ -39,7 +39,6 @@ if [[ ! -z "$PYTHON_V_ONLY" ]]; then
   docker_run_integration_tests "$PYTHON_V_ONLY"
 else
   docker_run_integration_tests "3"
-  docker_run_integration_tests "3.7"
   docker_run_integration_tests "3.8"
   docker_run_integration_tests "3.9"
   docker_run_integration_tests "3.10"

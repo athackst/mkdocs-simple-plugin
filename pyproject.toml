@@ -23,14 +23,13 @@ classifiers = [
     "Intended Audience :: Information Technology",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11"
 ]
 # md file="versions.snippet"
-# _Python 3.x, 3.7, 3.8, 3.9, 3.10, 3.11 supported._
+# _Python 3.x, 3.8, 3.9, 3.10, 3.11 supported._
 # /md
 dependencies = [
     "click>=7.1",

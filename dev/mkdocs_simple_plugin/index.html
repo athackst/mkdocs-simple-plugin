@@ -846,12 +846,12 @@ Then run the tests
 
 <h3 id="different-python-versions">Different Python versions</h3>
 <p>You can even test the package with different versions of python in a container
-by running the test_local script.  This builds a docker container with the 
-version of python you specify and runs the integration tests within the 
-container. 
+by running the test_local script.  This builds a docker container with the
+version of python you specify and runs the integration tests within the
+container.
 <div class="highlight"><pre><span></span><code>./tests/test_local.sh
 </code></pre></div>
-<em>Python 3.x, 3.7, 3.8, 3.9, 3.10, 3.11 supported.</em></p>
+<em>Python 3.x, 3.8, 3.9, 3.10, 3.11 supported.</em></p>
 <details>
 <summary>Code</summary>
 <div class="highlight"><pre><span></span><code><span class="nb">set</span><span class="w"> </span>-e
@@ -874,7 +874,6 @@ docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </
 <span class="w"> </span>docker_run_integration_tests<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PYTHON_V_ONLY</span><span class="s2">&quot;</span>
 <span class="k">else</span>
 <span class="w"> </span>docker_run_integration_tests<span class="w"> </span><span class="s2">&quot;3&quot;</span>
-<span class="w"> </span>docker_run_integration_tests<span class="w"> </span><span class="s2">&quot;3.7&quot;</span>
 <span class="w"> </span>docker_run_integration_tests<span class="w"> </span><span class="s2">&quot;3.8&quot;</span>
 <span class="w"> </span>docker_run_integration_tests<span class="w"> </span><span class="s2">&quot;3.9&quot;</span>
 <span class="w"> </span>docker_run_integration_tests<span class="w"> </span><span class="s2">&quot;3.10&quot;</span>
@@ -900,7 +899,7 @@ docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 19, 2023</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 21, 2023</span>
       
     
   </small>

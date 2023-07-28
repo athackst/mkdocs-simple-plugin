@@ -8,7 +8,7 @@ mkdocs-awesome-pages-plugin==2.9.1
 mkdocs-click==0.8.0
 mkdocs-macros-plugin==1.0.2
 mkdocs-material==9.1.19
-mkdocs==1.4.3
+mkdocs==1.5.1
 mkdocstrings-python-legacy==0.2.3
 mkdocstrings==0.22.0
 pillow==10.0.0

@@ -4,7 +4,6 @@ import unittest
 import os
 import tempfile
 
-from mkdocs import config
 from mkdocs import theme
 from mkdocs.config import defaults
 
@@ -47,7 +46,7 @@ class TestDefaultConfig(unittest.TestCase):
         self.assertTrue(test_config[config_name])
         self.assertEqual(test_config[config_name], config_value)
 
-        cfg = config.Config(schema=defaults.get_schema())
+        cfg = defaults.MkDocsConfig()
         cfg.load_dict(test_config)
         errors, warnings = cfg.validate()
         self.assertEqual(len(errors), 0, errors)
@@ -60,7 +59,7 @@ class TestDefaultConfig(unittest.TestCase):
     def test_default(self):
         """Test the default configuration without any additional options."""
         test_config = generator.setup_config(self.test_mkdocs_filename)
-        cfg = config.Config(schema=defaults.get_schema())
+        cfg = defaults.MkDocsConfig()
         cfg.load_dict(test_config)
         errors, warnings = cfg.validate()
         self.assertEqual(len(errors), 0, errors)

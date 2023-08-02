@@ -55,7 +55,6 @@ hello/foo/foo*
 
 ```
 site/
-├── .mkdocsignore
 ├── hello/
 │   ├── foo/
 │   │   └── bar/

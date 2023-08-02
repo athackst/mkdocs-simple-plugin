@@ -1,4 +1,0 @@
-# Ignore everything in the test folder
-test
-# Ignore the foo file in hello/foo
-hello/foo/foo*

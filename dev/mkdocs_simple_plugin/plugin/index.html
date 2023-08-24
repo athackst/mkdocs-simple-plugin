@@ -969,6 +969,19 @@
     build_dir
   </a>
   
+    <nav class="md-nav" aria-label="build_dir">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#copy" class="md-nav__link">
+    copy
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -1187,6 +1200,7 @@ pattern.</p>
 <span class="nt">merge_docs_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="nt">build_docs_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
 <span class="nt">build_dir</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span>
+<span class="nt">copy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="nt">include_extensions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
 <span class="nt">include</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.bmp&#39;</span>
@@ -1259,6 +1273,9 @@ the result.</p>
 <h3 id="build_dir">build_dir</h3>
 <p>If set, the directory where docs will be collated to be build.
 Otherwise, the build docs directory will be a temporary directory.</p>
+<h4 id="copy">copy</h4>
+<p>If set, docs will be copied to the build_docs_dir.
+Otherwise, files will be used in place.</p>
 <h3 id="include_extensions-renamed">include_extensions (renamed)</h3>
 <p>Renamed <a href="#include">include</a></p>
 <h3 id="include">include</h3>

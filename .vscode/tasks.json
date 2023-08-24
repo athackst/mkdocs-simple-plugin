@@ -81,9 +81,10 @@
     {
       "label": "action dry run",
       "type": "shell",
-      "command": "docker run --rm -v ${workspaceFolder}:/docs -e INPUT_PUSH --user $(id -u):$(id -g) althack/mkdocs-simple-plugin:latest deploy.sh",
+      "command": "docker run --rm -v ${workspaceFolder}:/docs -e INPUT_PUSH -e INPUT_SITE_DIR --user $(id -u):$(id -g) althack/mkdocs-simple-plugin:latest deploy.sh",
       "options": {
         "env": {
+          "INPUT_SITE_DIR": "/docs/site",
           "INPUT_PUSH": "false"
         }
       }
@@ -91,9 +92,10 @@
     {
       "label": "action dry run (root)",
       "type": "shell",
-      "command": "docker run --rm -v ${workspaceFolder}:/docs -e INPUT_PUSH althack/mkdocs-simple-plugin:latest deploy.sh",
+      "command": "docker run --rm -v ${workspaceFolder}:/docs -e INPUT_PUSH -e INPUT_SITE_DIR althack/mkdocs-simple-plugin:latest deploy.sh",
       "options": {
         "env": {
+          "INPUT_SITE_DIR": "/docs/site",
           "INPUT_PUSH": "false"
         }
       }
@@ -101,7 +103,7 @@
     {
       "label": "action serve",
       "type": "shell",
-      "command": "docker run --rm -p 8000:8000 -v ${PWD}:/docs  --user $(id -u):$(id -g) -it althack/mkdocs-simple-plugin:latest"
+      "command": "docker run --rm -p 8000:8000 -v ${PWD}:/docs -it althack/mkdocs-simple-plugin:latest"
     },
     {
       "label": "test",

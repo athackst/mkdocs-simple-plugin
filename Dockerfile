@@ -14,18 +14,13 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
   python3-pip \
   vim
 
-WORKDIR /tmp
+WORKDIR /opt/mkdocs-simple-plugin
 COPY mkdocs_simple_plugin mkdocs_simple_plugin
 COPY README.md README.md
 COPY VERSION VERSION
 COPY setup.py setup.py
 COPY pyproject.toml pyproject.toml
-
-RUN pip install --upgrade pip \
- && pip install --no-cache-dir . \
- && pip install --no-cache-dir mkdocs-material mike pillow cairosvg
-
-WORKDIR /docs
+COPY docker/requirements.txt requirements.txt
 
 EXPOSE 8000
 
@@ -35,6 +30,8 @@ ENV PATH=/home/mkdocs/.local/bin:${PATH}
 
 COPY docker/deploy.sh /usr/local/bin/
 COPY docker/entrypoint.sh /usr/local/bin/
+
+WORKDIR /docs
 ENTRYPOINT ["entrypoint.sh"]
 
 CMD ["mkdocs_simple_gen", "--serve", "--", "-a", "0.0.0.0:8000", "--dirtyreload"]

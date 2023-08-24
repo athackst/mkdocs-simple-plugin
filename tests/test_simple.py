@@ -123,15 +123,15 @@ class TestSimple(TestCase):
         self.assertIn("directory/*", simple_test.ignore_glob)
         self.assertEqual(1, len(simple_test.ignore_glob))
 
-    def test_should_copy(self):
-        """Test should_copy."""
+    def test_is_doc_file(self):
+        """Test if doc file."""
         simple_test = simple.Simple(**self.default_settings)
-        simple_test.copy_glob = ["*.md"]
-        self.assertTrue(simple_test.should_copy_file(name="helloworld.md"))
-        self.assertFalse(simple_test.should_copy_file(name="md.helloworld"))
+        simple_test.doc_glob = ["*.md"]
+        self.assertTrue(simple_test.is_doc_file(name="helloworld.md"))
+        self.assertFalse(simple_test.is_doc_file(name="md.helloworld"))
 
-        simple_test.copy_glob = [".pages"]
-        self.assertTrue(simple_test.should_copy_file(name=".pages"))
+        simple_test.doc_glob = [".pages"]
+        self.assertTrue(simple_test.is_doc_file(name=".pages"))
 
     def test_get_files(self):
         """Test getting all files."""
@@ -248,7 +248,7 @@ class TestSimple(TestCase):
 
         simple_test.ignore_glob = set(["foo/bat/**"])
         simple_test.folders = set(["foo/"])
-        simple_test.copy_glob = set(["*.md", ".pages"])
+        simple_test.doc_glob = set(["*.md", ".pages"])
 
         paths = []
         built_paths = simple_test.build_docs()

@@ -16,6 +16,7 @@ plugins:
           include:
               - ".yml"
     - macros:
+          include_dir: "."
           verbose: True
 extra:
     test: True
@@ -91,6 +92,7 @@ plugins:
       include:
         - .yml
   - macros:
+      include_dir: .
       verbose: true
 edit_uri: ''
 extra:
@@ -113,6 +115,7 @@ plugins:
       include:
         - .yml
   - macros:
+      include_dir: .
       verbose: true
 edit_uri: ''
 extra:

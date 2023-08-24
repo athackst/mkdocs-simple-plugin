@@ -11,6 +11,7 @@ plugins:
       include:
         - .yml
   - macros:
+      include_dir: .
       verbose: true
 edit_uri: ''
 extra:

@@ -9,7 +9,7 @@
 site_name: ok-mkdocs-docs-include
 plugins:
   - simple:
-      include_folders: ["subfolder/**"]
+      folders: ["subfolder/**"]
 ```
 ## Input
 

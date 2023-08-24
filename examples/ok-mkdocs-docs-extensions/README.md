@@ -9,7 +9,7 @@
 site_name: ok-mkdocs-docs-extensions
 plugins:
   - simple:
-      include_extensions: [".txt"]
+      include: [".txt"]
 ```
 ## Input
 

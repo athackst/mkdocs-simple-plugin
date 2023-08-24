@@ -1,7 +1,6 @@
 """Simple module handles document extraction from source files."""
-import os
 import fnmatch
-import stat
+import os
 import pathlib
 
 from shutil import copy2 as copy
@@ -26,34 +25,29 @@ class Simple():
     # pylint: disable=too-many-instance-attributes
     def __init__(
             self,
-            build_docs_dir: str,
-            include_folders: list,
-            include_extensions: list,
-            ignore_folders: list,
-            ignore_hidden: bool,
+            build_dir: str,
+            folders: list,
+            include: list,
+            ignore: list,
             ignore_paths: list,
             semiliterate: list,
             **kwargs):
         """Initialize module instance with settings.
 
         Args:
-            build_docs_dir (str): Output directory for processed files
-            include_folders (list): Glob of folders to search for files
-            include_extensions (list): Glob of filenames to copy directly to
-                output
-            ignore_folders (list): Glob of paths to exclude
-            ignore_hidden (bool): Whether to ignore hidden files for processing
+            build_dir (str): Output directory for processed files
+            folders (list): Glob of folders to search for files
+            include (list): Glob of filenames to copy directly to output
+            ignore (list): Glob of paths to exclude
             ignore_paths (list): Absolute filepaths to exclude
             semiliterate (list): Settings for processing file content in
                 Semiliterate
 
         """
-        self.build_dir = build_docs_dir
-        self.include_folders = set(include_folders)
-        self.copy_glob = set(include_extensions)
-        self.ignore_glob = set(ignore_folders)
-        self.ignore_hidden = ignore_hidden
-        self.hidden_prefix = set([".", "__"])
+        self.build_dir = build_dir
+        self.folders = set(folders)
+        self.copy_glob = set(include)
+        self.ignore_glob = set(ignore)
         self.ignore_paths = set(ignore_paths)
         self.semiliterate = []
         for item in semiliterate:
@@ -64,7 +58,7 @@ class Simple():
         files = []
         # Get all of the entries that match the include pattern.
         entries = []
-        for pattern in self.include_folders:
+        for pattern in self.folders:
             entries.extend(pathlib.Path().glob(pattern))
         # Ignore any entries that match the ignore pattern
         entries[:] = [
@@ -124,31 +118,13 @@ class Simple():
 
     def should_extract_file(self, name: str):
         """Check if file should be extracted."""
-        def has_hidden_attribute(filepath):
-            """Returns true if hidden attribute is set."""
-            try:
-                return bool(os.stat(filepath).st_file_attributes &
-                            stat.FILE_ATTRIBUTE_HIDDEN)
-            except (AttributeError, AssertionError):
-                return False
-
-        def has_hidden_prefix(filepath):
-            """Returns true if the file starts with a hidden prefix."""
-            parts = filepath.split(os.path.sep)
-
-            def hidden_prefix(name):
-                if name == ".":
-                    return False
-                return any(name.startswith(pattern)
-                           for pattern in self.hidden_prefix)
-            return any(hidden_prefix(part) for part in parts)
-
-        extract = True
-        if self.ignore_hidden:
-            is_hidden = has_hidden_prefix(name) or has_hidden_attribute(name)
-            extract = not is_hidden
-
-        return extract
+        # Check if file is text based
+        try:
+            with open(name, 'r', encoding='utf-8') as f:
+                _ = f.read()
+                return True
+        except UnicodeDecodeError:
+            return False
 
     def merge_docs(self, from_dir, dirty=False):
         """Merge docs directory"""

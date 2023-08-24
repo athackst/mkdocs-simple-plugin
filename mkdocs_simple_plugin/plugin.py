@@ -390,7 +390,8 @@ class SimplePlugin(BasePlugin):
                 use_directory_urls=config["use_directory_urls"]
             )
             if file.abs_dest_path in dedupe_files:
-                files.remove(dedupe_files[file.abs_dest_path])
+                if file.abs_dest_path in files:
+                    files.remove(dedupe_files[file.abs_dest_path])
             files.append(file)
         return files
 

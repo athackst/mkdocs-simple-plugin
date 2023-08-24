@@ -23,7 +23,7 @@ mkdocs_simple_gen --config-file ${INPUT_CONFIG}
 if [[ "${INPUT_PUSH}" == "1" || "${INPUT_PUSH,,}" == "true" ]]; then
     git config --global user.name "${GITHUB_ACTOR}"
     git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-   
+
     git fetch origin ${INPUT_PUBLISH_BRANCH} --depth=1 || echo -e "${YELLOW}skipping fetch${UNSET}"
 
     if [ "${INPUT_VERSION}" ]; then
@@ -31,14 +31,14 @@ if [[ "${INPUT_PUSH}" == "1" || "${INPUT_PUSH,,}" == "true" ]]; then
         mike deploy --config-file ${INPUT_CONFIG} -p -u -b ${INPUT_PUBLISH_BRANCH} ${INPUT_VERSION}
     else
         echo -e "${CYAN}Deploying docs to ${INPUT_PUBLISH_BRANCH}${UNSET}"
-        mkdocs gh-deploy --config-file ${INPUT_CONFIG} -b ${INPUT_PUBLISH_BRANCH} 
+        mkdocs gh-deploy --config-file ${INPUT_CONFIG} -b ${INPUT_PUBLISH_BRANCH}
     fi
 
-    if [ "${INPUT_DEFAULT_VERSION}" ]; then 
+    if [ "${INPUT_DEFAULT_VERSION}" ]; then
         echo -e "${CYAN}Setting default version to ${INPUT_DEFAULT_VERSION}${UNSET}"
         mike set-default -p -b ${INPUT_PUBLISH_BRANCH} ${INPUT_DEFAULT_VERSION}
     fi
-else 
+else
     mkdocs build --config-file ${INPUT_CONFIG}
 fi
 

@@ -1,6 +1,6 @@
 # md
 # ## Deploy from GitHub Actions
-# 
+#
 # Create a YAML file with the following contents in the `.github/workflows` directory in your repository
 # {% raw %}
 # ```yaml
@@ -14,17 +14,17 @@
 #         id: mkdocs
 #         uses: athackst/mkdocs-simple-plugin
 #         with:
-#           # (optional) Specify branch 
-#           publish_branch: gh-pages 
+#           # (optional) Specify branch
+#           publish_branch: gh-pages
 #           # (optional) The URL of the repository the docs should point to
-#           repo_url: https://github.com/owner/repository 
+#           repo_url: https://github.com/owner/repository
 #           # (optional) The name of the site
-#           site_name: owner/repository 
+#           site_name: owner/repository
 #           # (optional) The URL of the site
-#           site_url: https://owner.github.io/repository 
+#           site_url: https://owner.github.io/repository
 #           # (optional) The edit URI
 #           edit_uri: edit/main/
-#           # (optional) Specify a google analytics key 
+#           # (optional) Specify a google analytics key
 #           google_analytics: UA-XXXXXXX
 #           # (optional) Specify a different theme [mkdocs|readthedocs|material]
 #           theme: material

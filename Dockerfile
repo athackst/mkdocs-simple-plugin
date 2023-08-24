@@ -1,15 +1,17 @@
 FROM python:3.11
 
-RUN apt-get update && apt-get -y install --no-install-recommends bats gcc \
+RUN apt-get update && apt-get -y install --no-install-recommends \
+  bats \
+  gcc \
   git \
   git-lfs \
-  python3-pip \
   libcairo2-dev \
-  libfreetype6-dev \
   libffi-dev \
+  libfreetype6-dev \
   libjpeg-dev \
   libpng-dev \
   libz-dev \
+  python3-pip \
   vim
 
 WORKDIR /tmp

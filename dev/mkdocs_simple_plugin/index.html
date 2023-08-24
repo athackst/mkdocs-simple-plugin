@@ -997,7 +997,10 @@ Then run the tests
 by running the test_local script.  This builds a docker container with the
 version of python you specify and runs the integration tests within the
 container.
-<div class="highlight"><pre><span></span><code>./tests/test_local.sh
+<div class="highlight"><pre><span></span><code>./tests/run_local_tests.sh
+</code></pre></div>
+Change the python version by setting the environment variable <code>PYTHON_V_ONLY</code>
+<div class="highlight"><pre><span></span><code>./tests/run_local_tests.sh<span class="w"> </span>-e<span class="w"> </span><span class="nv">PYTHON_V_ONLY</span><span class="o">=</span><span class="s2">&quot;3.10&quot;</span>
 </code></pre></div>
 <em>Python 3.x, 3.8, 3.9, 3.10, 3.11 supported.</em></p>
 <details>
@@ -1031,16 +1034,33 @@ docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </
 </details>
 
 <h2 id="vscode">VSCode</h2>
-<p>Included in this package is a VSCode workspace and development container.  See <a href="https://allisonthackston.com/articles/docker-development.html">how I develop with VSCode and Docker</a> and <a href="https://allisonthackston.com/articles/vscode-tasks.html">how I use VSCode tasks</a>.</p>
+<p>This package includes a preconfigured Visual Studio Code (VSCode) workspace and development container, making it easier to get started with developing your plugin. </p>
+<p>To get started with developing your plugin in VSCode, follow these steps:</p>
+<ol>
+<li>
+<p><strong>Open the project in VSCode</strong> Open VSCode and select the "Open Folder" option from the File menu. Navigate to the location where you've saved the project and select the root folder of the project.</p>
+</li>
+<li>
+<p><strong>Connect to the development container</strong> VSCode will automatically detect the presence of the development container and prompt you to connect to it. Follow the on-screen instructions to connect to the container.</p>
+</li>
+<li>
+<p><strong>Run the build task</strong> To build the plugin, you can use the preconfigured build task in VSCode. This task is defined in the <code>build.sh</code> file and can be run by using the "Run Build Task" option from the Terminal menu or by using the Ctrl + Shift + B shortcut.</p>
+</li>
+<li>
+<p><strong>Debug the plugin</strong> You can use the VSCode debugger to inspect the code and debug your plugin. The debugger is configured in the launch.json file and can be started by using the "Start Debugging" option from the Debug menu or by using the F5 key.</p>
+</li>
+</ol>
+<p>For more information on how to use VSCode and Docker for development, please refer to <a href="https://allisonthackston.com/articles/docker-development.html">how I develop with VSCode and Docker</a> and <a href="https://allisonthackston.com/articles/vscode-tasks.html">how I use VSCode tasks</a>.</p>
 <h2 id="packaging">Packaging</h2>
-<p><a href="https://github.com/pypa/hatch"><img alt="Hatch project" src="https://img.shields.io/badge/%F0%9F%A5%9A-Hatch-4051b5.svg" /></a></p>
-<p>The project uses Hatch to build and package the plugin</p>
+<p>The project uses Hatch to build and package the plugin <a href="https://github.com/pypa/hatch"><img alt="Hatch project" src="https://img.shields.io/badge/%F0%9F%A5%9A-Hatch-4051b5.svg" /></a></p>
+<p>Hatch is a Python packaging tool that helps simplify the process of building and distributing Python packages. It automates many manual steps, such as creating a setup script, creating a distribution package, and uploading the package to a repository, allowing developers to focus on writing code. Hatch is flexible and customizable, with options for specifying dependencies, including additional files, and setting up test suites, and is actively maintained with a growing community of users and contributors.</p>
 <h3 id="build-the-package">Build the package</h3>
 <div class="highlight"><pre><span></span><code>hatch<span class="w"> </span>build
 </code></pre></div>
 <h3 id="publish-the-package">Publish the package</h3>
 <div class="highlight"><pre><span></span><code>hatch<span class="w"> </span>publish
 </code></pre></div>
+<p>Please note that you may need to set up the appropriate credentials for the repository before you can publish the package. If you encounter any issues with publishing the package, please refer to the <a href="https://hatch.pypa.io/latest/">Hatch documentation</a> for guidance.</p>
 
   <hr>
 <div class="md-source-file">

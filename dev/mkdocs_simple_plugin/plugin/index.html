@@ -916,22 +916,36 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#include_folders" class="md-nav__link">
-    include_folders
+  <a href="#include_folders-renamed" class="md-nav__link">
+    include_folders (renamed)
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#ignore_folders" class="md-nav__link">
-    ignore_folders
+  <a href="#folders" class="md-nav__link">
+    folders
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#ignore_hidden" class="md-nav__link">
-    ignore_hidden
+  <a href="#ignore_folders-renamed" class="md-nav__link">
+    ignore_folders (renamed)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ignore" class="md-nav__link">
+    ignore
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ignore_hidden-deprecated" class="md-nav__link">
+    ignore_hidden (deprecated)
   </a>
   
 </li>
@@ -944,15 +958,29 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#build_docs_dir" class="md-nav__link">
-    build_docs_dir
+  <a href="#build_docs_dir-renamed" class="md-nav__link">
+    build_docs_dir (renamed)
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#include_extensions" class="md-nav__link">
-    include_extensions
+  <a href="#build_dir" class="md-nav__link">
+    build_dir
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#include_extensions-renamed" class="md-nav__link">
+    include_extensions (renamed)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#include" class="md-nav__link">
+    include
   </a>
   
 </li>
@@ -1142,13 +1170,25 @@ pattern.</p>
 <p>See <a href="../../examples/ok-mkdocsignore/">example mkdocsignore usage</a></p>
 <h2 id="default-settings">Default settings</h2>
 <p>Below are the default settings of the plugin.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">include_folders</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="nt">include_folders</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="nt">folders</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*&#39;</span>
-<span class="nt">ignore_folders</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="nt">ignore_hidden</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">ignore_folders</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="nt">ignore</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">venv</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.cache/**</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.devcontainer/**</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.github/**</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.vscode/**</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;**/__pycache__/**&#39;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.git/**</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.egg-info&#39;</span>
+<span class="nt">ignore_hidden</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
 <span class="nt">merge_docs_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="nt">build_docs_dir</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span>
-<span class="nt">include_extensions</span><span class="p">:</span>
+<span class="nt">build_docs_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="nt">build_dir</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span>
+<span class="nt">include_extensions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="nt">include</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.bmp&#39;</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.tif&#39;</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.tiff&#39;</span>
@@ -1197,23 +1237,31 @@ pattern.</p>
 must reiterate the settings you want in your <code>mkdocs.yml</code> file.</p>
 </div>
 <h2 id="configuration-scheme">Configuration scheme</h2>
-<h3 id="include_folders">include_folders</h3>
+<h3 id="include_folders-renamed">include_folders (renamed)</h3>
+<p>Renamed <a href="#folders">folders</a></p>
+<h3 id="folders">folders</h3>
 <p>Directories whose name matches a glob pattern in this list will be
 searched for documentation</p>
-<h3 id="ignore_folders">ignore_folders</h3>
+<h3 id="ignore_folders-renamed">ignore_folders (renamed)</h3>
+<p>Renamed <a href="#ignore">ignore</a></p>
+<h3 id="ignore">ignore</h3>
 <p>Directories whose name matches a glob pattern in this list will NOT be
 searched for documentation.</p>
-<h3 id="ignore_hidden">ignore_hidden</h3>
+<h3 id="ignore_hidden-deprecated">ignore_hidden (deprecated)</h3>
 <p>Hidden directories will not be searched if this is true.</p>
 <h3 id="merge_docs_dir">merge_docs_dir</h3>
 <p>If true, the contents of the docs directory (if any) will be merged
 at the same level as all other documentation.
 Otherwise, the docs directory will be retained as a subdirectory in
 the result.</p>
-<h3 id="build_docs_dir">build_docs_dir</h3>
+<h3 id="build_docs_dir-renamed">build_docs_dir (renamed)</h3>
+<p>Renamed <a href="#build_dir">build_dir</a></p>
+<h3 id="build_dir">build_dir</h3>
 <p>If set, the directory where docs will be collated to be build.
 Otherwise, the build docs directory will be a temporary directory.</p>
-<h3 id="include_extensions">include_extensions</h3>
+<h3 id="include_extensions-renamed">include_extensions (renamed)</h3>
+<p>Renamed <a href="#include">include</a></p>
+<h3 id="include">include</h3>
 <p>Any file in the searched directories whose name contains a string in
 this list will simply be copied to the generated documentation.</p>
 <h3 id="semiliterate">semiliterate</h3>

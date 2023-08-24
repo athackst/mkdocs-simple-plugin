@@ -9,6 +9,7 @@ plugins:
           include:
               - ".yml"
     - macros:
+          include_dir: "."
           verbose: True
 extra:
     test: True

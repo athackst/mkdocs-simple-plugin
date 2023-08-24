@@ -170,11 +170,18 @@ class SimplePlugin(BasePlugin):
         # Otherwise, the build docs directory will be a temporary directory.
         ('build_dir', config_options.Type(str, default='')),
         #
+        # #### copy
+        #
+        # If set, docs will be copied to the build_docs_dir.
+        # Otherwise, files will be used in place.
+        ('copy', config_options.Type(bool, default=False)),
+        #
         # ### include_extensions (renamed)
         #
         # Renamed [include](#include)
         ('include_extensions', config_options.Deprecated(
             moved_to="include", message="", removed=False)),
+        #
         # ### include
         #
         # Any file in the searched directories whose name contains a string in
@@ -358,7 +365,9 @@ class SimplePlugin(BasePlugin):
         simple = Simple(**self.config)
 
         # Save paths to add to watch if serving
-        self.paths = simple.build_docs(self.dirty, self.last_build_time)
+        do_copy = self.config["copy"]
+        self.paths = simple.build_docs(
+            self.dirty, self.last_build_time, do_copy)
         self.last_build_time = time.time()
 
         if not self.config["merge_docs_dir"]:

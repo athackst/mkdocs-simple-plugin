@@ -46,7 +46,7 @@ class Simple():
         """
         self.build_dir = build_dir
         self.folders = set(folders)
-        self.copy_glob = set(include)
+        self.doc_glob = set(include)
         self.ignore_glob = set(ignore)
         self.ignore_paths = set(ignore_paths)
         self.semiliterate = []
@@ -109,12 +109,12 @@ class Simple():
             return True
         return False
 
-    def should_copy_file(self, name: str) -> bool:
-        """Check if file should be copied."""
+    def is_doc_file(self, name: str) -> bool:
+        """Check if file is a desired doc file."""
         def match_pattern(name, pattern):
             return fnmatch.fnmatch(name, pattern) or pattern in name
 
-        return any(match_pattern(name, pattern) for pattern in self.copy_glob)
+        return any(match_pattern(name, pattern) for pattern in self.doc_glob)
 
     def should_extract_file(self, name: str):
         """Check if file should be extracted."""
@@ -149,7 +149,11 @@ class Simple():
                     source_file, destination_file)
         self.ignore_paths.add(from_dir)
 
-    def build_docs(self, dirty=False, last_build_time=None) -> list:
+    def build_docs(
+            self,
+            dirty=False,
+            last_build_time=None,
+            do_copy=False) -> list:
         """Build the docs directory from workspace files."""
         paths = []
         files = self.get_files()
@@ -164,8 +168,9 @@ class Simple():
             build_prefix = os.path.normpath(
                 os.path.join(self.build_dir, from_dir))
 
-            copy_paths = self.try_copy_file(from_dir, name, build_prefix)
-            if copy_paths:
+            doc_paths = self.get_doc_file(
+                from_dir, name, build_prefix, do_copy)
+            if doc_paths:
                 paths.append(
                     SimplePath(
                         output_root=".",
@@ -207,17 +212,23 @@ class Simple():
 
         return []
 
-    def try_copy_file(self, from_dir: str, name: str, to_dir: str) -> list:
+    def get_doc_file(
+            self,
+            from_dir: str,
+            name: str,
+            to_dir: str,
+            do_copy: bool) -> list:
         """Copy file with the same name to a new directory.
 
         Returns true if file copied.
         """
         original = os.path.join(from_dir, name)
-        destination = os.path.join(to_dir, name)
 
-        if not self.should_copy_file(os.path.join(from_dir, name)):
+        if not self.is_doc_file(os.path.join(from_dir, name)):
             return []
 
-        os.makedirs(to_dir, exist_ok=True)
-        copy(original, destination)
+        if (do_copy):
+            destination = os.path.join(to_dir, name)
+            os.makedirs(to_dir, exist_ok=True)
+            copy(original, destination)
         return [original]

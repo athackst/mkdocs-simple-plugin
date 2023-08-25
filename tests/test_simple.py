@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 """Test mkdocs_simple_plugin.simple"""
 import unittest
+from unittest.mock import patch
+import stat
 import os
 
 from pyfakefs.fake_filesystem_unittest import TestCase
@@ -18,6 +20,7 @@ class TestSimple(TestCase):
             "folders": ["*"],
             "ignore": [],
             "include": ["*.md"],
+            "ignore_hidden": True,
             "ignore_paths": [],
             "semiliterate": {}
         }
@@ -35,6 +38,29 @@ class TestSimple(TestCase):
         self.assertFalse(simple_test.should_extract_file("example.bin"))
         # Test text file
         self.assertTrue(simple_test.should_extract_file("example.md"))
+
+    @patch("os.stat")
+    def test_ignore_hidden(self, os_stat):
+        """Test should_extract_file for correctness."""
+        simple_test = simple.Simple(**self.default_settings)
+        # Check ignore_hidden
+        simple_test.ignore_hidden = True
+        os_stat.return_value.st_file_attributes = 0
+        self.fs.create_file("test.md", contents="Hello_word")
+        self.assertTrue(simple_test.should_extract_file('test.md'))
+        self.fs.create_file("folder/test.md", contents="Hello_word")
+        self.assertTrue(simple_test.should_extract_file('./folder/test.md'))
+        self.fs.create_file("__pycache__")
+        self.assertFalse(simple_test.should_extract_file('__pycache__'))
+        self.fs.create_file(".mkdocsignore")
+        self.assertFalse(simple_test.should_extract_file('.mkdocsignore'))
+        self.fs.create_file(".git/objects/34/49807110bdc8")
+        self.assertFalse(simple_test.should_extract_file(
+            ".git/objects/34/49807110bdc8"))
+        # Check hidden file attribute
+        self.fs.create_file("/test/file")
+        os_stat.return_value.st_file_attributes = stat.FILE_ATTRIBUTE_HIDDEN
+        self.assertFalse(simple_test.should_extract_file('/test/file'))
 
     def test_ignored_default(self):
         """Test ignored files."""

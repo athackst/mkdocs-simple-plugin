@@ -148,7 +148,7 @@ class SimplePlugin(BasePlugin):
         ('ignore_hidden', config_options.Deprecated(
             moved_to=None,
             message="Common ignore files have been added to 'ignore' instead",
-            removed=True)),
+            removed=False)),
         #
         # ### merge_docs_dir
         #

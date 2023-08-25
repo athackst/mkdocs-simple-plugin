@@ -2,6 +2,7 @@
 import fnmatch
 import os
 import pathlib
+import stat
 
 from shutil import copy2 as copy
 from dataclasses import dataclass
@@ -29,6 +30,7 @@ class Simple():
             folders: list,
             include: list,
             ignore: list,
+            ignore_hidden: bool,
             ignore_paths: list,
             semiliterate: list,
             **kwargs):
@@ -39,6 +41,7 @@ class Simple():
             folders (list): Glob of folders to search for files
             include (list): Glob of filenames to copy directly to output
             ignore (list): Glob of paths to exclude
+            ignore_hidden (bool): Whether to ignore hidden files for processing
             ignore_paths (list): Absolute filepaths to exclude
             semiliterate (list): Settings for processing file content in
                 Semiliterate
@@ -48,6 +51,8 @@ class Simple():
         self.folders = set(folders)
         self.doc_glob = set(include)
         self.ignore_glob = set(ignore)
+        self.ignore_hidden = ignore_hidden  # to be deprecated
+        self.hidden_prefix = set([".", "__"])  # to be deprecated
         self.ignore_paths = set(ignore_paths)
         self.semiliterate = []
         for item in semiliterate:
@@ -118,13 +123,36 @@ class Simple():
 
     def should_extract_file(self, name: str):
         """Check if file should be extracted."""
+        def has_hidden_attribute(filepath):
+            """Returns true if hidden attribute is set."""
+            try:
+                return bool(os.stat(filepath).st_file_attributes &
+                            stat.FILE_ATTRIBUTE_HIDDEN)
+            except (AttributeError, AssertionError):
+                return False
+
+        def has_hidden_prefix(filepath):
+            """Returns true if the file starts with a hidden prefix."""
+            parts = filepath.split(os.path.sep)
+
+            def hidden_prefix(name):
+                if name == ".":
+                    return False
+                return any(name.startswith(pattern)
+                           for pattern in self.hidden_prefix)
+            return any(hidden_prefix(part) for part in parts)
         # Check if file is text based
         try:
             with open(name, 'r', encoding='utf-8') as f:
                 _ = f.read()
-                return True
         except UnicodeDecodeError:
             return False
+
+        # Check if file is hidden and should ignore
+        if self.ignore_hidden:
+            is_hidden = has_hidden_prefix(name) or has_hidden_attribute(name)
+            return not is_hidden
+        return True
 
     def merge_docs(self, from_dir, dirty=False):
         """Merge docs directory"""

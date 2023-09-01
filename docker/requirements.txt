@@ -4,4 +4,4 @@ mkdocs-awesome-pages-plugin==2.9.2
 mkdocs-material==9.2.6
 mkdocs==1.5.2
 pillow==10.0.0
-pymdown-extensions==10.1
+pymdown-extensions==10.2.1

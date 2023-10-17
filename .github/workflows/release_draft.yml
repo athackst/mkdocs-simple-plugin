@@ -18,7 +18,7 @@ jobs:
       tag_name: ${{ steps.release-draft.outputs.tag_name }}
     steps:
       # Drafts your next Release notes as Pull Requests are merged into "main"
-      - uses: release-drafter/release-drafter@v5.24.0
+      - uses: release-drafter/release-drafter@v5.25.0
         id: release-draft
         with:
           # (Optional) specify config name to use, relative to .github/. Default: release-drafter.yml

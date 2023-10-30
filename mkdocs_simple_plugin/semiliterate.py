@@ -1,4 +1,5 @@
 """Semiliterate module handles document extraction from source files."""
+from io import TextIOWrapper
 import os
 import re
 
@@ -7,14 +8,7 @@ from dataclasses import dataclass
 from mkdocs import utils
 
 
-def get_line(line: str) -> str:
-    """Returns line with EOL."""
-    if not line:
-        return None
-    return line if line.endswith("\n") else line + '\n'
-
-
-def get_match(pattern: re.Pattern, line: str) -> re.Match:
+def _get_match(pattern: re.Pattern, line: str) -> re.Match:
     """Returns the match for the given pattern."""
     if not pattern:
         return None
@@ -149,15 +143,15 @@ class ExtractionPattern:
         """Process input parameters."""
         setup_inline = InlineParams()
 
-        file_match = get_match(setup_inline.filename_pattern, line)
+        file_match = _get_match(setup_inline.filename_pattern, line)
         if file_match and file_match.lastindex:
             setup_inline.filename = file_match[file_match.lastindex]
 
-        trim_match = get_match(setup_inline.trim_pattern, line)
+        trim_match = _get_match(setup_inline.trim_pattern, line)
         if trim_match and trim_match.lastindex:
             setup_inline.trim = int(trim_match[trim_match.lastindex])
 
-        content_match = get_match(setup_inline.content_pattern, line)
+        content_match = _get_match(setup_inline.content_pattern, line)
         if content_match and content_match.lastindex:
             regex_pattern = content_match[content_match.lastindex]
             setup_inline.content = re.compile(regex_pattern)
@@ -167,7 +161,7 @@ class ExtractionPattern:
         #     1. default from extraction pattern settings
         #     2. default from inline params
         self.stop = self._stop_default
-        stop_match = get_match(setup_inline.stop_pattern, line)
+        stop_match = _get_match(setup_inline.stop_pattern, line)
         if stop_match and stop_match.lastindex:
             regex_pattern = stop_match[stop_match.lastindex]
             self.stop = re.compile(regex_pattern)
@@ -185,7 +179,7 @@ class ExtractionPattern:
             line = line[self.inline.trim:]
         # Process inline content regex
         if self.inline.content:
-            match_object = get_match(self.inline.content, line)
+            match_object = _get_match(self.inline.content, line)
             if match_object.lastindex:
                 return match_object[match_object.lastindex]
         # Preform replace operations
@@ -227,126 +221,132 @@ class LazyFile:
         return os.path.join(self.file_directory, self.file_name)
 
     def write(self, arg: str) -> None:
-        """Create and write the file, only if not empty."""
-        if not arg:
+        """Create and write a string line to the file, iff not none."""
+        if arg is None:
             return
         if self.file_object is None:
             filename = os.path.join(self.file_directory, self.file_name)
             os.makedirs(self.file_directory, exist_ok=True)
             self.file_object = open(filename, 'w+')
-        self.file_object.write(arg)
+
+        def get_line(line: str) -> str:
+            """Returns line with EOL."""
+            return line if line.endswith("\n") else line + '\n'
+
+        self.file_object.write(get_line(arg))
 
     def close(self) -> str:
         """Finish the file."""
         if self.file_object is not None:
-            file = os.path.join(self.file_directory, self.file_name)
-            utils.log.debug("        ... extracted %s", file)
+            file_path = os.path.join(self.file_directory, self.file_name)
+            utils.log.debug("        ... extracted %s", file_path)
             self.file_object.close()
             self.file_object = None
-            return file
+            return file_path
         return None
 
 
 class StreamExtract:
-    """Extract documentation portions of files to an output stream."""
+    """Extract files to an output stream.
+
+    Optionally filter using a list of ExtractionPatterns.
+    """
 
     def __init__(
             self,
-            input_stream: LazyFile,
+            input_stream: TextIOWrapper,
             output_stream: LazyFile,
             terminate: re.Pattern = None,
             patterns: ExtractionPattern = None,
             **kwargs):
         """Initialize StreamExtract with input and output streams."""
         self.input_stream = input_stream
-        self.default_stream = output_stream
         self.output_stream = output_stream
         self.terminate = terminate
         self.patterns = patterns
-        self.wrote_something = False
-        self.output_files = []
-        self.streams = {
+
+        self._default_stream = output_stream
+        self._output_files = []
+        self._streams = {
             output_stream.file_name: output_stream
         }
 
-    def transcribe(self, text: str) -> None:
-        """Write some text and record if something was written."""
-        self.output_stream.write(text)
-        if text:
-            self.wrote_something = True
-
-    def try_extract_match(
+    def _try_extract_match(
             self,
             match_object: re.Match,
             emit_last: bool = True) -> bool:
-        """Extract match into output.
+        """Extracts line iff there's a match.
 
-        If _match_object_ is not false-y, returns true.
-        If extract flag is true, emits the last group of the match if any.
+        Returns:
+            True iff match_object exists.
         """
         if not match_object:
             return False
         if match_object.lastindex and emit_last:
-            self.transcribe(get_line(match_object[match_object.lastindex]))
+            self.output_stream.write(match_object[match_object.lastindex])
         return True
 
     def close(self) -> list:
-        """Returns true if something was written"""
+        """Close the file and return a list of filenames written to."""
         file = self.output_stream.close()
-        if file and self.wrote_something:
-            self.output_files.append(file)
-        return self.output_files
+        if file:
+            self._output_files.append(file)
+        return self._output_files
 
-    def set_output_file(self, filename: str) -> None:
-        """Set output stream from filename."""
+    def set_output_file(self, filename: str) -> LazyFile:
+        """Set the current output stream from filename and return the stream."""
         output_stream = self.output_stream
         if filename:
             # If we've opened this file before, re-use its stream.
-            if filename in self.streams:
-                return self.set_output_stream(self.streams[filename])
+            if filename in self._streams:
+                return self.set_output_stream(self._streams[filename])
             # Otherwise, make a new one and save it to the list.
             output_stream = LazyFile(
                 self.output_stream.file_directory, filename)
-            self.streams[filename] = output_stream
-        self.set_output_stream(output_stream)
+            self._streams[filename] = output_stream
+        return self.set_output_stream(output_stream)
 
-    def set_output_stream(self, stream: LazyFile) -> None:
-        """Set the output stream."""
+    def set_output_stream(self, stream: LazyFile) -> LazyFile:
+        """Set the current output stream and return the stream."""
         if self.output_stream != stream:
             self.close()
             self.output_stream = stream
+        return self.output_stream
 
     def extract(self, **kwargs) -> list:
         """Extract from file with semiliterate configuration.
 
-        Invoke this method to perform the extraction. Returns true if
-        any text is actually extracted, false otherwise.
+        Invoke this method to perform the extraction.
+
+        Returns:
+            A list of files extracted.
         """
         active_pattern = None if self.patterns else ExtractionPattern()
-        for pattern in self.patterns:
+        patterns = self.patterns if self.patterns else []
+        for pattern in patterns:
             if not pattern.start:
                 active_pattern = pattern
 
         for line in self.input_stream:
             # Check terminate, regardless of state:
-            if self.try_extract_match(
-                    get_match(self.terminate, line), active_pattern):
+            if self._try_extract_match(
+                    _get_match(self.terminate, line), active_pattern):
                 return self.close()
             # Change state if flagged to do so:
             if active_pattern is None:
-                for pattern in self.patterns:
-                    start = get_match(pattern.start, line)
+                for pattern in patterns:
+                    start = _get_match(pattern.start, line)
                     if start:
                         active_pattern = pattern
                         active_pattern.setup(line)
                         self.set_output_file(active_pattern.get_filename())
-                        self.try_extract_match(start)
+                        self._try_extract_match(start)
                         break
                 continue
             # We are extracting. See if we should stop:
-            if self.try_extract_match(get_match(active_pattern.stop, line)):
+            if self._try_extract_match(_get_match(active_pattern.stop, line)):
                 active_pattern = None
-                self.set_output_stream(self.default_stream)
+                self.set_output_stream(self._default_stream)
                 continue
             # Extract all other lines in the normal way:
             self.extract_line(line, active_pattern)
@@ -354,8 +354,8 @@ class StreamExtract:
 
     def extract_line(self, line: str, extraction_pattern: re.Pattern) -> None:
         """Copy line to the output stream, applying specified replacements."""
-        line = get_line(extraction_pattern.replace_line(line))
-        self.transcribe(line)
+        line = extraction_pattern.replace_line(line)
+        self.output_stream.write(line)
 
 
 class Semiliterate:
@@ -410,18 +410,25 @@ class Semiliterate:
         self.file_filter = re.compile(pattern)
         self.destination = destination
         self.terminate = (terminate is not None) and re.compile(terminate)
-        self.patterns = []
+        self.extractions = []
         if not extract:
             extract = []
         if isinstance(extract, dict):
             # if there is only one extraction pattern, allow it to be a single
             # dict entry
             extract = [extract]
-        for pattern in extract:
-            self.patterns.append(ExtractionPattern(**pattern))
+        for extract_params in extract:
+            self.extractions.append(ExtractionPattern(**extract_params))
 
     def filename_match(self, name: str) -> str:
-        """Get the filename for the match, otherwise return None."""
+        """Get the filename for the match, otherwise return None.
+
+        Args:
+            name (str): The name to match with the pattern filter
+
+        Returns:
+            The output filename for 'name' or None
+        """
         name_match = self.file_filter.search(name)
         if name_match:
             new_name = os.path.splitext(name)[0] + '.md'
@@ -438,7 +445,12 @@ class Semiliterate:
             **kwargs) -> list:
         """Try to extract documentation from file with name.
 
-        Returns True if extraction was successful.
+        Args:
+            from_directory (str): The source directory
+            from_file (str): The source filename within directory
+            destination_directory (str): The destination directory
+
+        Returns a list of extracted files.
         """
         to_file = self.filename_match(from_file)
         if not to_file:
@@ -452,11 +464,11 @@ class Semiliterate:
                     input_stream=original_file,
                     output_stream=LazyFile(destination_directory, to_file),
                     terminate=self.terminate,
-                    patterns=self.patterns,
+                    patterns=self.extractions,
                     **kwargs)
                 return extraction.extract()
         except (UnicodeDecodeError) as error:
-            utils.log.info("mkdocs-simple-plugin: Skipped  %s", from_file_path)
+            utils.log.debug("mkdocs-simple-plugin: Skipped  %s", from_file_path)
             utils.log.debug(
                 "mkdocs-simple-plugin: Error details: %s", str(error))
         except (OSError, IOError) as error:

@@ -15,10 +15,10 @@
         <link rel="canonical" href="https://www.althack.dev/mkdocs-simple-plugin/latest/mkdocs_simple_plugin/">
       
       
-        <link rel="prev" href="plugin/">
+        <link rel="prev" href="generator/">
       
       
-        <link rel="next" href="generator/">
+        <link rel="next" href="plugin/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -936,7 +936,7 @@
 <h1 id="package-guide">Package Guide</h1>
 <h2 id="prerequisites">Prerequisites</h2>
 <p>You will need to have <a href="https://www.mkdocs.org/">MKDocs</a> installed on your system.
-I recommend installing it via pip to get the latest version.
+I recommend installing it via pip to get the latest version.</p>
 <div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
 sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>--no-install-recommends<span class="w"> </span><span class="se">\</span>
 <span class="w"> </span>python3-pip<span class="w"> </span><span class="se">\</span>
@@ -946,9 +946,10 @@ sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w
 <span class="w"> </span>libjpeg-dev<span class="w"> </span><span class="se">\</span>
 <span class="w"> </span>libpng-dev<span class="w"> </span><span class="se">\</span>
 <span class="w"> </span>libz-dev
+
 pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
 pip<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>-r<span class="w"> </span>requirements.txt
-</code></pre></div></p>
+</code></pre></div>
 <h2 id="building">Building</h2>
 <p>Building this package requires  using <code>mkdocs_simple_gen</code> to generate the site.
 <div class="highlight"><pre><span></span><code>mkdocs_simple_gen<span class="w"> </span>--build<span class="w"> </span>--<span class="w"> </span>--verbose
@@ -957,13 +958,15 @@ pip<span class="w"> </span>install<span class="w"> </span>--user<span class="w">
 <h3 id="lint">Lint</h3>
 <p>Linting helps maintain style consistency.  This package follows the <a href="https://google.github.io/styleguide/pyguide.html">google 
 style guide</a>.  Conformity
-is enforced with flake8 and pydodstyle.
+is enforced with flake8 and pydodstyle.</p>
 <div class="highlight"><pre><span></span><code>./tests/run_linters.sh
-</code></pre></div></p>
+</code></pre></div>
 <details>
 <summary>Code</summary>
+
 <div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Running flake8 linter --------&gt;&quot;</span>
 flake8<span class="w"> </span>--count<span class="w"> </span>.
+
 <span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Running pydocstyle&quot;</span>
 pydocstyle<span class="w"> </span>--count<span class="w"> </span>.
 </code></pre></div>
@@ -971,9 +974,9 @@ pydocstyle<span class="w"> </span>--count<span class="w"> </span>.
 
 <h3 id="unit-tests">Unit tests</h3>
 <p>Unit tests help ensure individual functions perform as expected.  Unit tests
-in this module use the the standard python unittest framework.
+in this module use the the standard python unittest framework.</p>
 <div class="highlight"><pre><span></span><code>./tests/run_unit_tests.sh
-</code></pre></div></p>
+</code></pre></div>
 <details>
 <summary>Code</summary>
 <div class="highlight"><pre><span></span><code>python3<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w"> </span>tests/test_*.py
@@ -982,15 +985,16 @@ in this module use the the standard python unittest framework.
 
 <h3 id="integration-tests">Integration tests</h3>
 <p>Integration testing allows the plugin to be tested with mkdocs using example
-configurations.
-Integration testing uses bats, install it with
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>bats
+configurations.</p>
+<p>Integration testing uses bats, install it with</p>
+<p><div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>bats
 </code></pre></div>
-Then run the tests
+Then run the tests</p>
 <div class="highlight"><pre><span></span><code>./tests/run_integration_tests.sh
-</code></pre></div></p>
+</code></pre></div>
 <details>
 <summary>Code</summary>
+
 <div class="highlight"><pre><span></span><code>./examples/gen_readme.py
 ./tests/integration_test.bats
 </code></pre></div>
@@ -1000,16 +1004,18 @@ Then run the tests
 <p>You can even test the package with different versions of python in a container
 by running the test_local script.  This builds a docker container with the
 version of python you specify and runs the integration tests within the
-container.
+container.</p>
 <div class="highlight"><pre><span></span><code>./tests/run_local_tests.sh
 </code></pre></div>
-Change the python version by setting the environment variable <code>PYTHON_V_ONLY</code>
+<p>Change the python version by setting the environment variable <code>PYTHON_V_ONLY</code></p>
 <div class="highlight"><pre><span></span><code>./tests/run_local_tests.sh<span class="w"> </span>-e<span class="w"> </span><span class="nv">PYTHON_V_ONLY</span><span class="o">=</span><span class="s2">&quot;3.10&quot;</span>
 </code></pre></div>
-<em>Python 3.x, 3.8, 3.9, 3.10, 3.11 supported.</em></p>
+<p><em>Python 3.x, 3.8, 3.9, 3.10, 3.11 supported.</em></p>
 <details>
 <summary>Code</summary>
+
 <div class="highlight"><pre><span></span><code><span class="nb">set</span><span class="w"> </span>-e
+
 End-to-end<span class="w"> </span>testing<span class="w"> </span>via<span class="w"> </span>Bats<span class="w"> </span><span class="o">(</span>Bash<span class="w"> </span>automated<span class="w"> </span>tests<span class="o">)</span>
 <span class="k">function</span><span class="w"> </span>docker_run_integration_tests<span class="o">()</span><span class="w"> </span><span class="o">{</span>
 docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>mkdocs-simple-test-runner:<span class="nv">$1</span><span class="w"> </span>-f-<span class="w"> </span>.<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
@@ -1019,11 +1025,13 @@ docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </
 <span class="s"> COPY . /workspace</span>
 <span class="s"> WORKDIR /workspace</span>
 <span class="s">EOF</span>
+
 <span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&lt;-------- Running E2E tests via Bats in Docker (python:</span><span class="nv">$1</span><span class="s2">) --------&gt;&quot;</span>
 docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>mkdocs-simple-test-runner:<span class="nv">$1</span><span class="w"> </span>tests/run_unit_tests.sh
 docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>mkdocs-simple-test-runner:<span class="nv">$1</span><span class="w"> </span>tests/run_linters.sh
 docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>mkdocs-simple-test-runner:<span class="nv">$1</span><span class="w"> </span>tests/run_integration_tests.sh
 <span class="o">}</span>
+
 <span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>!<span class="w"> </span>-z<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PYTHON_V_ONLY</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
 <span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;only v </span><span class="nv">$PYTHON_V_ONLY</span><span class="s2">&quot;</span>
 <span class="w"> </span>docker_run_integration_tests<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PYTHON_V_ONLY</span><span class="s2">&quot;</span>
@@ -1071,7 +1079,7 @@ docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 20, 2023</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 30, 2023</span>
       
     
   </small>

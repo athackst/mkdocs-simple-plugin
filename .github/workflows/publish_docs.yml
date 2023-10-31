@@ -8,8 +8,9 @@ on:
   workflow_dispatch:
 
 # Add a concurrency group so that doc publish doesn't interfere with each other.
-concurrency: 
+concurrency:
   group: publish-docs
+  cancel-in-progress: false
 
 jobs:
   docs:

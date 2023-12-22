@@ -58,6 +58,9 @@ jobs:
         with:
           directory: "./site"
           retries: 3
+          ignore_urls: |
+            https://twitter.com/althack
+            https://fonts.gstatic.com
           swap_urls: |
             ^.*althack.dev\/mkdocs-simple-plugin:
             ^\/mkdocs-simple-plugin:

@@ -15,7 +15,7 @@ pillow==10.3.0
 pip-upgrader==1.4.15
 pydocstyle==6.3.0
 pyfakefs==5.3.5
-pymdown-extensions==10.7.1
+pymdown-extensions==10.8
 PyYAML==6.0.1
 hatch==1.9.4
 typing-extensions==4.11.0

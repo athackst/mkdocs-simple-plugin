@@ -17,6 +17,6 @@ pydocstyle==6.3.0
 pyfakefs==5.3.5
 pymdown-extensions==10.7.1
 PyYAML==6.0.1
-hatch==1.9.4
+hatch==1.9.6
 typing-extensions==4.11.0
 mkdocs-git-revision-date-localized-plugin==1.2.4

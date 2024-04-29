@@ -10,7 +10,7 @@ mkdocs-macros-plugin==1.0.5
 mkdocs-material==9.5.17
 mkdocs==1.5.3
 mkdocstrings-python-legacy==0.2.3
-mkdocstrings==0.24.3
+mkdocstrings==0.25.0
 pillow==10.3.0
 pip-upgrader==1.4.15
 pydocstyle==6.3.0

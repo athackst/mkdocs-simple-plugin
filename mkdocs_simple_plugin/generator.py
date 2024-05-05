@@ -85,7 +85,7 @@ def write_config(config_file, config):
     """Write configuration file."""
     if os.path.dirname(config_file):
         os.makedirs(os.path.dirname(config_file), exist_ok=True)
-    with open(config_file, 'w+') as file:
+    with open(config_file, 'w+', encoding="utf-8") as file:
         try:
             yaml.dump(
                 data=config,
@@ -105,7 +105,7 @@ def setup_config(config_file="mkdocs.yml"):
         # from the folder name.
         write_config(config_file, config)
     # Open the config file to verify settings.
-    with open(config_file, 'r') as stream:
+    with open(config_file, 'r', encoding="utf-8") as stream:
         try:
             local_config = yaml.load(stream, yaml.Loader)
             if local_config:

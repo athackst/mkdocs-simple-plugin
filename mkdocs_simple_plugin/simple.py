@@ -100,7 +100,7 @@ class Simple():
         mkdocsignore = os.path.join(base_path, ".mkdocsignore")
         if os.path.exists(mkdocsignore):
             ignore_list = []
-            with open(mkdocsignore, "r") as txt_file:
+            with open(mkdocsignore, mode="r", encoding="utf-8") as txt_file:
                 ignore_list = txt_file.read().splitlines()
                 # Remove all comment lines
                 ignore_list = [x for x in ignore_list if not x.startswith('#')]
@@ -255,7 +255,7 @@ class Simple():
         if not self.is_doc_file(os.path.join(from_dir, name)):
             return []
 
-        if (do_copy):
+        if do_copy:
             destination = os.path.join(to_dir, name)
             os.makedirs(to_dir, exist_ok=True)
             copy(original, destination)

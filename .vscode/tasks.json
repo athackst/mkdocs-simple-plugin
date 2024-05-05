@@ -101,6 +101,17 @@
       }
     },
     {
+      "label": "action update",
+      "type": "shell",
+      "command": "docker run --rm -v ${workspaceFolder}:/docs -e INPUT_PUSH -e INPUT_SITE_DIR althack/mkdocs-simple-plugin:latest update.sh",
+      "options": {
+        "env": {
+          "INPUT_SITE_DIR": "/docs/site",
+          "INPUT_PUSH": "false"
+        }
+      }
+    },
+    {
       "label": "action serve",
       "type": "shell",
       "command": "docker run --rm -p 8000:8000 -v ${PWD}:/docs -it althack/mkdocs-simple-plugin:latest"

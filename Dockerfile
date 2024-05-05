@@ -30,6 +30,7 @@ ENV PATH=/home/mkdocs/.local/bin:${PATH}
 
 COPY docker/deploy.sh /usr/local/bin/
 COPY docker/entrypoint.sh /usr/local/bin/
+COPY docker/update.sh /usr/local/bin/
 
 WORKDIR /docs
 ENTRYPOINT ["entrypoint.sh"]

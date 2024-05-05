@@ -34,7 +34,7 @@ classifiers = [
 dependencies = [
     "click>=7.1",
     "MarkupSafe>=2.1.1",
-    "mkdocs>=1.4.0",
+    "mkdocs>=1.6.0",
     "PyYAML>=6.0",
 ]
 

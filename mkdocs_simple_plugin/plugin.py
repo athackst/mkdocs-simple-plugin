@@ -90,14 +90,16 @@ mkdocs serve
 import os
 import tempfile
 import time
+from typing import Callable, Literal
+
 import yaml
-
-
-from mkdocs.structure.files import Files, File
-from mkdocs.plugins import BasePlugin
-from mkdocs.config import config_options
 from mkdocs import config as mkdocs_config
 from mkdocs import utils
+from mkdocs.config import config_options
+from mkdocs.config.defaults import MkDocsConfig
+from mkdocs.livereload import LiveReloadServer
+from mkdocs.plugins import BasePlugin
+from mkdocs.structure.files import File, Files
 
 from mkdocs_simple_plugin.simple import Simple
 
@@ -309,11 +311,16 @@ class SimplePlugin(BasePlugin):
         self.dirty = False
         self.last_build_time = None
 
-    def on_startup(self, *, command, dirty: bool) -> None:
+    def on_startup(self,
+                   *,
+                   command: Literal['build',
+                                    'gh-deploy',
+                                    'serve'],
+                   dirty: bool):
         """Configure the plugin on startup."""
         self.dirty = dirty
 
-    def on_config(self, config, **kwargs):
+    def on_config(self, config: MkDocsConfig):
         """Update configuration to use a temporary build directory."""
         # Save the config for documentation
         default_config = dict((name, config_option.default)
@@ -359,7 +366,8 @@ class SimplePlugin(BasePlugin):
                 os.path.abspath(config['docs_dir']))
         return config
 
-    def on_files(self, files: Files, *, config):
+    def on_files(self, files: Files, /, *,
+                 config: MkDocsConfig):
         """Update files based on plugin settings."""
         # Configure simple
         simple = Simple(**self.config)
@@ -372,15 +380,10 @@ class SimplePlugin(BasePlugin):
 
         if not self.config["merge_docs_dir"]:
             # If not merging, remove files that are from the docs dir
-            # pylint: disable=protected-access
-            for file in files._files[:]:
-                if file.abs_src_path.startswith(
-                        os.path.abspath(config['docs_dir'])):
+            abs_docs_dir = os.path.abspath(config['docs_dir'])
+            for _, file in files.src_uris.items():
+                if file.abs_src_path.startswith(abs_docs_dir):
                     files.remove(file)
-
-        dedupe_files = {}
-        for file in files:
-            dedupe_files[file.abs_dest_path] = file
 
         for path in self.paths:
             file = File(
@@ -389,13 +392,13 @@ class SimplePlugin(BasePlugin):
                 dest_dir=config.site_dir,
                 use_directory_urls=config["use_directory_urls"]
             )
-            if file.abs_dest_path in dedupe_files:
-                if file.abs_dest_path in files:
-                    files.remove(dedupe_files[file.abs_dest_path])
+            if file.src_uri in files.src_uris:
+                files.remove(file)
             files.append(file)
         return files
 
-    def on_serve(self, server, *, config, builder):
+    def on_serve(self, server: LiveReloadServer, /, *, config: MkDocsConfig,
+                 builder: Callable):
         """Add files to watch server."""
         # don't watch the build directory
         # pylint: disable=protected-access

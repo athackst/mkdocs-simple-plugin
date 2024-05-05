@@ -2,6 +2,6 @@ cairosvg==2.7.1
 mike==2.0.0
 mkdocs-awesome-pages-plugin==2.9.2
 mkdocs-material==9.5.17
-mkdocs==1.5.3
+mkdocs==1.6.0
 pillow==10.3.0
 pymdown-extensions==10.7.1

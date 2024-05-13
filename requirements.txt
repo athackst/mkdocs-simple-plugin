@@ -14,7 +14,7 @@ mkdocstrings==0.25.1
 pillow==10.3.0
 pip-upgrader==1.4.15
 pydocstyle==6.3.0
-pyfakefs==5.4.1
+pyfakefs==5.5.0
 pymdown-extensions==10.8.1
 PyYAML==6.0.1
 hatch==1.10.0

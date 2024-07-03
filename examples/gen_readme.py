@@ -53,12 +53,12 @@ class DisplayablePath(object):
                 yield cls(path, displayable_root, is_last)
             count += 1
 
-    @ classmethod
+    @classmethod
     def _default_criteria(cls, path):
         """Default criteria includes everything."""
         return True
 
-    @ property
+    @property
     def display_name(self):
         """Pretty format the file name."""
         if self.path.is_dir():

@@ -236,10 +236,18 @@
       "problemMatcher": []
     },
     {
-      "label": "upgrade",
+      "label": "local update",
       "type": "shell",
       "command": "pip3 install --upgrade pip && pip-upgrade --skip-virtualenv-check -p all",
       "problemMatcher": []
+    },
+    {
+      "label": "update",
+      "type": "shell",
+      "dependsOn":[
+        "local update",
+        "action update"
+      ],
     },
     {
       "label": "setup",

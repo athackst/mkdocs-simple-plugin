@@ -44,7 +44,7 @@ categories:
   - title: ':toolbox: Maintenance'
     label: 'maintenance'
   - title: ':memo: Documentation'
-    label: 'docs'
+    label: 'documentation'
   - title: 'Dependency Updates'
     label: 'dependencies'
     collapse-after: 3
@@ -62,7 +62,7 @@ version-resolver:
     labels:
       - 'bug'
       - 'maintenance'
-      - 'docs'
+      - 'documentation'
       - 'dependencies'
       - 'security'
 

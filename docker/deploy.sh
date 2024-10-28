@@ -17,6 +17,10 @@ INPUT_CONFIG=${INPUT_CONFIG:-"mkdocs.yml"}
 echo "config: ${INPUT_CONFIG}"
 INPUT_PUSH=${INPUT_PUSH:-"true"}
 echo "push: ${INPUT_PUSH}"
+INPUT_PATH=${INPUT_PATH:-"."}
+echo "path: ${INPUT_PATH}"
+
+cd ${INPUT_PATH}
 
 mkdocs_simple_gen --config-file ${INPUT_CONFIG}
 

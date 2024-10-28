@@ -14,6 +14,8 @@
 #         id: mkdocs
 #         uses: athackst/mkdocs-simple-plugin
 #         with:
+#           # (optional) Spedify mkdocs path
+#           path: "."
 #           # (optional) Specify branch
 #           publish_branch: gh-pages
 #           # (optional) The URL of the repository the docs should point to
@@ -53,6 +55,10 @@ branding:
   icon: "book"
   color: "green"
 inputs:
+  path:
+    description: "Set the path to run mkdocs"
+    required: false
+    default: "."
   publish_branch:
     description: "Set a target branch for deployment."
     required: false

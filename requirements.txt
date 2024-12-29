@@ -1,5 +1,5 @@
 cairosvg==2.7.1
-click==8.1.7
+click==8.1.8
 flake8==7.1.1
 Jinja2==3.1.4
 MarkupSafe==3.0.2

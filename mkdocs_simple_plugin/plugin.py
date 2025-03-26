@@ -396,6 +396,7 @@ class SimplePlugin(BasePlugin):
                 dest_dir=config.site_dir,
                 use_directory_urls=config["use_directory_urls"]
             )
+            file.generated_by = "mkdocs_simple_plugin"
             if file.src_uri in files.src_uris:
                 files.remove(file)
             files.append(file)

@@ -11,7 +11,10 @@
 site_name: ok-with-mkdocstrings
 plugins:
   - simple
-  - mkdocstrings
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [examples/ok-with-mkdocstrings, .]
 ```
 ## Input
 

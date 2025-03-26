@@ -36,7 +36,7 @@
       "command": "mkdocs build --verbose",
       "dependsOrder": "sequence",
       "dependsOn": [
-        "mkdocs_simple_gen",
+        "mkdocs_simple_gen"
       ],
       "problemMatcher": []
     },
@@ -46,7 +46,7 @@
       "command": "mkdocs serve --verbose",
       "dependsOrder": "sequence",
       "dependsOn": [
-        "mkdocs_simple_gen",
+        "mkdocs_simple_gen"
       ],
       "problemMatcher": []
     },
@@ -167,7 +167,7 @@
         {
           "owner": "run_linters",
           "applyTo": "allDocuments",
-          "fileLocation":"relative",
+          "fileLocation": "relative",
           "pattern": [
             {
               "regexp": "^(.*):(\\d+)(:(\\d+):\\s(\\w\\d+)(.*))$",
@@ -187,7 +187,7 @@
             {
               "regexp": "^(.*):(\\d+)(.*):$",
               "file": 1,
-              "line": 2,
+              "line": 2
             },
             {
               "regexp": "^\\s*(.*):.(.*)$",
@@ -212,7 +212,7 @@
       "command": "htmlproofer",
       "args": [
         "--ignore-urls='https://fonts.gstatic.com,https://twitter.com/althack'",
-        "--swap-urls='^.*althack.dev\/mkdocs-simple-plugin:,^\/mkdocs-simple-plugin:,^\/latest:'",
+        "--swap-urls='^.*althack.dev/mkdocs-simple-plugin:,^/mkdocs-simple-plugin:,^/latest:'",
         "./site"
       ],
       "dependsOrder": "sequence",
@@ -244,10 +244,11 @@
     {
       "label": "update",
       "type": "shell",
-      "dependsOn":[
+      "dependsOn": [
         "local update",
         "action update"
       ],
+      "problemMatcher": []
     },
     {
       "label": "setup",
@@ -264,7 +265,7 @@
       },
       "dependsOn": [
         "pip install"
-      ],
+      ]
     }
   ]
 }

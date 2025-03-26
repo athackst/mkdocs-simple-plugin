@@ -335,11 +335,15 @@ class SimplePlugin(BasePlugin):
         # Read previous config first so updates don't get overwritten
         config_site_dir = get_config_site_dir(config.config_file_path)
 
-        # Set the build docs dir to tmp location if not set by user
-        if not self.config['build_dir'] and self.config['merge_docs_dir']:
-            self.config['build_dir'] = config['docs_dir']
-        else:
-            self.config['build_dir'] = self.tmp_build_dir
+        # If the build_dir isn't set by the user,
+        # set it to one of the following locations:
+        if not self.config['build_dir']:
+            if self.config['merge_docs_dir']:
+                # the build_dir to the docs_dir if merging
+                self.config['build_dir'] = config['docs_dir']
+            else:
+                # or a temp directory
+                self.config['build_dir'] = self.tmp_build_dir
 
         utils.log.info(
             "mkdocs-simple-plugin: build_dir: %s",

@@ -197,6 +197,55 @@ class TestSimple(TestCase):
         self.assertIn("boo.md", files)
         self.assertEqual(9, len(files), msg=f"Files: {files}")
 
+    def test_get_files_in_docs_folders(self):
+        """Test getting all files."""
+        simple_test = simple.Simple(**self.default_settings)
+        # /foo
+        #  ├── baz.md
+        #  ├── .pages
+        #  └── docs
+        #      ├── spam.md
+        #      ├── hello.txt
+        #      └── eggs.md
+        #  └── bat
+        #      ├── hello.md
+        #      └── world.md
+        #      └── docs
+        #          ├── index.md
+        #          ├── bar.txt
+        #          └── readme.md
+        # /goo
+        #  └── day.md
+        # boo.md
+        self.fs.create_file("/foo/baz.md")
+        self.fs.create_file("/foo/.pages")
+        self.fs.create_file("/foo/docs/spam.md")
+        self.fs.create_file("/foo/docs/hello.txt")
+        self.fs.create_file("/foo/docs/eggs.md")
+        self.fs.create_file("/foo/bat/hello.md")
+        self.fs.create_file("/foo/bat/world.md")
+        self.fs.create_file("/foo/bat/docs/index.md")
+        self.fs.create_file("/foo/bat/docs/bar.txt")
+        self.fs.create_file("/foo/bat/docs/readme.md")
+        self.fs.create_file("/goo/day.md")
+        self.fs.create_file("boo.md")
+
+        simple_test.folders = ["**/docs/**"]
+        files = simple_test.get_files()
+        self.assertNotIn("foo/baz.md", files)
+        self.assertNotIn("foo/.pages", files)
+        self.assertIn("foo/docs/hello.txt", files)
+        self.assertIn("foo/docs/eggs.md", files)
+        self.assertIn("foo/docs/spam.md", files)
+        self.assertNotIn("foo/bat/hello.md", files)
+        self.assertNotIn("foo/bat/world.md", files)
+        self.assertIn("foo/bat/docs/index.md", files)
+        self.assertIn("foo/bat/docs/bar.txt", files)
+        self.assertIn("foo/bat/docs/readme.md", files)
+        self.assertNotIn("goo/day.md", files)
+        self.assertNotIn("boo.md", files)
+        self.assertEqual(6, len(files), msg=f"Files: {files}")
+
     def test_get_files_ignore_folders(self):
         """Test getting all files not ignored."""
         simple_test = simple.Simple(**self.default_settings)

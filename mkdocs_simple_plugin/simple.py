@@ -60,36 +60,25 @@ class Simple():
 
     def get_files(self) -> list:
         """Get a list of files to process, excluding ignored files."""
+        
+        def is_valid_file(path: pathlib.Path) -> bool:
+            return path.is_file() and not self.is_path_ignored(path)
+
         files = set()
-        # Get all of the entries that match the include pattern.
-        entries = set()
         for pattern in self.folders:
-            entries.update(pathlib.Path().rglob(pattern))
+            for entry in pathlib.Path().glob(pattern):
+                if entry.is_dir():
+                    files.update(str(f) for f in entry.rglob('*') if is_valid_file(f))
+                elif is_valid_file(entry):
+                    files.add(str(entry))
 
-        # Filter out entries that match the ignore pattern
-        entries = {
-            entry for entry in entries if not self.is_path_ignored(str(entry))
-        }
-
-        # Iterate through directories to get files
-        for entry in entries:
-            if os.path.isfile(entry):
-                files.update(
-                    [str(entry) if not self.is_path_ignored(str(entry)) else None])
-                continue
-            for root, directories, filenames in os.walk(entry):
-                files.update([os.path.join(root, f)
-                             for f in filenames if not self.is_ignored(root, f)]
-                             )
-                directories[:] = [
-                    d for d in directories if not self.is_ignored(root, d)]
-        return files
-
+        return list(files)
+    
     def is_ignored(self, base_path: str, name: str) -> bool:
         """Check if directory and filename should be ignored."""
         return self.is_path_ignored(os.path.join(base_path, name))
 
-    def is_path_ignored(self, path: str = None) -> bool:
+    def is_path_ignored(self, path: pathlib.Path) -> bool:
         """Check if path should be ignored."""
         path = os.path.normpath(path)
         base_path = os.path.dirname(path)

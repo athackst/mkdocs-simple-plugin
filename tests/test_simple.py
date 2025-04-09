@@ -195,7 +195,7 @@ class TestSimple(TestCase):
         self.assertIn("foo/bat/world.md", files)
         self.assertIn("goo/day.md", files)
         self.assertIn("boo.md", files)
-        self.assertEqual(9, len(files))
+        self.assertEqual(9, len(files), msg=f"Files: {files}")
 
     def test_get_files_ignore_folders(self):
         """Test getting all files not ignored."""
@@ -229,7 +229,7 @@ class TestSimple(TestCase):
                                 "goo/night.md",
                                 "moo.md"]))
 
-        simple_test.ignore_glob = set(["foo/bar"])
+        simple_test.ignore_glob = set(["foo/bar/**"])
         files = simple_test.get_files()
         self.assertIn("foo/baz.md", files)
         self.assertNotIn("foo/bar/hello.txt", files)
@@ -241,7 +241,7 @@ class TestSimple(TestCase):
         self.assertNotIn("goo/night.md", files)
         self.assertIn("boo.md", files)
         self.assertIn(".mkdocsignore", files)
-        self.assertEqual(4, len(files))
+        self.assertEqual(4, len(files), msg=f"Files: {files}")
 
     def test_build_docs(self):
         """Test build docs."""

@@ -60,22 +60,25 @@ class Simple():
 
     def get_files(self) -> list:
         """Get a list of files to process, excluding ignored files."""
-        files = []
+        files = set()
         # Get all of the entries that match the include pattern.
-        entries = []
+        entries = set()
         for pattern in self.folders:
-            entries.extend(pathlib.Path().glob(pattern))
-        # Ignore any entries that match the ignore pattern
-        entries[:] = [
-            entry for entry in entries
-            if not self.is_path_ignored(str(entry))]
-        # Add any files
-        files[:] = [
-            os.path.normpath(entry) for entry in entries if entry.is_file()]
+            entries.update(pathlib.Path().rglob(pattern))
+
+        # Filter out entries that match the ignore pattern
+        entries = {
+            entry for entry in entries if not self.is_path_ignored(str(entry))
+        }
+
         # Iterate through directories to get files
         for entry in entries:
+            if os.path.isfile(entry):
+                files.update(
+                    [str(entry) if not self.is_path_ignored(str(entry)) else None])
+                continue
             for root, directories, filenames in os.walk(entry):
-                files.extend([os.path.join(root, f)
+                files.update([os.path.join(root, f)
                              for f in filenames if not self.is_ignored(root, f)]
                              )
                 directories[:] = [

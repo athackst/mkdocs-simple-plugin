@@ -66,88 +66,61 @@ class TestSimple(TestCase):
         """Test ignored files."""
         simple_test = simple.Simple(**self.default_settings)
         self.fs.create_file("directory/file")
-        self.assertFalse(
-            simple_test.is_ignored(
-                base_path="directory",
-                name="file"
-            )
-        )
+        files = simple_test.get_files()
+        self.assertIn("directory/file", files)
+        self.assertEqual(1, len(files))
 
     def test_ignored_paths(self):
         """Test ignored files."""
         simple_test = simple.Simple(**self.default_settings)
-        base_path = "directory"
-        name = "test.md"
-        path = os.path.join(base_path, name)
-        self.fs.create_file(path)
+        self.fs.create_file("directory/test.md")
+        self.fs.create_file("directory/foo.md")
+        simple_test.ignore_paths = [os.path.abspath("directory/test.md")]
 
-        self.assertFalse(
-            simple_test.is_ignored(
-                base_path=base_path,
-                name=name))
-
-        abs_path = os.path.abspath(os.path.join(base_path, name))
-        simple_test.ignore_paths = [abs_path]
-        self.assertTrue(simple_test.is_ignored(base_path=base_path, name=name))
+        files = simple_test.get_files()
+        self.assertNotIn("directory/test.md", files)
+        self.assertIn("directory/foo.md", files)
 
     def test_ignored_config(self):
         """Test ignored files from config."""
         self.default_settings["ignore"] = ["test/*"]
         simple_test = simple.Simple(**self.default_settings)
         self.fs.create_file("directory/test.md")
-        self.assertFalse(
-            simple_test.is_ignored(base_path="directory", name="test.md"))
         self.fs.create_file("test/file.md")
-        self.assertTrue(
-            simple_test.is_ignored(base_path="test", name="file.md"))
+        files = simple_test.get_files()
+        self.assertIn("directory/test.md", files)
+        self.assertNotIn("test/file.md", files)
+        self.assertEqual(1, len(files))
 
     def test_ignored_mkdocsignore(self):
         """Test mkdocsignore file."""
         simple_test = simple.Simple(**self.default_settings)
-
-        self.fs.create_file("directory/.mkdocsignore", contents="*test*")
-        self.fs.create_file("directory/test.md")
-        self.assertTrue(
-            simple_test.is_ignored(
-                base_path="directory",
-                name="test.md"))
-        self.fs.create_file("./directory/hello.md")
-        self.assertFalse(
-            simple_test.is_ignored(
-                base_path="directory",
-                name="hello.md"))
-
-        self.fs.create_file(".mkdocsignore", contents="*test*")
-        self.fs.create_file("test.md")
-        self.assertTrue(
-            simple_test.is_ignored(
-                base_path=".",
-                name="test.md"))
+        self.fs.create_file(".mkdocsignore", contents="*foo*")
+        self.fs.create_file("foo.md")
         self.fs.create_file("hello.md")
-        self.assertFalse(
-            simple_test.is_ignored(
-                base_path=".",
-                name="hello.md"))
-        self.assertIn("directory/*test*", simple_test.ignore_glob)
-        self.assertIn("*test*", simple_test.ignore_glob)
-        self.assertEqual(2, len(simple_test.ignore_glob))
+        self.fs.create_file("directory/.mkdocsignore", contents="*bar*")
+        self.fs.create_file("directory/foo.md")
+        self.fs.create_file("directory/bar.md")
+        self.fs.create_file("directory/world.md")
+
+        files = simple_test.get_files()
+        self.assertNotIn("foo.md", files)
+        self.assertIn("hello.md", files)
+        self.assertNotIn("directory/foo.md", files)
+        self.assertNotIn("directory/bar.md", files)
+        self.assertIn("directory/world.md", files)
+        self.assertEqual(4, len(files))
 
     def test_ignored_mkdocsignore_empty(self):
         """Test empty mkdocsignore file."""
         simple_test = simple.Simple(**self.default_settings)
         self.fs.create_file("./directory/.mkdocsignore")
         self.fs.create_file("./directory/test.md")
-        self.assertTrue(
-            simple_test.is_ignored(
-                base_path="./directory",
-                name="test.md"))
         self.fs.create_file("hello.md")
-        self.assertFalse(
-            simple_test.is_ignored(
-                base_path=".",
-                name="hello.md"))
-        self.assertIn("directory/*", simple_test.ignore_glob)
-        self.assertEqual(1, len(simple_test.ignore_glob))
+
+        files = simple_test.get_files()
+        self.assertNotIn("directory/test.md", files)
+        self.assertIn("hello.md", files)
 
     def test_is_doc_file(self):
         """Test if doc file."""
@@ -278,7 +251,7 @@ class TestSimple(TestCase):
                                 "goo/night.md",
                                 "moo.md"]))
 
-        simple_test.ignore_glob = set(["foo/bar/**"])
+        simple_test.ignore_glob = set(["foo/bar"])
         files = simple_test.get_files()
         self.assertIn("foo/baz.md", files)
         self.assertNotIn("foo/bar/hello.txt", files)
@@ -333,7 +306,11 @@ class TestSimple(TestCase):
         self.assertIn("foo/baz.md", paths)
         self.assertIn("foo/bar/eggs.md", paths)
         self.assertIn("foo/.pages", paths)
-        self.assertEqual(3, len(paths))
+        self.assertEqual(
+            3,
+            len(paths),
+            f"Unexpected path in {paths},"
+            " expected ['foo/baz.md', 'foo/bar/eggs.md', 'foo/.pages']")
 
     def test_build_docs_dirty_copy(self):
         """Test dirty build of doc copy."""

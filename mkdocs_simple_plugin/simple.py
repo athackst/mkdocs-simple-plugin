@@ -3,6 +3,7 @@ import fnmatch
 import os
 import pathlib
 import stat
+from typing import List, Dict
 
 from shutil import copy2 as copy
 from dataclasses import dataclass
@@ -51,68 +52,77 @@ class Simple():
         self.folders = set(folders)
         self.doc_glob = set(include)
         self.ignore_glob = set(ignore)
-        self.ignore_hidden = ignore_hidden  # to be deprecated
-        self.hidden_prefix = set([".", "__"])  # to be deprecated
+        self.ignore_hidden = ignore_hidden  # TODO[athackst] deprecate
+        self.hidden_prefix = set([".", "__"])  # TODO[athackst] deprecate
         self.ignore_paths = set(ignore_paths)
         self.semiliterate = []
         for item in semiliterate:
             self.semiliterate.append(Semiliterate(**item))
+        self.ignore_patterns: Dict[pathlib.Path, List[str]] = {}
+        self.root_path: pathlib.Path = pathlib.Path()
 
-    def get_files(self) -> list:
+    def process_mkdocsignore_files(self):
+        """Process all .mkdocsignore files and update ignore_glob."""
+        for mkdocsignore in self.root_path.rglob('.mkdocsignore'):
+            relative_path = mkdocsignore.parent.relative_to(self.root_path)
+            patterns = []
+            with mkdocsignore.open(mode="r", encoding="utf-8") as txt_file:
+                for line in txt_file:
+                    line = line.strip()
+                    if line and not line.startswith('#'):
+                        patterns.append(line)
+
+            if not patterns:
+                # If .mkdocsignore is empty, ignore everything in this directory
+                # and below
+                pattern = str(relative_path / '**')
+                self.ignore_glob.add(pattern)
+            else:
+                for pattern in patterns:
+                    if relative_path != pathlib.Path('.'):
+                        pattern = str(relative_path / pattern)
+                    self.ignore_glob.add(pattern)
+
+    def process_ignore_folders(self):
+        """Update ignore glob to include folders."""
+        self.ignore_glob.update(
+            [f"{pattern}/**" for pattern in self.ignore_glob])
+
+    def get_files(self) -> List[str]:
         """Get a list of files to process, excluding ignored files."""
-        files = []
-        # Get all of the entries that match the include pattern.
-        entries = []
+        # Process all .mkdocsignore files first
+        self.process_mkdocsignore_files()
+        self.process_ignore_folders()  # TODO[athackst] deprecate
+        files = set()
         for pattern in self.folders:
-            entries.extend(pathlib.Path().glob(pattern))
-        # Ignore any entries that match the ignore pattern
-        entries[:] = [
-            entry for entry in entries
-            if not self.is_path_ignored(str(entry))]
-        # Add any files
-        files[:] = [
-            os.path.normpath(entry) for entry in entries if entry.is_file()]
-        # Iterate through directories to get files
-        for entry in entries:
-            for root, directories, filenames in os.walk(entry):
-                files.extend([os.path.join(root, f)
-                             for f in filenames if not self.is_ignored(root, f)]
-                             )
-                directories[:] = [
-                    d for d in directories if not self.is_ignored(root, d)]
-        return files
+            for entry in pathlib.Path().glob(pattern):
+                if entry.is_dir():
+                    files.update(str(f) for f in entry.rglob(
+                        '*') if self.is_valid_file(f))
+                elif self.is_valid_file(entry):
+                    files.add(str(entry))
+        return list(files)
 
-    def is_ignored(self, base_path: str, name: str) -> bool:
-        """Check if directory and filename should be ignored."""
-        return self.is_path_ignored(os.path.join(base_path, name))
+    def is_valid_file(self, path: pathlib.Path) -> bool:
+        """Check if file is valid (not ignored and matches doc_glob)."""
+        if self.is_ignored(path):
+            return False
+        if not path.is_file():
+            return False
+        return True
 
-    def is_path_ignored(self, path: str = None) -> bool:
+    def is_ignored(self, path: pathlib.Path) -> bool:
         """Check if path should be ignored."""
-        path = os.path.normpath(path)
-        base_path = os.path.dirname(path)
+        rel_path = path.relative_to(self.root_path)
 
-        # Check if its an internally required ignore path
-        for ignored in self.ignore_paths:
-            if os.path.abspath(path).startswith(ignored):
-                return True
-
-        # Update ignore patterns from .mkdocsignore file
-        mkdocsignore = os.path.join(base_path, ".mkdocsignore")
-        if os.path.exists(mkdocsignore):
-            ignore_list = []
-            with open(mkdocsignore, mode="r", encoding="utf-8") as txt_file:
-                ignore_list = txt_file.read().splitlines()
-                # Remove all comment lines
-                ignore_list = [x for x in ignore_list if not x.startswith('#')]
-            if not ignore_list:
-                ignore_list = ["*"]
-            self.ignore_glob.update(
-                set(os.path.join(base_path, filter) for filter in ignore_list))
-        # Check for ignore paths in patterns
-        if any(fnmatch.fnmatch(path, filter)
-                for filter in self.ignore_glob):
+        # Check ignore_paths (absolute paths)
+        if any(path.resolve().is_relative_to(ignored)
+               for ignored in self.ignore_paths):
             return True
-        return False
+
+        # Check all ignore patterns
+        return any(fnmatch.fnmatch(str(rel_path), pattern)
+                   for pattern in self.ignore_glob)
 
     def is_doc_file(self, name: str) -> bool:
         """Check if file is a desired doc file."""

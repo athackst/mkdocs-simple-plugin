@@ -23,8 +23,7 @@ debugger() {
     cat mkdocs.yml
     echo "--------------"
     echo "--- FILES ----"
-    pwd
-    ls -R
+    tree .
     echo "--------------"
 }
 

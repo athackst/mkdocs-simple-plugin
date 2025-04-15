@@ -18,5 +18,5 @@ pyfakefs==5.8.0
 pymdown-extensions==10.14.3
 PyYAML==6.0.2
 hatch==1.14.1
-typing-extensions==4.13.0
+typing-extensions==4.13.2
 mkdocs-git-revision-date-localized-plugin==1.4.5

@@ -134,14 +134,11 @@ class SimplePlugin(BasePlugin):
         ('ignore', config_options.Type(
             list,
             default=[
-                "venv",
-                ".cache/**",
-                ".devcontainer/**",
-                ".github/**",
-                ".vscode/**",
-                "**/__pycache__/**",
-                ".git/**",
                 "*.egg-info",
+                "**/__pycache__/**",
+                "vendor/**",
+                "venv/**",
+                ".**/**"
             ])),
         #
         # ### ignore_hidden (deprecated)

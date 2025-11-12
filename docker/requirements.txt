@@ -5,4 +5,4 @@ mkdocs-material==9.6.22
 mkdocs==1.6.1
 pillow==11.3.0
 pip-upgrader==1.4.15
-pymdown-extensions==10.16.1
+pymdown-extensions==10.17.1

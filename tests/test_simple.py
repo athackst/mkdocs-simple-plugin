@@ -4,6 +4,7 @@ import unittest
 from unittest.mock import patch
 import stat
 import os
+import shutil
 
 from pyfakefs.fake_filesystem_unittest import TestCase
 
@@ -25,6 +26,21 @@ class TestSimple(TestCase):
             "semiliterate": {}
         }
         self.setUpPyfakefs()
+
+        def _copy2_fallback(src, dst, follow_symlinks=True):
+            if os.path.isdir(dst):
+                dst = os.path.join(dst, os.path.basename(src))
+            with open(src, "rb") as fsrc:
+                with open(dst, "wb") as fdst:
+                    shutil.copyfileobj(fsrc, fdst)
+            shutil.copystat(src, dst, follow_symlinks=follow_symlinks)
+            return dst
+
+        self._copy_patcher = patch(
+            "mkdocs_simple_plugin.simple.copy", _copy2_fallback
+        )
+        self._copy_patcher.start()
+        self.addCleanup(self._copy_patcher.stop)
 
     def test_should_extract_file(self):
         """Test should_extract_file for correctness."""

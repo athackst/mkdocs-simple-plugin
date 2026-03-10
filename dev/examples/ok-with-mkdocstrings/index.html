@@ -101,7 +101,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#input" class="md-skip">
+        <a href="#extract-docs-with-mkdocstrings" class="md-skip">
           Skip to content
         </a>
       
@@ -1020,12 +1020,25 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mkdocsyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mkdocs.yml
+      
+    </span>
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#input" class="md-nav__link">
@@ -1040,50 +1053,6 @@
       
         <li class="md-nav__item">
   <a href="#output" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Output
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#input_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Input
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#output_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Output
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#input_2" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Input
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#output_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Output
@@ -1110,79 +1079,10 @@
 
 
 
-  <h1>Index</h1>
-
 <!-- md-ignore -->
-</p>
-<p>It says "Hello, world!"trings
-
-## mkdocs.yml
-
-<div class="highlight"><pre><span></span><code><span class="c1"># You can even use this with other plugins, like </span>
-<span class="c1"># [mkdocstrings](https://pypi.org/project/mkdocstrings/), to achieve advanced </span>
-<span class="c1"># configurations.</span>
-<span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ok-with-mkdocstrings</span>
-<span class="nt">plugins</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">simple</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">mkdocstrings</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">handlers</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">python</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">paths</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">examples/ok-with-mkdocstrings</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">.</span><span class="p p-Indicator">]</span>
-</code></pre></div>
-## Input
-
-<div class="highlight"><pre><span></span><code>ok-with-mkdocstrings/
-├── example.md
-├── mkdocs.yml
-├── module.py
-└── README.md
-</code></pre></div>
-
-
-**module.py**
-<div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;md</span>
-
-<span class="sd">## Python Version</span>
-
-<span class="sd">You can put _markdown_ in triple-quoted strings in Python.</span>
-
-<span class="sd">You can even combine it with mkdocstrings to automatically generate your source</span>
-<span class="sd">documentation!</span>
-
-<span class="sd">::: module.main</span>
-<span class="sd">    handler: python</span>
-<span class="sd">    options:</span>
-<span class="sd">        show_root_heading: true</span>
-<span class="sd">        show_source: false</span>
-<span class="sd">        heading_level: 3</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test function which takes no parameters.</span>
-
-<span class="sd">    It says &quot;Hello, world!&quot;</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello, world!&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="mi">0</span>
-</code></pre></div>
-
-
-## Output
-
-<div class="highlight"><pre><span></span><code>site/
-├── example/
-│   └── index.html
-├── index.html
-├── module/
-│   └── index.html
-└── objects.inv
-</code></pre></div>
-
-
-<div class="admonition quote">
-<div class="highlight"><pre><span></span><code>kdocs.yml
-</code></pre></div>
+<!-- DO NOT EDIT! This file is auto-generated from README.md.ninja -->
+<h1 id="extract-docs-with-mkdocstrings">Extract docs with mkdocstrings</h1>
+<h2 id="mkdocsyml">mkdocs.yml</h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># You can even use this with other plugins, like </span>
 <span class="c1"># [mkdocstrings](https://pypi.org/project/mkdocstrings/), to achieve advanced </span>
 <span class="c1"># configurations.</span>
@@ -1238,95 +1138,31 @@
 └── objects.inv
 </code></pre></div>
 <div class="admonition quote">
-<p>zxhzdk:0</p>
-<h2 id="input_1">Input</h2>
-<div class="highlight"><pre><span></span><code>ok-with-mkdocstrings/
-├── example.md
-├── mkdocs.yml
-├── module.py
-└── README.md
-</code></pre></div>
-<p><strong>module.py</strong>
-<div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;md</span>
-
-<span class="sd">## Python Version</span>
-
-<span class="sd">You can put _markdown_ in triple-quoted strings in Python.</span>
-
-<span class="sd">You can even combine it with mkdocstrings to automatically generate your source</span>
-<span class="sd">documentation!</span>
-
-<span class="sd">::: module.main</span>
-<span class="sd">    handler: python</span>
-<span class="sd">    options:</span>
-<span class="sd">        show_root_heading: true</span>
-<span class="sd">        show_source: false</span>
-<span class="sd">        heading_level: 3</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<p class="admonition-title">module</p>
+<h2 id="python-version">Python Version</h2>
+<p>You can put <em>markdown</em> in triple-quoted strings in Python.</p>
+<p>You can even combine it with mkdocstrings to automatically generate your source
+documentation!</p>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test function which takes no parameters.</span>
-
-<span class="sd">    It says &quot;Hello, world!&quot;</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello, world!&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="mi">0</span>
-</code></pre></div></p>
-<h2 id="output_1">Output</h2>
-<div class="highlight"><pre><span></span><code>site/
-├── example/
-│   └── index.html
-├── index.html
-├── module/
-│   └── index.html
-└── objects.inv
-</code></pre></div>
-<p><div class="admonition quote">:0</p>
-<h2 id="input_2">Input</h2>
-<div class="highlight"><pre><span></span><code>ok-with-mkdocstrings/
-├── example.md
-├── mkdocs.yml
-├── module.py
-└── README.md
-</code></pre></div>
-<p><strong>module.py</strong>
-<div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;md</span>
-
-<span class="sd">## Python Version</span>
-
-<span class="sd">You can put _markdown_ in triple-quoted strings in Python.</span>
-
-<span class="sd">You can even combine it with mkdocstrings to automatically generate your source</span>
-<span class="sd">documentation!</span>
-
-<span class="sd">::: module.main</span>
-<span class="sd">    handler: python</span>
-<span class="sd">    options:</span>
-<span class="sd">        show_root_heading: true</span>
-<span class="sd">        show_source: false</span>
-<span class="sd">        heading_level: 3</span>
-<span class="sd">&quot;&quot;&quot;</span>
+  <div class="doc doc-object doc-function">
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test function which takes no parameters.</span>
 
-<span class="sd">    It says &quot;Hello, world!&quot;</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello, world!&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="mi">0</span>
-</code></pre></div></p>
-<h2 id="output_2">Output</h2>
-<div class="highlight"><pre><span></span><code>site/
-├── example/
-│   └── index.html
-├── index.html
-├── module/
-│   └── index.html
-└── objects.inv
-</code></pre></div>
-<div class="admonition quote">
+<h3 id="module.main" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">module</span><span class="o">.</span><span class="n">main</span><span class="p">()</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Test function which takes no parameters.</p>
+<p>It says "Hello, world!"</p>
+
+    </div>
+
+  </div></div>
 
 
 
@@ -1347,7 +1183,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="February 3, 2026 00:43:36 UTC">February 3, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="March 10, 2026 03:47:23 UTC">March 10, 2026</span>
   </span>
 
     

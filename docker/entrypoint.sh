@@ -11,10 +11,11 @@ fi
 
 pip install ${PIP_OPTS} --upgrade pip
 pip install ${PIP_OPTS} /opt/mkdocs-simple-plugin
-pip install ${PIP_OPTS} -r /opt/mkdocs-simple-plugin/requirements.txt
 
 if [ -f "requirements.txt" ]; then
-    pip install ${PIP_OPTS} -r requirements.txt
+    pip install ${PIP_OPTS} -r /opt/mkdocs-simple-plugin/requirements.txt -r requirements.txt -v
+else
+    pip install ${PIP_OPTS} -r /opt/mkdocs-simple-plugin/requirements.txt -v
 fi
 
 exec "$@"

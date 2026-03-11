@@ -1,0 +1,35 @@
+name: PR Bot
+
+on:
+  pull_request:
+  pull_request_target:
+
+jobs:
+  pr-label:
+    permissions:
+      contents: read
+      pull-requests: write
+    uses: athackst/ci/.github/workflows/pr_labeler.yml@main
+    secrets: inherit
+
+  pr-automerge:
+    needs: pr-label
+    if: ${{ github.event_name == 'pull_request_target' }}
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: athackst/ci/.github/workflows/automerge.yml@main
+    secrets:
+      token: ${{ secrets.CI_BOT_TOKEN }}
+
+  pr-bump:
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.user.login != 'dependabot[bot]' }}
+    needs: pr-label
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: athackst/ci/.github/workflows/pr_bump.yml@main
+    with:
+      bump-script: .github/bump.sh
+    secrets:
+      token: ${{ secrets.CI_BOT_TOKEN }}

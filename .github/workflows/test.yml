@@ -70,10 +70,10 @@ jobs:
       - name: Check for diffs
         run: git diff --exit-code
       - name: Upload artifact
-        uses: actions/upload-artifact@main
+        uses: actions/upload-pages-artifact@v4
         with:
           name: 'github-pages'
-          path: ${{ steps.mkdocs.outputs.artifact }}
+          path: ./site
           retention-days: 1
 
   complete:

@@ -9,3 +9,4 @@ dist/
 venv/
 docs/
 artifact.tar
+.env

@@ -6,8 +6,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  release-pypi:
+  build-pypi:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v6
       - name: Set up Python
@@ -15,15 +17,36 @@ jobs:
         with:
           python-version: "3.x"
           cache: 'pip'
-      - name: Build and Publish
-        env:
-          HATCH_INDEX_USER: ${{ secrets.PYPI_USERNAME }}
-          HATCH_INDEX_AUTH: ${{ secrets.PYPI_PASSWORD }}
+      - name: Build distributions
         run: |
           python -m pip install --upgrade pip
-          pip install -U hatch
-          hatch build
-          hatch publish 
+          python -m pip install build hatchling
+          python -m build
+      - name: Store the distribution packages
+        uses: actions/upload-artifact@v5
+        with:
+          name: python-package-distributions
+          path: dist/
+
+  release-pypi:
+    name: Upload release to PyPI
+    needs:
+    - build-pypi
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/mkdocs-simple-plugin
+    permissions:
+      id-token: write  # IMPORTANT: mandatory for trusted publishing
+    steps:
+    - name: Download all the dists
+      uses: actions/download-artifact@v6
+      with:
+        name: python-package-distributions
+        path: dist/
+    - name: Publish distribution to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+
   release-docker:
     runs-on: ubuntu-latest
     steps:

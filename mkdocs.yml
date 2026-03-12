@@ -6,8 +6,7 @@ plugins:
   - macros
   - search
   - social
-  - mike:
-      canonical_version: latest
+  - mike
   - git-revision-date-localized:
       fallback_to_build_date: true
 edit_uri: ''

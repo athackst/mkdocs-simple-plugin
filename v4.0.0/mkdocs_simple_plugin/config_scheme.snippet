@@ -1,0 +1,63 @@
+### include_folders (renamed)
+
+Renamed [folders](#folders)
+
+### folders
+
+Directories whose name matches a glob pattern in this list will be
+searched for documentation
+
+### ignore_folders (renamed)
+
+Renamed [ignore](#ignore)
+
+### ignore
+
+Directories whose name matches a glob pattern in this list will NOT be
+searched for documentation.
+
+### ignore_hidden (deprecated)
+
+Hidden directories will not be searched if this is true.
+
+### merge_docs_dir
+
+If true, the contents of the docs directory (if any) will be merged
+at the same level as all other documentation.
+Otherwise, the docs directory will be retained as a subdirectory in
+the result.
+
+### build_docs_dir (renamed)
+
+Renamed [build_dir](#build_dir)
+
+### build_dir
+
+If set, the directory where docs will be collated to be build.
+Otherwise, the build docs directory will be a temporary directory.
+
+#### copy
+
+If set, docs will be copied to the build_docs_dir.
+Otherwise, files will be used in place.
+
+### include_extensions (renamed)
+
+Renamed [include](#include)
+
+### include
+
+Any file in the searched directories whose name contains a string in
+this list will simply be copied to the generated documentation.
+
+### semiliterate
+
+The semiliterate settings allows the extraction of markdown from
+inside source files.
+It is defined as a list of blocks of settings for different
+filename patterns (typically matching filename extensions).
+All regular expression parameters use ordinary Python `re` syntax.
+
+{% include "mkdocs_simple_plugin/Semiliterate.snippet" %}
+
+{% include "mkdocs_simple_plugin/ExtractionPattern.snippet" %}

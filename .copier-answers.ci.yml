@@ -1,5 +1,5 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: b1c89b3
+_commit: 4928c60
 _src_path: gh:athackst/ci
 bump_script_path: .github/bump.sh
 release_template: "# Get it\n\n  ## Python\n\n  Install it with pip\n\n  ```bash\n\

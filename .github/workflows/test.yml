@@ -41,10 +41,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      - uses: actions/cache@v5
-        with:
-          key: ${{ github.ref }}
-          path: .cache
       - name: Build dev docs
         id: mkdocs
         uses: ./
@@ -53,6 +49,11 @@ jobs:
       - name: Check output
         run: |
           tree
+      - name: Cache HTMLProofer
+        uses: actions/cache@v5
+        with:
+          path: tmp/.htmlproofer
+          key: htmlproofer
       - name: Test html
         uses: athackst/htmlproofer-action@main
         with:

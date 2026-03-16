@@ -53,24 +53,31 @@ def default_config():
     # Set the default edit uri to empty since doc files are built from source
     # and may not exist.
     config['edit_uri'] = ''
+    return config
+
+
+def apply_environment_config(config, existing_config=None):
+    """Set config values from the environment unless already in the file."""
+    existing_config = existing_config or {}
 
     def maybe_set_string(name):
         env_variable = "INPUT_" + name.upper()
         config_variable = name.lower()
-        if os.environ.get(env_variable):
+        config_exists = config_variable in existing_config
+        if os.environ.get(env_variable) and not config_exists:
             config[config_variable] = os.environ[env_variable]
 
     def maybe_set_dict(name, key):
         env_variable = "INPUT_" + name.upper()
         config_variable = name.lower()
-        if os.environ.get(env_variable):
+        config_exists = config_variable in existing_config
+        if os.environ.get(env_variable) and not config_exists:
             config[config_variable] = {key: os.environ[env_variable]}
-    # Set the config variables via environment if exist
+
     maybe_set_string("site_name")
     maybe_set_string("site_url")
     maybe_set_string("repo_url")
     maybe_set_dict("theme", "name")
-    return config
 
 
 class MkdocsConfigDumper(yaml.Dumper):
@@ -100,9 +107,11 @@ def write_config(config_file, config):
 def setup_config(config_file="mkdocs.yml"):
     """Create the mkdocs.yml file with defaults for params that don't exist."""
     config = default_config()
+    local_config = {}
     if not os.path.exists(config_file):
         # If config file doesn't exit, create a simple one, guess the site name
         # from the folder name.
+        apply_environment_config(config)
         write_config(config_file, config)
     # Open the config file to verify settings.
     with open(config_file, 'r', encoding="utf-8") as stream:
@@ -112,6 +121,7 @@ def setup_config(config_file="mkdocs.yml"):
                 # Overwrite default config values with local mkdocs.yml
                 config.update(local_config)
                 print(config)
+            apply_environment_config(config, local_config)
             if not os.path.exists(config["docs_dir"]):
                 #  Ensure docs directory exists.
                 print("making docs_dir %s", config["docs_dir"])

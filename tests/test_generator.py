@@ -6,6 +6,7 @@ import tempfile
 
 from mkdocs import theme
 from mkdocs.config import defaults
+import yaml
 
 from mkdocs_simple_plugin import generator
 
@@ -105,6 +106,48 @@ class TestDefaultConfig(unittest.TestCase):
             config_name="theme",
             config_value={"name": "readthedocs"},
             loaded_type=theme.Theme)
+
+    def test_existing_site_name_is_not_overwritten_by_env(self):
+        """Test that an existing site name in mkdocs.yml is preserved."""
+        os.environ["INPUT_SITE_NAME"] = "from-env"
+        generator.write_config(
+            self.test_mkdocs_filename,
+            {
+                "site_name": "from-file",
+                "docs_dir": tempfile.mkdtemp(),
+                "plugins": ("simple", "search"),
+                "edit_uri": "",
+            })
+
+        test_config = generator.setup_config(self.test_mkdocs_filename)
+
+        self.assertEqual(test_config["site_name"], "from-file")
+        with open(self.test_mkdocs_filename, 'r', encoding="utf-8") as stream:
+            written_config = yaml.load(stream, yaml.Loader)
+        self.assertEqual(written_config["site_name"], "from-file")
+
+    def test_existing_theme_is_not_overwritten_by_env(self):
+        """Test that an existing theme in mkdocs.yml is preserved."""
+        os.environ["INPUT_THEME"] = "readthedocs"
+        generator.write_config(
+            self.test_mkdocs_filename,
+            {
+                "site_name": "from-file",
+                "docs_dir": tempfile.mkdtemp(),
+                "plugins": ("simple", "search"),
+                "edit_uri": "",
+                "theme": {"name": "mkdocs"},
+            })
+
+        test_config = generator.setup_config(self.test_mkdocs_filename)
+
+        self.assertEqual(test_config["theme"], {"name": "mkdocs"})
+        cfg = defaults.MkDocsConfig()
+        cfg.load_dict(test_config)
+        errors, warnings = cfg.validate()
+        self.assertEqual(len(errors), 0, errors)
+        self.assertEqual(len(warnings), 0, warnings)
+        self.assertIsInstance(cfg["theme"], theme.Theme)
 
 
 if __name__ == '__main__':

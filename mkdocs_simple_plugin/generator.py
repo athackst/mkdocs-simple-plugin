@@ -138,14 +138,24 @@ def setup_config(config_file="mkdocs.yml"):
 @click.command()
 @click.option("--config-file", default="mkdocs.yml",
               help="Set the configuration file.")
+@click.option("-v", "--verbose", is_flag=True,
+              help="Print the final configuration file.")
 @click.option('--build/--no-build', default=False,
               help="Build the site using mkdocs build.")
 @click.option('--serve/--no-serve', default=False,
               help="Serve the site using mkdocs serve.")
 @click.argument('mkdocs-args', nargs=-1)
-def main(config_file, build, serve, mkdocs_args):
+def main(config_file, verbose, build, serve, mkdocs_args):
     """Generate and build a mkdocs site."""
-    setup_config(config_file)
+    config = setup_config(config_file)
+    if verbose:
+        click.echo(yaml.dump(
+            data=config,
+            sort_keys=False,
+            default_flow_style=False,
+            Dumper=MkdocsConfigDumper
+        ).rstrip())
+
     args = mkdocs_args + ("-f", config_file)
     if build:
         os.system("mkdocs build " + " ".join(args))

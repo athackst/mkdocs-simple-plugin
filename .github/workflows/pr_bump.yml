@@ -1,0 +1,22 @@
+# This file is generated from athackst/ci/template/.github/workflows/pr_bump.yml.jinja.
+# Do not edit directly; update the template instead.
+
+name: PR Bump
+
+on:
+  pull_request:
+    types:
+      - labeled
+      - unlabeled
+
+jobs:
+  pr-bump:
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]' }}
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: athackst/ci/.github/workflows/bump.yml@main
+    with:
+      bump-script: .github/bump.sh
+    secrets:
+      token: ${{ secrets.CI_BOT_TOKEN }}

@@ -5,31 +5,7 @@
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-ignore/subfolder/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-extensions/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-no-merge/docs/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-inline-settings/main/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-no-merge/docs/draft/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-ignore/subfolder/draft/</loc>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-include/subfolder/</loc>
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
@@ -41,7 +17,11 @@
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/mkdocs_simple_plugin/generator/</loc>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-source-extract/main/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-source-replace/module/</loc>
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
@@ -49,59 +29,11 @@
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-include/</loc>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-ignore-file/test/</loc>
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-ignore/other-folder/subfolder/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-include/subfolder/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-readme/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/mkdocs_simple_plugin/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-ignore/test/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-with-macros/example/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/CONTRIBUTING/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/LICENSE/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocsignore/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocsignore/hello/hello/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-ignore/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-custom-extract/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-include/subfolder/draft/</loc>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-ignore/subfolder/draft/</loc>
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
@@ -109,7 +41,7 @@
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs/docs/</loc>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-ignore/subfolder/</loc>
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
@@ -117,35 +49,7 @@
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-merge/test/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/mkdocs_simple_plugin/plugin/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-with-mkdocstrings/example/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-source-replace/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-with-mkdocstrings/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-ignore-file/test/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-ignore-file/</loc>
-         <lastmod>2026-03-25</lastmod>
-    </url>
-    <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-with-rename/</loc>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/CONTRIBUTING/</loc>
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
@@ -153,39 +57,47 @@
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/action/</loc>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-with-mkdocstrings/example/</loc>
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-inline-settings/</loc>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-source-extract/module/</loc>
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-merge/</loc>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-readme/</loc>
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-source-extract/</loc>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-with-mkdocstrings/</loc>
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocsignore/hello/foo/bar/</loc>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/mkdocs_simple_plugin/generator/</loc>
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-no-merge/test/</loc>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs/docs/</loc>
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-source-extract/main/</loc>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/mkdocs_simple_plugin/</loc>
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-merge/docs/</loc>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-no-merge/docs/</loc>
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-source-replace/module/</loc>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocsignore/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-ignore/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-extensions/</loc>
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
@@ -201,7 +113,11 @@
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-merge/docs/draft/</loc>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-with-macros/module/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocsignore/hello/hello/</loc>
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
@@ -209,11 +125,95 @@
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-with-macros/module/</loc>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/</loc>
          <lastmod>2026-03-25</lastmod>
     </url>
     <url>
-         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-source-extract/module/</loc>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-source-replace/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-ignore-file/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-merge/test/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-inline-settings/main/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-merge/docs/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-merge/docs/draft/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-inline-settings/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-merge/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-source-extract/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-ignore/other-folder/subfolder/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-no-merge/test/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocsignore/hello/foo/bar/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/LICENSE/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/mkdocs_simple_plugin/plugin/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-include/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-ignore/test/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-with-macros/example/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/action/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-no-merge/docs/draft/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-custom-extract/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-mkdocs-docs-include/subfolder/draft/</loc>
+         <lastmod>2026-03-25</lastmod>
+    </url>
+    <url>
+         <loc>https://www.althack.dev/mkdocs-simple-plugin/dev/examples/ok-with-rename/</loc>
          <lastmod>2026-03-25</lastmod>
     </url>
 </urlset>

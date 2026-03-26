@@ -11,7 +11,7 @@ on:
 
 jobs:
   pr-bump:
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]' }}
+    if: ${{ github.event.pull_request.state == 'open' && github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]' }}
     permissions:
       contents: write
       pull-requests: write

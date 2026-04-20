@@ -33,4 +33,3 @@ See it in the actions marketplace: [https://github.com/marketplace/actions/mkdoc
 # What’s Changed
 
 $CHANGES
-

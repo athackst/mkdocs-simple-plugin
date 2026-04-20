@@ -94,9 +94,7 @@ inputs:
     description: "Push to remote"
     required: false
     default: "true"
-outputs:
-  artifact:
-    description: "Compressed tar file of the site directory"
+
 runs:
   using: "docker"
   image: "Dockerfile"

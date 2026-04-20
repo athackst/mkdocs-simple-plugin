@@ -41,15 +41,3 @@ if [[ "${INPUT_PUSH}" == "1" || "${INPUT_PUSH,,}" == "true" ]]; then
 else
     mkdocs build --config-file ${INPUT_CONFIG} -d ${INPUT_SITE_DIR}
 fi
-
-# Set permissions
-chmod -c -R +rX "$INPUT_SITE_DIR" | while read line; do
-    echo "::warning title=Invalid file permissions automatically fixed::$line"
-done
-# Create a tar the resulting files
-echo "Creating tar file artifact.tar from $INPUT_SITE_DIR"
-tar -cvf "artifact.tar" -C $INPUT_SITE_DIR .
-
-if [ $GITHUB_OUTPUT ]; then
-    echo "ARTIFACT=artifact.tar" >> $GITHUB_OUTPUT
-fi

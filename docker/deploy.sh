@@ -18,7 +18,7 @@ echo "config: ${INPUT_CONFIG}"
 INPUT_PUSH=${INPUT_PUSH:-"true"}
 echo "push: ${INPUT_PUSH}"
 
-mkdocs_simple_gen --config-file ${INPUT_CONFIG}
+mkdocs_simple_gen --config-file ${INPUT_CONFIG} --verbose
 
 if [[ "${INPUT_PUSH}" == "1" || "${INPUT_PUSH,,}" == "true" ]]; then
     git config --global user.name "${GITHUB_ACTOR}"

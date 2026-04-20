@@ -1,14 +1,13 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: fad301e
+_commit: 1d93439
 _src_path: gh:athackst/ci
 bump_script_path: .github/bump.sh
-release_template: "# Get it\n\n  ## Python\n\n  Install it with pip\n\n  ```bash\n\
-    \  pip install mkdocs-simple-plugin==$RESOLVED_VERSION\n  ```\n  See it on pypi:\
-    \ [https://pypi.org/project/mkdocs-simple-plugin](https://pypi.org/project/mkdocs-simple-plugin/$RESOLVED_VERSION/)\n\
-    \n  ## Docker\n\n  Pull it with docker\n\n  ```bash\n  docker pull althack/mkdocs-simple-plugin:v$RESOLVED_VERSION\n\
-    \  ```\n\n  See it on dockerhub: [https://hub.docker.com/repository/docker/althack/mkdocs-simple-plugin](https://hub.docker.com/repository/docker/althack/mkdocs-simple-plugin)\n\
-    \n  ## Github\n\n  ```yaml\n  - name: Build docs\n    uses: athackst/mkdocs-simple-plugin:v$RESOLVED_VERSION\n\
-    \  ```\n\n  See it in the actions marketplace: [https://github.com/marketplace/actions/mkdocs-simple-action](https://github.com/marketplace/actions/mkdocs-simple-action)\n\
-    \n  # What’s Changed\n\n  $CHANGES"
+do_releases: true
+release_template: "# Get it\n\n## Python\n\nInstall it with pip\n\n```bash\npip install\
+    \ mkdocs-simple-plugin==$RESOLVED_VERSION\n```\nSee it on pypi: [https://pypi.org/project/mkdocs-simple-plugin](https://pypi.org/project/mkdocs-simple-plugin/$RESOLVED_VERSION/)\n\
+    \n## Docker\n\nPull it with docker\n\n```bash\ndocker pull althack/mkdocs-simple-plugin:v$RESOLVED_VERSION\n\
+    ```\n\nSee it on dockerhub: [https://hub.docker.com/repository/docker/althack/mkdocs-simple-plugin](https://hub.docker.com/repository/docker/althack/mkdocs-simple-plugin)\n\
+    \n## Github\n\n```yaml\n- name: Build docs\n  uses: athackst/mkdocs-simple-plugin:v$RESOLVED_VERSION\n\
+    ```\n\nSee it in the actions marketplace: [https://github.com/marketplace/actions/mkdocs-simple-action](https://github.com/marketplace/actions/mkdocs-simple-action)\n\
+    \n# What’s Changed\n\n$CHANGES\n"
 site_generator: mkdocs
-site_version: true

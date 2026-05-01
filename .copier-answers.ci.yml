@@ -1,6 +1,7 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: 2456d50
+_commit: b817668
 _src_path: gh:athackst/ci
+automerge_mode: poll
 bump_script_path: .github/bump.sh
 do_releases: true
 release_template: "# Get it\n\n## Python\n\nInstall it with pip\n\n```bash\npip install\

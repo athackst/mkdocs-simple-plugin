@@ -6,10 +6,6 @@ name: PR Automerge
 on:
   pull_request_target:
     types:
-      - opened
-      - synchronize
-      - reopened
-      - ready_for_review
       - labeled
       - unlabeled
 
@@ -25,5 +21,7 @@ jobs:
       pull-requests: write
       checks: read
     uses: athackst/ci/.github/workflows/automerge.yml@main
+    with:
+      automerge-mode: poll
     secrets:
       token: ${{ secrets.CI_BOT_TOKEN }}

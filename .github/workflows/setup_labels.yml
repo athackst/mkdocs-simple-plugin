@@ -14,7 +14,7 @@ jobs:
   setup-labels:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       
       - name: Setup labels
         id: setup-labels

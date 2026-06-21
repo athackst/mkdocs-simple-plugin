@@ -109,7 +109,8 @@
           "INPUT_SITE_DIR": "/docs/site",
           "INPUT_PUSH": "false"
         }
-      }
+      },
+      "problemMatcher": []
     },
     {
       "label": "action serve",
@@ -238,7 +239,7 @@
     {
       "label": "local update",
       "type": "shell",
-      "command": "pip3 install --upgrade pip && pip-upgrade --skip-virtualenv-check -p all",
+      "command": "pip3 install --upgrade pip && pip-upgrade -p all",
       "problemMatcher": []
     },
     {

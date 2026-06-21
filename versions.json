@@ -6,9 +6,7 @@
     "version": "dev"
   },
   {
-    "aliases": [
-      "latest"
-    ],
+    "aliases": [],
     "properties": {},
     "title": "v4.0.0",
     "version": "v4.0.0"
@@ -108,5 +106,13 @@
     "properties": {},
     "title": "v1.1.0",
     "version": "v1.1.0"
+  },
+  {
+    "aliases": [
+      "latest"
+    ],
+    "properties": {},
+    "title": "v4.0.1",
+    "version": "v4.0.1"
   }
 ]

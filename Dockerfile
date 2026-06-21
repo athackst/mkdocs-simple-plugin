@@ -1,4 +1,4 @@
-FROM python:3.11
+FROM python:3.14.6
 
 RUN apt-get update && apt-get -y install --no-install-recommends \
   bats \

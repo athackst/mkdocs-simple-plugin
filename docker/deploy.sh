@@ -18,6 +18,24 @@ echo "config: ${INPUT_CONFIG}"
 INPUT_PUSH=${INPUT_PUSH:-"true"}
 echo "push: ${INPUT_PUSH}"
 
+if [ "${GITHUB_REPOSITORY}" ]; then
+    GITHUB_REPOSITORY_NAME="${GITHUB_REPOSITORY##*/}"
+    if [ -z "${DEFAULT_REPO_URL}" ]; then
+        export DEFAULT_REPO_URL="https://github.com/${GITHUB_REPOSITORY}"
+    fi
+    if [ -z "${DEFAULT_SITE_NAME}" ]; then
+        export DEFAULT_SITE_NAME="${GITHUB_REPOSITORY}"
+    fi
+fi
+if [[ "${GITHUB_REPOSITORY_OWNER}" && "${GITHUB_REPOSITORY_NAME}" ]]; then
+    if [ -z "${DEFAULT_SITE_URL}" ]; then
+        export DEFAULT_SITE_URL="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY_NAME}"
+    fi
+fi
+if [ -z "${DEFAULT_THEME}" ]; then
+    export DEFAULT_THEME="material"
+fi
+
 mkdocs_simple_gen --config-file ${INPUT_CONFIG}
 
 if [[ "${INPUT_PUSH}" == "1" || "${INPUT_PUSH,,}" == "true" ]]; then

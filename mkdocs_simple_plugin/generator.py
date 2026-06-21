@@ -57,27 +57,44 @@ def default_config():
 
 
 def apply_environment_config(config, existing_config=None):
-    """Set config values from the environment unless already in the file."""
+    """Set config values from non-empty environment inputs."""
     existing_config = existing_config or {}
 
     def maybe_set_string(name):
-        env_variable = "INPUT_" + name.upper()
+        env_variable = "DEFAULT_" + name.upper()
         config_variable = name.lower()
         config_exists = config_variable in existing_config
         if os.environ.get(env_variable) and not config_exists:
             config[config_variable] = os.environ[env_variable]
 
     def maybe_set_dict(name, key):
-        env_variable = "INPUT_" + name.upper()
+        env_variable = "DEFAULT_" + name.upper()
         config_variable = name.lower()
         config_exists = config_variable in existing_config
         if os.environ.get(env_variable) and not config_exists:
+            config[config_variable] = {key: os.environ[env_variable]}
+
+    def set_string(name):
+        env_variable = "INPUT_" + name.upper()
+        config_variable = name.lower()
+        if os.environ.get(env_variable):
+            config[config_variable] = os.environ[env_variable]
+
+    def set_dict(name, key):
+        env_variable = "INPUT_" + name.upper()
+        config_variable = name.lower()
+        if os.environ.get(env_variable):
             config[config_variable] = {key: os.environ[env_variable]}
 
     maybe_set_string("site_name")
     maybe_set_string("site_url")
     maybe_set_string("repo_url")
     maybe_set_dict("theme", "name")
+
+    set_string("site_name")
+    set_string("site_url")
+    set_string("repo_url")
+    set_dict("theme", "name")
 
 
 class MkdocsConfigDumper(yaml.Dumper):

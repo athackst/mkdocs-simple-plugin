@@ -28,7 +28,7 @@
 #           google_analytics: UA-XXXXXXX
 #           # (optional) Specify a different theme [mkdocs|readthedocs|material]
 #           theme: material
-#           # (optional) Load a configuration file from a string
+#           # (optional) Specify a configuration file
 #           config: "mkdocs.yml"
 #           # (optional) Version or alias.  Specify multiple aliases with space
 #           # example: version: v0.1.0 latest
@@ -60,15 +60,12 @@ inputs:
   repo_url:
     description: "Set the repository url."
     required: false
-    default: "https://github.com/${{ github.repository }}"
   site_name:
     description: "Set the site name."
     required: false
-    default: "${{ github.repository }}"
   site_url:
     description: "Set the site url."
     required: false
-    default: "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
   site_dir:
     description: "Directory to build the site."
     required: false
@@ -79,7 +76,6 @@ inputs:
   theme:
     description: "Set the theme"
     required: false
-    default: material
   config:
     description: "Configuration file"
     required: false

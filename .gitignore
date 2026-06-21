@@ -10,3 +10,4 @@ venv/
 docs/
 artifact.tar
 .env
+.pytest_cache/

@@ -6,7 +6,7 @@
 	"image": "mcr.microsoft.com/devcontainers/base:jammy",
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
-		"ghcr.io/devcontainers/features/docker-in-docker:": {},
+		"ghcr.io/devcontainers/features/docker-in-docker:3.1.0": {},
 		"ghcr.io/devcontainers/features/python:1": {}
 	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

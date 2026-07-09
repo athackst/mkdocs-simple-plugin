@@ -32,7 +32,7 @@ To get started with developing your plugin in VSCode, follow these steps:
 
 4. **Debug the plugin** You can use the VSCode debugger to inspect the code and debug your plugin. The debugger is configured in the launch.json file and can be started by using the "Start Debugging" option from the Debug menu or by using the F5 key.
 
-For more information on how to use VSCode and Docker for development, please refer to [how I develop with VSCode and Docker](https://allisonthackston.com/articles/docker-development.html) and [how I use VSCode tasks](https://allisonthackston.com/articles/vscode-tasks.html).
+For more information on how to use VSCode and Docker for development, please refer to [how I develop with VSCode and Docker](https://www.allisonthackston.com/articles/docker-development.html) and [how I use VSCode tasks](https://www.allisonthackston.com/articles/vscode-tasks.html).
 
 ## Packaging
 

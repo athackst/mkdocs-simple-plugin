@@ -6,12 +6,49 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-pypi:
+  resolve-version:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Resolve release version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            TAG_NAME="${{ github.event.release.tag_name }}"
+          elif [ "${{ github.ref_type }}" = "tag" ]; then
+            TAG_NAME="${{ github.ref_name }}"
+          else
+            echo "::error title=Unable to resolve release version::Release runs need a release tag. Publish a GitHub release, or run this workflow manually from a version tag like v1.2.3."
+            exit 1
+          fi
+
+          if [ -z "${TAG_NAME}" ]; then
+            echo "::error title=Unable to resolve release version::No release tag was found on this event."
+            exit 1
+          fi
+
+          VERSION="${TAG_NAME#v}"
+          if ! [[ "${VERSION}" =~ ^[0-9]+([.][0-9]+)*([A-Za-z0-9._+-]*)?$ ]]; then
+            echo "::error title=Unable to resolve release version::The tag '${TAG_NAME}' does not contain a release number. Use a tag like v1.2.3."
+            exit 1
+          fi
+
+          echo "Resolved release version ${VERSION} from tag ${TAG_NAME}"
+          echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
+
+  build-pypi:
+    needs:
+    - resolve-version
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ needs.resolve-version.outputs.version }}
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@v7
+      - name: Bump version
+        run: bash .github/bump.sh
       - name: Set up Python
         uses: actions/setup-python@v6.3.0
         with:
@@ -48,12 +85,15 @@ jobs:
       uses: pypa/gh-action-pypi-publish@release/v1
 
   release-docker:
+    needs:
+    - resolve-version
     runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ needs.resolve-version.outputs.version }}
     steps:
       - uses: actions/checkout@v7
-      - name: Setup environment
-        run: |
-          echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV
+      - name: Bump version
+        run: bash .github/bump.sh
       - name: Login to DockerHub
         uses: docker/login-action@v4.4.0
         with:
@@ -67,4 +107,5 @@ jobs:
           tags: |
             althack/mkdocs-simple-plugin:latest
             althack/mkdocs-simple-plugin:${{ env.VERSION }}
+            althack/mkdocs-simple-plugin:v${{ env.VERSION }}
           push: true

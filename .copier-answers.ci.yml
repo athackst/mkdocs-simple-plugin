@@ -1,8 +1,8 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: v0.1.0-2-ge171501
+_commit: v0.1.0-5-g0fd01c0
 _src_path: gh:athackst/ci
-automerge_mode: poll
-bump_script_path: .github/bump.sh
+automerge_mode: native
+bump_script_path: ''
 do_releases: true
 release_template: "# Get it\n\n## Python\n\nInstall it with pip\n\n```bash\npip install\
     \ mkdocs-simple-plugin==$RESOLVED_VERSION\n```\nSee it on pypi: [https://pypi.org/project/mkdocs-simple-plugin](https://pypi.org/project/mkdocs-simple-plugin/$RESOLVED_VERSION/)\n\

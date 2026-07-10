@@ -22,6 +22,6 @@ jobs:
       checks: read
     uses: athackst/ci/.github/workflows/automerge.yml@main
     with:
-      automerge-mode: poll
+      automerge-mode: native
     secrets:
       token: ${{ secrets.CI_BOT_TOKEN }}

@@ -1,5 +1,5 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: v0.7.0-2-g302b8b3
+_commit: v0.7.0-3-g7e5e928
 _src_path: gh:athackst/ci
 automerge_mode: native
 do_releases: true
@@ -10,4 +10,4 @@ release_template: "# Get it\n\n## Python\n\nInstall it with pip\n\n```bash\npip 
     \n## Github\n\n```yaml\n- name: Build docs\n  uses: athackst/mkdocs-simple-plugin:v$RESOLVED_VERSION\n\
     ```\n\nSee it in the actions marketplace: [https://github.com/marketplace/actions/mkdocs-simple-action](https://github.com/marketplace/actions/mkdocs-simple-action)\n\
     \n# What’s Changed\n\n$CHANGES\n"
-site_generator: mkdocs
+site_generator: none

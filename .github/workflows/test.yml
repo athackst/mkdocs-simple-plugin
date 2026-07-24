@@ -36,48 +36,8 @@ jobs:
       - name: Lint
         run: ./tests/run_linters.sh
 
-  check-docs:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-      - name: Build dev docs
-        id: mkdocs
-        uses: ./
-        with:
-          push: false
-      - name: Check output
-        run: |
-          tree
-      - name: Cache HTMLProofer
-        uses: actions/cache@v6.1.0
-        with:
-          path: tmp/.htmlproofer
-          key: htmlproofer
-      - name: Test html
-        uses: athackst/htmlproofer-action@main
-        with:
-          directory: "./site"
-          retries: 3
-          ignore_urls: |
-            https://twitter.com/althack
-            https://fonts.gstatic.com
-            https://docs.docker.com/
-          swap_urls: |
-            ^.*althack.dev\/mkdocs-simple-plugin:
-            ^\/mkdocs-simple-plugin:
-            ^\/latest:
-      - name: Check for diffs
-        run: git diff --exit-code
-      - name: Upload artifact
-        uses: actions/upload-artifact@main
-        with:
-          name: 'github-pages'
-          path: ${{ steps.mkdocs.outputs.artifact }}
-          retention-days: 1
-
   complete:
-    needs: [test, lint, check-docs]
+    needs: [test, lint]
     runs-on: ubuntu-latest
     steps:
       - name: Complete

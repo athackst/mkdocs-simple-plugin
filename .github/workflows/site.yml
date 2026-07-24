@@ -1,6 +1,3 @@
-# This file is generated from athackst/ci/copier/template/.github/workflows/site.yml.jinja.
-# Do not edit directly; update the template instead.
-
 name: Site
 
 on:
@@ -20,9 +17,30 @@ jobs:
     permissions:
       contents: read
       pages: read
-    uses: athackst/ci/.github/workflows/mkdocs_site.yml@main
-    with:
+    runs-on: ubuntu-latest
+    outputs:
+      host: ${{ steps.pages.outputs.host }}
+      base-path: ${{ steps.pages.outputs.base_path }}
+      artifact-name: github-pages
       version: ${{ github.event.release.tag_name || 'dev' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v6
+
+      - name: Build site
+        id: build-site
+        uses: ./
+        with:
+          push: false
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          name: github-pages
+          path: ./site
 
   test-site:
     needs: build-site

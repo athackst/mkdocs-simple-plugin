@@ -1,5 +1,5 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: v0.7.0-3-g7e5e928
+_commit: v0.8.0
 _src_path: gh:athackst/ci
 automerge_mode: native
 do_releases: true

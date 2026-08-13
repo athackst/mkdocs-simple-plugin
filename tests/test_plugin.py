@@ -51,14 +51,6 @@ class TestSimplePlugin(unittest.TestCase):
         self.assertIn(".pages", plugin.config["include"])
         self.assertIn(".nav.yml", plugin.config["include"])
 
-    def test_on_startup_records_dirty_mode(self):
-        """Test startup passes the dirty-build state to file generation."""
-        plugin = self.make_plugin()
-
-        plugin.on_startup(command="serve", dirty=True)
-
-        self.assertTrue(plugin.dirty)
-
     def test_on_config_merges_into_docs_directory(self):
         """Test the default configuration builds into the docs directory."""
         plugin = self.make_plugin()
@@ -77,7 +69,6 @@ class TestSimplePlugin(unittest.TestCase):
         self.assertEqual(docs_dir, plugin.orig_docs_dir)
         self.assertEqual(docs_dir, plugin.config["build_dir"])
         self.assertEqual(docs_dir, config["docs_dir"])
-        self.assertIn(".nav.yml", plugin.config["include"])
         self.assertIn(docs_dir, plugin.config["ignore_paths"])
         self.assertIn(site_dir, plugin.config["ignore_paths"])
         self.assertIn("include:", config["mkdocs_simple_config"])
@@ -102,7 +93,7 @@ class TestSimplePlugin(unittest.TestCase):
     def test_on_files_replaces_existing_file_with_generated_file(self):
         """Test generated documentation replaces the original MkDocs file."""
         plugin = self.make_plugin()
-        plugin.dirty = True
+        plugin.on_startup(command="serve", dirty=True)
         plugin.last_build_time = 10
         temporary_directory = tempfile.TemporaryDirectory()
         self.addCleanup(temporary_directory.cleanup)

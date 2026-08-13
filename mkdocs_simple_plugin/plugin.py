@@ -382,7 +382,7 @@ class SimplePlugin(BasePlugin):
         if not self.config["merge_docs_dir"]:
             # If not merging, remove files that are from the docs dir
             abs_docs_dir = os.path.abspath(config['docs_dir'])
-            for _, file in files.src_uris.items():
+            for _, file in list(files.src_uris.items()):
                 if file.abs_src_path.startswith(abs_docs_dir):
                     files.remove(file)
 

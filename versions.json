@@ -108,11 +108,17 @@
     "version": "v1.1.0"
   },
   {
+    "aliases": [],
+    "properties": {},
+    "title": "v4.0.1",
+    "version": "v4.0.1"
+  },
+  {
     "aliases": [
       "latest"
     ],
     "properties": {},
-    "title": "v4.0.1",
-    "version": "v4.0.1"
+    "title": "v4.0.2",
+    "version": "v4.0.2"
   }
 ]

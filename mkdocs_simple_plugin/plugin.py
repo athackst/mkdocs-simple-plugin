@@ -192,7 +192,7 @@ class SimplePlugin(BasePlugin):
                     "*.bmp", "*.tif", "*.tiff", "*.gif", "*.svg", "*.jpeg",
                     "*.jpg", "*.jif", "*.jiff", "*.jp2", "*.jpx", "*.j2k",
                     "*.j2c", "*.fpx", "*.pcd", "*.png", "*.pdf", "CNAME",
-                    "*.snippet", ".pages"
+                    "*.snippet", ".pages", ".nav.yml"
                 ])),
         #
         # ### semiliterate

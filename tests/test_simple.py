@@ -145,8 +145,9 @@ class TestSimple(TestCase):
         self.assertTrue(simple_test.is_doc_file(name="helloworld.md"))
         self.assertFalse(simple_test.is_doc_file(name="md.helloworld"))
 
-        simple_test.doc_glob = [".pages"]
+        simple_test.doc_glob = [".pages", ".nav.yml"]
         self.assertTrue(simple_test.is_doc_file(name=".pages"))
+        self.assertTrue(simple_test.is_doc_file(name=".nav.yml"))
 
     def test_get_files(self):
         """Test getting all files."""

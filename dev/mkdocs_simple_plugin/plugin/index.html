@@ -1447,16 +1447,16 @@ in the documentation site.</p>
 <h2 id="usage">Usage</h2>
 <p>Create a <code>mkdocs.yml</code> file in the root of your directory and add the <code>simple</code>
 plugin to its plugin list.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;My</span><span class="nv"> </span><span class="s">site&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="s">"My</span><span class="nv"> </span><span class="s">site"</span>
 <span class="nt">plugins</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">search</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">simple</span><span class="p">:</span>
 </code></pre></div>
 <h3 id="example-usage-defaults">Example usage (defaults)</h3>
 <p>block comments starting with: <code>"""md</code></p>
-<div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;md</span>
+<div class="highlight"><pre><span></span><code><span class="sd">"""md</span>
 <span class="sd">This is a documentation comment.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 </code></pre></div>
 <p>line comments starting with:
 <code># md</code> and ending with <code># /md</code>,
@@ -1489,7 +1489,7 @@ and only capturing comment lines.</p>
 <p>Inline parameters configure a block's extraction.</p>
 <p>These parameters should be on the same line as the start block.</p>
 <p>For example:</p>
-<div class="highlight"><pre><span></span><code> /**md file=&quot;new_name.md&quot; trim=2 content=&quot;^\s*\/\/\s?(.*)$&quot;
+<div class="highlight"><pre><span></span><code> /**md file="new_name.md" trim=2 content="^\s*\/\/\s?(.*)$"
 </code></pre></div>
 <h4 id="set-output-file-name">Set output file name</h4>
 <p>Filename is relative to the folder of the file being processed.</p>
@@ -1515,40 +1515,40 @@ pattern.</p>
 <p>Below are the default settings of the plugin.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">include_folders</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
 <span class="nt">folders</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*&#39;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'*'</span>
 <span class="nt">ignore_folders</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
 <span class="nt">ignore</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.egg-info&#39;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;**/__pycache__/**&#39;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'*.egg-info'</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'**/__pycache__/**'</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vendor/**</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">venv/**</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.**/**</span>
 <span class="nt">ignore_hidden</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
 <span class="nt">merge_docs_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="nt">build_docs_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-<span class="nt">build_dir</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span>
+<span class="nt">build_dir</span><span class="p">:</span><span class="w"> </span><span class="s">''</span>
 <span class="nt">copy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="nt">include_extensions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
 <span class="nt">include</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.bmp&#39;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.tif&#39;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.tiff&#39;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.gif&#39;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.svg&#39;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.jpeg&#39;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.jpg&#39;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.jif&#39;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.jiff&#39;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.jp2&#39;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.jpx&#39;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.j2k&#39;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.j2c&#39;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.fpx&#39;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.pcd&#39;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.png&#39;</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.pdf&#39;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'*.bmp'</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'*.tif'</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'*.tiff'</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'*.gif'</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'*.svg'</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'*.jpeg'</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'*.jpg'</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'*.jif'</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'*.jiff'</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'*.jp2'</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'*.jpx'</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'*.j2k'</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'*.j2c'</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'*.fpx'</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'*.pcd'</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'*.png'</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'*.pdf'</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CNAME</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;*.snippet&#39;</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="s">'*.snippet'</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.pages</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.nav.yml</span>
 <span class="nt">semiliterate</span><span class="p">:</span>
@@ -1556,8 +1556,8 @@ pattern.</p>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pattern</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.*</span>
 <span class="w">  </span><span class="nt">terminate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\W*md-ignore</span>
 <span class="w">  </span><span class="nt">extract</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\s*&quot;&quot;&quot;\W?md\b</span>
-<span class="w">    </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\s*&quot;&quot;&quot;\s*$</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\s*"""\W?md\b</span>
+<span class="w">    </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\s*"""\s*$</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">start</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\s*#+\W?md\b</span>
 <span class="w">    </span><span class="nt">stop</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">^\s*#\s?\/md\s*$</span>
 <span class="w">    </span><span class="nt">replace</span><span class="p">:</span>
@@ -1697,7 +1697,7 @@ documentation site locally.</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 15, 2026 15:31:59 UTC">August 15, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 18, 2026 15:09:51 UTC">August 18, 2026</span>
   </span>
 
     

@@ -1,4 +1,4 @@
-FROM python:3.15.0rc1
+FROM python:3.15.0rc2
 
 RUN apt-get update && apt-get -y install --no-install-recommends \
   bats \

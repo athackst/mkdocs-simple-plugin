@@ -16,6 +16,6 @@ pip-upgrader==2.4.13
 pydocstyle==6.3.0
 pymdown-extensions==11.0.2
 PyYAML==6.0.3
-hatch==1.18.0
+hatch==1.18.1
 typing-extensions==4.16.0
 mkdocs-git-revision-date-localized-plugin==1.6.0

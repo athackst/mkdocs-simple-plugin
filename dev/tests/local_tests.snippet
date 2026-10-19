@@ -12,7 +12,7 @@ container.
 Change the python version by setting the environment variable `PYTHON_V_ONLY`
 
 ```bash
-./tests/run_local_tests.sh -e PYTHON_V_ONLY="3.10"
+./tests/run_local_tests.sh -e PYTHON_V_ONLY="3.11"
 ```
 
 {% include "versions.snippet" %}
@@ -44,10 +44,11 @@ if [[ ! -z "$PYTHON_V_ONLY" ]]; then
  docker_run_integration_tests "$PYTHON_V_ONLY"
 else
  docker_run_integration_tests "3"
- docker_run_integration_tests "3.8"
- docker_run_integration_tests "3.9"
- docker_run_integration_tests "3.10"
  docker_run_integration_tests "3.11"
+ docker_run_integration_tests "3.12"
+ docker_run_integration_tests "3.13"
+ docker_run_integration_tests "3.14"
+ docker_run_integration_tests "3.15"
 fi
 ```
 </details>

@@ -10,11 +10,11 @@ mkdocs-macros-plugin==1.5.0
 mkdocs-material==9.7.7
 mkdocs==1.6.1
 mkdocstrings-python
-mkdocstrings==1.0.6
+mkdocstrings==1.0.7
 pillow==12.3.0
 pip-upgrader==2.4.13
 pydocstyle==6.3.0
-pymdown-extensions==12.1
+pymdown-extensions==12.2
 PyYAML==6.0.3
 hatch==1.18.1
 typing-extensions==4.16.0

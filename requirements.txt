@@ -7,7 +7,7 @@ mike==2.2.0
 mkdocs-awesome-pages-plugin==2.10.1
 mkdocs-click==0.9.0
 mkdocs-macros-plugin==1.5.0
-mkdocs-material==9.7.7
+mkdocs-material==9.8.0
 mkdocs==1.6.1
 mkdocstrings-python
 mkdocstrings==1.0.8
@@ -18,4 +18,4 @@ pymdown-extensions==12.3
 PyYAML==6.0.3
 hatch==1.18.1
 typing-extensions==4.16.0
-mkdocs-git-revision-date-localized-plugin==1.6.0
+mkdocs-git-revision-date-localized-plugin==1.6.2

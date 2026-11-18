@@ -14,7 +14,7 @@ mkdocstrings==1.0.8
 pillow==13.0.0
 pip-upgrader==2.4.13
 pydocstyle==6.3.0
-pymdown-extensions==13.0
+pymdown-extensions==13.1
 PyYAML==6.0.3
 hatch==1.18.2
 typing-extensions==4.16.0

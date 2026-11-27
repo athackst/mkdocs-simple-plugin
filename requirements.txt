@@ -7,14 +7,14 @@ mike==2.2.0
 mkdocs-awesome-pages-plugin==2.10.1
 mkdocs-click==0.9.0
 mkdocs-macros-plugin==1.5.0
-mkdocs-material==9.8.1
+mkdocs-material==9.8.2
 mkdocs==1.6.1
 mkdocstrings-python
 mkdocstrings==1.0.8
 pillow==13.0.0
 pip-upgrader==2.4.13
 pydocstyle==6.3.0
-pymdown-extensions==13.1
+pymdown-extensions==13.1.1
 PyYAML==6.0.3
 hatch==1.18.2
 typing-extensions==4.16.0
